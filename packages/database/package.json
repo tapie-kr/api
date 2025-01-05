@@ -1,0 +1,48 @@
+{
+  "name": "@tapie-kr/api-database",
+  "version": "0.0.1",
+  "description": "TAPIE API Database Schema",
+  "scripts": {
+    "prepublishOnly": "pnpm run format && pnpm run generate",
+    "format": "prisma format",
+    "generate": "prisma generate",
+    "migrate": "prisma migrate dev",
+    "migrate:prod": "prisma migrate deploy",
+    "studio": "prisma studio"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tapie-kr/api.git"
+  },
+  "author": {
+    "name": "Taeyeong Kim",
+    "email": "taeyeong.kim@algorix.io",
+    "url": "https://github.com/cottons-kr"
+  },
+  "peerDependencies": {
+    "@prisma/client": "^6.1.0",
+    "prisma": "^6.1.0"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.1.0",
+    "prisma": "^6.1.0"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  },
+  "exports": {
+    "./client": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.js",
+      "import": "./dist/index.js"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "client"
+  ]
+}

@@ -1,0 +1,54 @@
+enum PortfolioTag {
+  Web
+  App
+  Design
+  Hackathon
+  Winner
+  Entry
+  Other
+}
+
+model Portfolio {
+  uuid             String  @id @default(uuid())
+  thumbnailUUID    String?
+  presentationUUID String?
+
+  name        String
+  catchPhrase String
+  description String
+  links       String[]
+  tags        PortfolioTag[]
+
+  members       PortfolioMember[]
+  thumbnail     Asset?                  @relation(name: "PortfolioThumbnail", fields: [thumbnailUUID], references: [uuid])
+  presentation  Asset?                  @relation(name: "PortfolioPresentation", fields: [presentationUUID], references: [uuid])
+  competition   Competition[]
+  visitStats    PortfolioVisitStat[]
+  downloadStats PortfolioDownloadStat[]
+
+  releasedAt DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([name, releasedAt])
+}
+
+model PortfolioMember {
+  uuid          String  @id @default(uuid())
+  portfolioUUID String
+  accountUUID   String?
+
+  name        String?
+  role        String
+  description String
+
+  portfolio              Portfolio      @relation(fields: [portfolioUUID], references: [uuid])
+  skills                 AccountSkill[]
+  account                Account?       @relation(name: "AccountPortfolio", fields: [accountUUID], references: [uuid])
+  representativeAccounts Account?       @relation(name: "AccountRepresentativePortfolioMember")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([portfolioUUID, accountUUID])
+}

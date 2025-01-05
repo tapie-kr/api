@@ -1,0 +1,12 @@
+model Asset {
+  uuid String @id @default(uuid())
+
+  path String
+
+  account               Account[]
+  applyForm             ApplyForm[]
+  portfolioThumbnail    Portfolio[] @relation(name: "PortfolioThumbnail")
+  portfolioPresentation Portfolio[] @relation(name: "PortfolioPresentation")
+
+  createdAt DateTime @default(now())
+}

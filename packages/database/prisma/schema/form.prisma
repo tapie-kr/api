@@ -1,0 +1,20 @@
+model ApplyForm {
+  uuid               String  @id @default(uuid())
+  accountUUID        String? @unique
+  portfolioAssetUUID String? @unique
+
+  name               String
+  unit               Unit
+  googleEmail        String @unique
+  phoneNumber        String @unique
+  introduction       String
+  motivation         String
+  expectedActivities String
+  reasonToChoose     String
+
+  account   Account? @relation(fields: [accountUUID], references: [uuid])
+  portfolio Asset?   @relation(fields: [portfolioAssetUUID], references: [uuid])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

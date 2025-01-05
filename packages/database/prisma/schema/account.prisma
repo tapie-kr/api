@@ -1,0 +1,75 @@
+enum Unit {
+  Developer
+  Designer
+}
+
+enum Role {
+  Admin
+  Manager
+  Member
+}
+
+model Account {
+  uuid                              String  @id @default(uuid())
+  profileAssetUUID                  String?
+  representativePortfolioMemberUUID String? @unique
+  representativeAwardUUID           String?
+
+  username        String? @unique
+  googleEmail     String  @unique
+  role            Role    @default(Member)
+  name            String
+  unit            Unit
+  additionalTitle String?
+
+  profile    Asset?             @relation(fields: [profileAssetUUID], references: [uuid])
+  applyForm  ApplyForm?
+  portfolio  PortfolioMember[]  @relation(name: "AccountPortfolio")
+  awards     Award[]            @relation(name: "AccountAward")
+  skills     AccountSkill[]
+  history    AccountHistory[]
+  visitStats ProfileVisitStat[]
+
+  representativePortfolioMember PortfolioMember? @relation(name: "AccountRepresentativePortfolioMember", fields: [representativePortfolioMemberUUID], references: [uuid])
+  representativeAward           Award?           @relation(name: "AccountRepresentativeAward", fields: [representativeAwardUUID], references: [uuid])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([name, additionalTitle])
+}
+
+model AccountSkill {
+  uuid        String @id @default(uuid())
+  accountUUID String
+  skillUUID   String
+
+  isVerified Boolean @default(false)
+  isLearning Boolean @default(false)
+
+  account        Account           @relation(fields: [accountUUID], references: [uuid])
+  skill          Skill             @relation(fields: [skillUUID], references: [uuid])
+  usedPortfolios PortfolioMember[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([accountUUID, skillUUID])
+}
+
+model AccountHistory {
+  id          Int    @id @default(autoincrement())
+  accountUUID String
+
+  label       String
+  link        String?
+  isImportant Boolean @default(false)
+
+  account Account @relation(fields: [accountUUID], references: [uuid])
+
+  releasedAt DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([accountUUID, label])
+}

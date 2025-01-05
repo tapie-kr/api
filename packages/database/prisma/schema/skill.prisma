@@ -1,0 +1,20 @@
+enum SkillType {
+  Development
+  Management
+  Other
+}
+
+model Skill {
+  uuid String @id @default(uuid())
+
+  icon String
+  name String
+  type SkillType
+
+  accountSkills AccountSkill[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([icon, name])
+}

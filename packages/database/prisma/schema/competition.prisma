@@ -1,0 +1,32 @@
+model Competition {
+  uuid String @id @default(uuid())
+
+  name String @unique
+
+  portfolios Portfolio[]
+  awards     Award[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Award {
+  uuid            String @id @default(uuid())
+  competitionUUID String
+
+  title      String
+  grade      Int     @default(0)
+  gradeLabel String?
+
+  competition            Competition @relation(fields: [competitionUUID], references: [uuid])
+  accounts               Account[]   @relation(name: "AccountAward")
+  representativeAccounts Account[]   @relation(name: "AccountRepresentativeAward")
+
+  rewardedAt DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([competitionUUID, title])
+  @@unique([title, grade])
+  @@unique([grade, gradeLabel])
+}
