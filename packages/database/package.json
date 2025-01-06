@@ -1,6 +1,6 @@
 {
   "name": "@tapie-kr/api-database",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "TAPIE API Database Schema",
   "scripts": {
     "prepublishOnly": "pnpm run format && pnpm run generate",
@@ -8,6 +8,7 @@
     "generate": "prisma generate",
     "migrate": "prisma migrate dev",
     "migrate:prod": "prisma migrate deploy",
+    "migrate:reset": "prisma migrate reset",
     "studio": "prisma studio"
   },
   "license": "MIT",

@@ -1,19 +1,19 @@
 model ApplyForm {
   uuid               String  @id @default(uuid())
-  accountUUID        String? @unique
+  memberUUID         String? @unique
   portfolioAssetUUID String? @unique
 
   name               String
-  unit               Unit
-  googleEmail        String @unique
-  phoneNumber        String @unique
+  unit               MemberUnit
+  googleEmail        String     @unique
+  phoneNumber        String     @unique
   introduction       String
   motivation         String
   expectedActivities String
   reasonToChoose     String
 
-  account   Account? @relation(fields: [accountUUID], references: [uuid])
-  portfolio Asset?   @relation(fields: [portfolioAssetUUID], references: [uuid])
+  member    Member? @relation(fields: [memberUUID], references: [uuid], onDelete: SetNull)
+  portfolio Asset?  @relation(fields: [portfolioAssetUUID], references: [uuid], onDelete: Restrict)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

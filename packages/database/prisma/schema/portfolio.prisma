@@ -1,11 +1,11 @@
 enum PortfolioTag {
-  Web
-  App
-  Design
-  Hackathon
-  Winner
-  Entry
-  Other
+  WEB
+  APP
+  DESIGN
+  HACKATHON
+  WINNER
+  ENTRY
+  OTHER
 }
 
 model Portfolio {
@@ -20,8 +20,8 @@ model Portfolio {
   tags        PortfolioTag[]
 
   members       PortfolioMember[]
-  thumbnail     Asset?                  @relation(name: "PortfolioThumbnail", fields: [thumbnailUUID], references: [uuid])
-  presentation  Asset?                  @relation(name: "PortfolioPresentation", fields: [presentationUUID], references: [uuid])
+  thumbnail     Asset?                  @relation(name: "PortfolioThumbnail", fields: [thumbnailUUID], references: [uuid], onDelete: Restrict)
+  presentation  Asset?                  @relation(name: "PortfolioPresentation", fields: [presentationUUID], references: [uuid], onDelete: Restrict)
   competition   Competition[]
   visitStats    PortfolioVisitStat[]
   downloadStats PortfolioDownloadStat[]
@@ -36,19 +36,19 @@ model Portfolio {
 model PortfolioMember {
   uuid          String  @id @default(uuid())
   portfolioUUID String
-  accountUUID   String?
+  memberUUID    String?
 
   name        String?
   role        String
   description String
 
-  portfolio              Portfolio      @relation(fields: [portfolioUUID], references: [uuid])
-  skills                 AccountSkill[]
-  account                Account?       @relation(name: "AccountPortfolio", fields: [accountUUID], references: [uuid])
-  representativeAccounts Account?       @relation(name: "AccountRepresentativePortfolioMember")
+  portfolio             Portfolio     @relation(fields: [portfolioUUID], references: [uuid], onDelete: Cascade)
+  skills                MemberSkill[]
+  member                Member?       @relation(name: "MemberPortfolio", fields: [memberUUID], references: [uuid], onDelete: SetNull)
+  representativeMembers Member?       @relation(name: "MemberRepresentativePortfolioMember")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@unique([portfolioUUID, accountUUID])
+  @@unique([portfolioUUID, memberUUID])
 }

@@ -1,0 +1,75 @@
+enum MemberUnit {
+  DEVELOPER
+  DESIGNER
+}
+
+enum MemberRole {
+  ADMIN
+  MANAGER
+  MEMBER
+}
+
+model Member {
+  uuid                              String  @id @default(uuid())
+  profileAssetUUID                  String?
+  representativePortfolioMemberUUID String? @unique
+  representativeAwardUUID           String?
+
+  username        String?    @unique
+  googleEmail     String     @unique
+  role            MemberRole @default(MEMBER)
+  name            String
+  unit            MemberUnit
+  additionalTitle String?
+
+  profile    Asset?             @relation(fields: [profileAssetUUID], references: [uuid], onDelete: Restrict)
+  applyForm  ApplyForm?
+  portfolio  PortfolioMember[]  @relation(name: "MemberPortfolio")
+  awards     Award[]            @relation(name: "MemberAward")
+  skills     MemberSkill[]
+  history    MemberHistory[]
+  visitStats ProfileVisitStat[]
+
+  representativePortfolioMember PortfolioMember? @relation(name: "MemberRepresentativePortfolioMember", fields: [representativePortfolioMemberUUID], references: [uuid], onDelete: Restrict)
+  representativeAward           Award?           @relation(name: "MemberRepresentativeAward", fields: [representativeAwardUUID], references: [uuid], onDelete: Restrict)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([name, additionalTitle])
+}
+
+model MemberSkill {
+  uuid       String @id @default(uuid())
+  memberUUID String
+  skillUUID  String
+
+  isVerified Boolean @default(false)
+  isLearning Boolean @default(false)
+
+  member         Member            @relation(fields: [memberUUID], references: [uuid], onDelete: Cascade)
+  skill          Skill             @relation(fields: [skillUUID], references: [uuid], onDelete: Cascade)
+  usedPortfolios PortfolioMember[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([memberUUID, skillUUID])
+}
+
+model MemberHistory {
+  id         Int    @id @default(autoincrement())
+  memberUUID String
+
+  label       String
+  link        String?
+  isImportant Boolean @default(false)
+
+  member Member @relation(fields: [memberUUID], references: [uuid], onDelete: Cascade)
+
+  releasedAt DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([memberUUID, label])
+}

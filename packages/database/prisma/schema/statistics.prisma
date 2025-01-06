@@ -1,8 +1,8 @@
 enum SiteType {
-  Tapie
-  Inspire
-  ApplyForm
-  Portfolio
+  TAPIE
+  INSPIRE
+  APPLY_FORM
+  PORTFOLIO
 }
 
 model SiteVisitStat {
@@ -18,7 +18,7 @@ model PortfolioVisitStat {
   id            Int     @id @default(autoincrement())
   portfolioUUID String?
 
-  portfolio Portfolio? @relation(fields: [portfolioUUID], references: [uuid])
+  portfolio Portfolio? @relation(fields: [portfolioUUID], references: [uuid], onDelete: SetNull)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -28,17 +28,17 @@ model PortfolioDownloadStat {
   id            Int     @id @default(autoincrement())
   portfolioUUID String?
 
-  portfolio Portfolio? @relation(fields: [portfolioUUID], references: [uuid])
+  portfolio Portfolio? @relation(fields: [portfolioUUID], references: [uuid], onDelete: SetNull)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model ProfileVisitStat {
-  id          Int     @id @default(autoincrement())
-  accountUUID String?
+  id         Int     @id @default(autoincrement())
+  memberUUID String?
 
-  account Account? @relation(fields: [accountUUID], references: [uuid])
+  member Member? @relation(fields: [memberUUID], references: [uuid], onDelete: SetNull)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

@@ -3,7 +3,7 @@ model Asset {
 
   path String
 
-  account               Account[]
+  member                Member[]
   applyForm             ApplyForm[]
   portfolioThumbnail    Portfolio[] @relation(name: "PortfolioThumbnail")
   portfolioPresentation Portfolio[] @relation(name: "PortfolioPresentation")

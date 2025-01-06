@@ -1,7 +1,7 @@
 enum SkillType {
-  Development
-  Management
-  Other
+  DEVELOPMENT
+  MANAGEMENT
+  OTHER
 }
 
 model Skill {
@@ -11,7 +11,7 @@ model Skill {
   name String
   type SkillType
 
-  accountSkills AccountSkill[]
+  memberSkills MemberSkill[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

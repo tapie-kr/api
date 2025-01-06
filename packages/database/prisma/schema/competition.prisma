@@ -11,16 +11,16 @@ model Competition {
 }
 
 model Award {
-  uuid            String @id @default(uuid())
-  competitionUUID String
+  uuid            String  @id @default(uuid())
+  competitionUUID String?
 
   title      String
   grade      Int     @default(0)
   gradeLabel String?
 
-  competition            Competition @relation(fields: [competitionUUID], references: [uuid])
-  accounts               Account[]   @relation(name: "AccountAward")
-  representativeAccounts Account[]   @relation(name: "AccountRepresentativeAward")
+  competition           Competition? @relation(fields: [competitionUUID], references: [uuid], onDelete: SetNull)
+  members               Member[]     @relation(name: "MemberAward")
+  representativeMembers Member[]     @relation(name: "MemberRepresentativeAward")
 
   rewardedAt DateTime
   createdAt  DateTime @default(now())
