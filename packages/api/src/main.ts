@@ -19,7 +19,7 @@ async function bootstrap() {
   const configService = app.get(ConfigService)
   const isProduction = configService.get('NODE_ENV') === 'production'
 
-  await app.enableCors({
+  app.enableCors({
     origin: isProduction ?
       ['https://tapie.kr/', 'https://api.tapie.kr/', 'https://admin.tapie.kr/', 'https://lms.tapie.kr/'] :
       '*',
