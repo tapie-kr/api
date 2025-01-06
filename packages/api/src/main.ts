@@ -3,10 +3,14 @@ import { AppModule } from './app.module'
 import { GlobalExceptionFilter } from './common/filters/global-exception.filter'
 import { TransformInterceptor } from './common/interceptors/transform.interceptor'
 import { ConfigService } from '@nestjs/config'
-import { ValidationPipe } from '@nestjs/common'
+import { Logger, ValidationPipe } from '@nestjs/common'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
+  const configService = app.get(ConfigService)
+  const logger = new Logger('bootstrap')
+
+  const isProduction = configService.get('NODE_ENV') === 'production'
 
   app.useGlobalFilters(new GlobalExceptionFilter())
   app.useGlobalInterceptors(new TransformInterceptor())
@@ -15,9 +19,6 @@ async function bootstrap() {
     whitelist: true,
     forbidNonWhitelisted: true,
   }))
-
-  const configService = app.get(ConfigService)
-  const isProduction = configService.get('NODE_ENV') === 'production'
 
   app.enableCors({
     origin: isProduction ?
@@ -29,6 +30,8 @@ async function bootstrap() {
     isProduction ? Number(configService.get('PORT') || 3000) : 8877,
     '0.0.0.0'
   )
+
+  logger.log(`Server running on ${await app.getUrl()}`)
 }
 
 bootstrap()
