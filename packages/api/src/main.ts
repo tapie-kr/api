@@ -26,7 +26,7 @@ async function bootstrap() {
   })
 
   await app.listen(
-    isProduction ? Number(configService.get('PORT')) : 8877,
+    isProduction ? Number(configService.get('PORT') || 3000) : 8877,
     '0.0.0.0'
   )
 }
