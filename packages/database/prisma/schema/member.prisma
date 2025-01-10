@@ -24,6 +24,7 @@ model Member {
 
   profile    Asset?             @relation(fields: [profileAssetUUID], references: [uuid], onDelete: Restrict)
   applyForm  ApplyForm?
+  links      MemberLink[]
   portfolio  PortfolioMember[]  @relation(name: "MemberPortfolio")
   awards     Award[]            @relation(name: "MemberAward")
   skills     MemberSkill[]
@@ -37,6 +38,23 @@ model Member {
   updatedAt DateTime @updatedAt
 
   @@unique([name, additionalTitle])
+}
+
+model MemberLink {
+  id         Int    @id @default(autoincrement())
+  memberUUID String
+
+  icon  String
+  label String
+  link  String
+
+  member Member @relation(fields: [memberUUID], references: [uuid], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([memberUUID, label])
+  @@unique([label, link])
 }
 
 model MemberSkill {
