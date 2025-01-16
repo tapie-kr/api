@@ -5,7 +5,7 @@ import { GoogleAuthDto } from './dto/google-auth.dto'
 import { MemberPayloadDto } from './dto/member-payload.dto'
 import { MembersService } from 'src/members/members.service'
 import { omit } from 'src/common/utils/object'
-import { MemberMethod } from 'src/members/enums/member.enum'
+import { GetMemberMethod } from 'src/members/enums/member.enum'
 
 @Injectable()
 export class AuthService {
@@ -19,7 +19,7 @@ export class AuthService {
     if (!googleUser) {
       throw new UnauthorizedException('잘못된 인증 정보입니다.')
     }
-    const existsMember = await this.membersService.getMember(MemberMethod.GOOGLE_EMAIL, googleUser.email)
+    const existsMember = await this.membersService.getMember(GetMemberMethod.GOOGLE_EMAIL, googleUser.email)
     if (!existsMember) {
       throw new UnauthorizedException('TAPIE 부원이 아닙니다.')
     }

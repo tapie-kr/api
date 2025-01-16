@@ -19,7 +19,7 @@ async function main() {
     await prisma.member.create({ data: {
       googleEmail: TEMPORARY_GOOGLE_EMAIL,
       name: '임시 사용자',
-      role: MemberRole.ADMIN,
+      role: MemberRole.MANAGER,
       unit: MemberUnit.DEVELOPER,
     } })
 

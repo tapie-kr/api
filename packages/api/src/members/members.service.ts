@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { MemberRepository } from './repository/member.repository'
-import { MemberMethod } from './enums/member.enum'
+import { GetMemberMethod } from './enums/member.enum'
 
 @Injectable()
 export class MembersService {
@@ -8,13 +8,13 @@ export class MembersService {
     private readonly memberRepository: MemberRepository,
   ) {}
 
-  async getMember(method: MemberMethod, value: string) {
+  async getMember(method: GetMemberMethod, value: string) {
     switch (method) {
-      case MemberMethod.UUID:
+      case GetMemberMethod.UUID:
         return this.memberRepository.getMember(value)
-      case MemberMethod.USERNAME:
+      case GetMemberMethod.USERNAME:
         return this.memberRepository.getMemberByUsername(value)
-      case MemberMethod.GOOGLE_EMAIL:
+      case GetMemberMethod.GOOGLE_EMAIL:
         return this.memberRepository.getMemberByGoogleEmail(value)
     }
   }
