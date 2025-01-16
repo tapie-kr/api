@@ -16,9 +16,9 @@ model Portfolio {
   name        String
   catchPhrase String
   description String
-  links       String[]
   tags        PortfolioTag[]
 
+  links         PortfolioLink[]
   members       PortfolioMember[]
   thumbnail     Asset?                  @relation(name: "PortfolioThumbnail", fields: [thumbnailUUID], references: [uuid], onDelete: Restrict)
   presentation  Asset?                  @relation(name: "PortfolioPresentation", fields: [presentationUUID], references: [uuid], onDelete: Restrict)
@@ -31,6 +31,24 @@ model Portfolio {
   updatedAt  DateTime @updatedAt
 
   @@unique([name, releasedAt])
+}
+
+enum PortfolioLinkType {
+  LANDING
+  GITHUB
+}
+
+model PortfolioLink {
+  uuid          String @id @default(uuid())
+  portfolioUUID String
+
+  type PortfolioLinkType
+  href String
+
+  portfolio Portfolio @relation(fields: [portfolioUUID], references: [uuid], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model PortfolioMember {

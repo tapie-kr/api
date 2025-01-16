@@ -4,8 +4,8 @@ enum MemberUnit {
 }
 
 enum MemberRole {
-  ADMIN
   MANAGER
+  VICE_MANAGER
   MEMBER
 }
 
@@ -15,12 +15,11 @@ model Member {
   representativePortfolioMemberUUID String? @unique
   representativeAwardUUID           String?
 
-  username        String?    @unique
-  googleEmail     String     @unique
-  role            MemberRole @default(MEMBER)
-  name            String
-  unit            MemberUnit
-  additionalTitle String?
+  username    String?    @unique
+  googleEmail String     @unique
+  role        MemberRole @default(MEMBER)
+  name        String
+  unit        MemberUnit
 
   profile    Asset?             @relation(fields: [profileAssetUUID], references: [uuid], onDelete: Restrict)
   applyForm  ApplyForm?
@@ -36,8 +35,6 @@ model Member {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  @@unique([name, additionalTitle])
 }
 
 model MemberLink {
@@ -46,7 +43,7 @@ model MemberLink {
 
   icon  String
   label String
-  link  String
+  href  String
 
   member Member @relation(fields: [memberUUID], references: [uuid], onDelete: Cascade)
 
@@ -54,7 +51,7 @@ model MemberLink {
   updatedAt DateTime @updatedAt
 
   @@unique([memberUUID, label])
-  @@unique([label, link])
+  @@unique([label, href])
 }
 
 model MemberSkill {
