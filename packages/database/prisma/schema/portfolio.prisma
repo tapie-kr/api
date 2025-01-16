@@ -13,10 +13,11 @@ model Portfolio {
   thumbnailUUID    String?
   presentationUUID String?
 
-  name        String
-  catchPhrase String
-  description String
-  tags        PortfolioTag[]
+  name                 String
+  catchPhrase          String
+  description          String
+  tags                 PortfolioTag[]
+  thumbnailEffectColor String?
 
   links         PortfolioLink[]
   members       PortfolioMember[]
