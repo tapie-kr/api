@@ -4,8 +4,8 @@ enum MemberUnit {
 }
 
 enum MemberRole {
+  CO_MANAGER
   MANAGER
-  VICE_MANAGER
   MEMBER
   GUEST
 }
@@ -21,6 +21,7 @@ model Member {
   role        MemberRole @default(GUEST)
   name        String
   unit        MemberUnit
+  permissions Int        @default(0)
 
   profile    Asset?             @relation(fields: [profileAssetUUID], references: [uuid], onDelete: Restrict)
   applyForm  ApplyForm?
