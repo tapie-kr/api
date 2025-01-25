@@ -1,8 +1,8 @@
-import { Module } from '@nestjs/common'
-import { ConfigModule } from '@nestjs/config'
-import { CacheModule } from '@nestjs/cache-manager'
-import { AuthModule } from './auth/auth.module'
-import { MembersModule } from './members/members.module'
+import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+import { CacheModule } from '@nestjs/cache-manager';
+import { AuthModule } from './auth/auth.module';
+import { MembersModule } from './members/members.module';
 
 @Module({
   imports: [
@@ -13,6 +13,6 @@ import { MembersModule } from './members/members.module'
     CacheModule.register({ isGlobal: true }),
     AuthModule,
     MembersModule,
-  ]
+  ],
 })
 export class AppModule {}

@@ -1,9 +1,9 @@
-import { IsEmail, IsString } from 'class-validator'
+import { IsEmail, IsString } from 'class-validator';
 
 export class GoogleAuthDto {
   @IsEmail()
-  public email: string
+  public email: string;
 
   @IsString()
-  public accessToken: string
+  public accessToken: string;
 }
