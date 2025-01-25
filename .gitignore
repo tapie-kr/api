@@ -7,3 +7,4 @@ dist/
 .DS_Store
 client/
 build/
+__test__/

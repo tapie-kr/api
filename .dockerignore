@@ -2,3 +2,5 @@
 node_modules
 dist
 scripts
+__test__
+test
