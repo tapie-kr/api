@@ -24,7 +24,7 @@ export class AuthService {
       googleUser.email,
     );
     if (!existsMember) {
-      throw new UnauthorizedException('TAPIE 부원이 아닙니다.');
+      throw new UnauthorizedException('계정이 없습니다.');
     }
 
     const payload: MemberPayloadDto = existsMember;

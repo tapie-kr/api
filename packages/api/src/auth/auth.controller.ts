@@ -1,6 +1,6 @@
-import { Controller, Get, Post, UseGuards, Body, Req } from '@nestjs/common';
+import { Controller, Get, Post, UseGuards, Body, Req, Query } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { GoogleAuthDto } from './dto/google-auth.dto';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
