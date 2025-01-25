@@ -17,6 +17,7 @@
     "@nestjs/core": "^10.4.15",
     "@nestjs/jwt": "^10.2.0",
     "@nestjs/passport": "^10.0.3",
+    "@nestjs/swagger": "^11.0.3",
     "@prisma/client": "^6.1.0",
     "@tapie-kr/api-database": "workspace:*",
     "ajv": "^8.17.1",
@@ -36,6 +37,7 @@
     "typescript": "^5.7.2"
   },
   "devDependencies": {
+    "@eslint/js": "^9.19.0",
     "@swc/cli": "^0.5.2",
     "@swc/core": "^1.10.4",
     "@types/express": "^5.0.0",
@@ -43,6 +45,16 @@
     "@types/node": "^22.10.5",
     "@types/passport-google-oauth20": "^2.0.16",
     "@types/passport-jwt": "^4.0.1",
-    "dotenv": "^16.4.7"
+    "@typescript-eslint/eslint-plugin": "^8.21.0",
+    "@typescript-eslint/parser": "^8.21.0",
+    "dotenv": "^16.4.7",
+    "eslint": "^9.19.0",
+    "eslint-config-prettier": "^10.0.1",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-simple-import-sort": "^12.1.1",
+    "eslint-plugin-unused-imports": "^4.1.4",
+    "globals": "^15.14.0",
+    "prettier": "3.4.2",
+    "typescript-eslint": "^8.21.0"
   }
 }
