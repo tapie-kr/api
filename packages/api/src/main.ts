@@ -35,12 +35,25 @@ async function bootstrap() {
   });
 
   const config = new DocumentBuilder()
-    .setTitle('Vedge API')
-    .setDescription('암표 방지 티켓 예매 서비스 Vedge API 문서')
+    .setTitle('TAPIE API')
+    .setDescription('TAPIE System API')
     .setVersion('1.0')
-    .addTag('vedge')
-    .addCookieAuth('sessionId')
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+      },
+      'accessToken',
+    )
     .build();
+
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api-docs', app, document, {
+    jsonDocumentUrl: 'api-docs/json',
+    explorer: true,
+    yamlDocumentUrl: 'api-docs/yaml',
+  });
 
   await app.listen(isProduction ? Number(configService.get('PORT') || 3000) : 8877, '0.0.0.0');
 
