@@ -1,13 +1,13 @@
-import { Injectable, OnModuleInit } from '@nestjs/common'
-import { PrismaClient } from '@tapie-kr/api-database/client'
+import { Injectable, OnModuleInit } from '@nestjs/common';
+import { PrismaClient } from '@tapie-kr/api-database/client';
 
 @Injectable()
 export class PrismaService extends PrismaClient implements OnModuleInit {
   async onModuleInit() {
-    await this.$connect()
+    await this.$connect();
   }
 
   async onModuleDestroy() {
-    await this.$disconnect()
+    await this.$disconnect();
   }
 }

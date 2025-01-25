@@ -1,11 +1,11 @@
-import { HttpStatus } from '@nestjs/common'
+import { HttpStatus } from '@nestjs/common';
 
 export class APIResponseDto {
-  public status: HttpStatus = HttpStatus.OK
+  public status: HttpStatus = HttpStatus.OK;
 
-  public message: string = 'OK'
+  public message: string = 'OK';
 
-  public data: any = null
+  public data: any = null;
 
-  public responseAt: Date = new Date()
+  public responseAt: Date = new Date();
 }
