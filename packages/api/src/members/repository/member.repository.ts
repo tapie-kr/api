@@ -22,4 +22,8 @@ export class MemberRepository {
       where: { googleEmail: email },
     });
   }
+
+  async getAllMembers() {
+    return this.prisma.member.findMany();
+  }
 }
