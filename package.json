@@ -5,6 +5,10 @@
   ],
   "version": "1.0.0",
   "description": "TAPIE API Service",
+  "scripts": {
+    "api": "pnpm -F @tapie-kr/api",
+    "db": "pnpm -F @tapie-kr/api-database"
+  },
   "author": {
     "name": "Taeyeong Kim",
     "email": "taeyeong.kim@algorix.io",
