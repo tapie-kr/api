@@ -7,6 +7,7 @@ import { MembersService } from 'src/members/members.service';
 import { omit } from 'src/common/utils/object';
 import { GetMemberMethod } from 'src/members/enums/member.enum';
 import { JWT_CONSTANTS } from 'src/common/constants/auth/jwt.constants'
+import AUTH_ERROR_MESSAGE from 'src/common/constants/error/auth-message.constants'
 
 @Injectable()
 export class AuthService {
@@ -18,14 +19,14 @@ export class AuthService {
 
   async googleLogin(googleUser: GoogleAuthDto) {
     if (!googleUser) {
-      throw new UnauthorizedException('잘못된 인증 정보입니다.');
+      throw new UnauthorizedException(AUTH_ERROR_MESSAGE.ACCOUNT.INVALID);
     }
     const existsMember = await this.membersService.getMember(
       GetMemberMethod.GOOGLE_EMAIL,
       googleUser.email,
     );
     if (!existsMember) {
-      throw new UnauthorizedException('계정이 없습니다.');
+      throw new UnauthorizedException(AUTH_ERROR_MESSAGE.ACCOUNT.NOT_FOUND);
     }
 
     const payload: MemberPayloadDto = existsMember;
@@ -51,7 +52,7 @@ export class AuthService {
         secret: jwtSecret,
       });
     } catch (error) {
-      throw new UnauthorizedException('잘못된 토큰입니다.');
+      throw new UnauthorizedException(AUTH_ERROR_MESSAGE.TOKEN.INVALID_REFRESH);
     }
   }
 
@@ -72,7 +73,7 @@ export class AuthService {
 
       return { accessToken };
     } catch (error) {
-      throw new UnauthorizedException('잘못된 리프레시 토큰입니다.', error);
+      throw new UnauthorizedException(AUTH_ERROR_MESSAGE.TOKEN.INVALID, error);
     }
   }
 }
