@@ -6,6 +6,7 @@ import { MemberPayloadDto } from './dto/member-payload.dto';
 import { MembersService } from 'src/members/members.service';
 import { omit } from 'src/common/utils/object';
 import { GetMemberMethod } from 'src/members/enums/member.enum';
+import { JWT_CONSTANTS } from 'src/common/constants/auth/jwt.constants'
 
 @Injectable()
 export class AuthService {
@@ -33,11 +34,11 @@ export class AuthService {
 
     const accessToken = this.jwtService.sign(payload, {
       secret: jwtSecret,
-      expiresIn: '2h',
+      expiresIn: JWT_CONSTANTS.ACCESS_TOKEN_EXPIRES_IN,
     });
     const refreshToken = this.jwtService.sign(payload, {
       secret: refreshSecret,
-      expiresIn: '7d',
+      expiresIn: JWT_CONSTANTS.REFRESH_TOKEN_EXPIRES_IN,
     });
 
     return { accessToken, refreshToken };
