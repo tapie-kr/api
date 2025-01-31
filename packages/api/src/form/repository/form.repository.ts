@@ -66,7 +66,12 @@ export class ApplyFormRepository {
 
 export interface ApplyFormRepository {
   create(data: ApplyFormDto): Promise<ApplyForm>;
-  findAll(query: FindFormsQueryDto): Promise<{ items: ApplyForm[]; meta: { total: number; page: number; limit: number; totalPages: number; } }>;
+  findAll(
+    query: FindFormsQueryDto,
+  ): Promise<{
+    items: ApplyForm[];
+    meta: { total: number; page: number; limit: number; totalPages: number };
+  }>;
   findOne(uuid: string): Promise<ApplyForm | null>;
   remove(uuid: string): Promise<ApplyForm>;
 }
