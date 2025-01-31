@@ -1,10 +1,11 @@
-import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, UseGuards } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { CreateApplyFormDto } from './dto/form.dto'
 import { ApplyFormService } from './form.service'
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard'
 
-@ApiTags('apply-form')
-@Controller('apply-form')
+@ApiTags('form')
+@Controller('form')
 export class ApplyFormController {
   constructor(private readonly applyFormService: ApplyFormService) {}
 
@@ -21,6 +22,7 @@ export class ApplyFormController {
     return this.applyFormService.findAll();
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get(':uuid')
   @ApiOperation({ summary: '특정 지원서 조회' })
   findOne(@Param('uuid') uuid: string) {
