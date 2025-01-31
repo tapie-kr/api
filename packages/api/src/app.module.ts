@@ -4,6 +4,7 @@ import { CacheModule } from '@nestjs/cache-manager';
 import { AuthModule } from './auth/auth.module';
 import { MembersModule } from './members/members.module';
 import { HealthModule } from './health/health.module'
+import { FormModule } from './form/form.module'
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { HealthModule } from './health/health.module'
     AuthModule,
     MembersModule,
     HealthModule,
+    FormModule
   ],
 })
 export class AppModule {}

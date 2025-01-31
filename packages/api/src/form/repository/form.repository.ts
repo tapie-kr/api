@@ -1,33 +1,38 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateApplyFormDto } from '../dto/form.dto'
-import { ApplyForm } from '@tapie-kr/api-database/client'
+import { ApplyFormDto } from '../dto/form.dto';
+import { ApplyForm } from '@tapie-kr/api-database/client';
+import { PrismaService } from 'src/common/prisma/prisma.service'
 
 @Injectable()
-export class ApplyFormService {
-  constructor(private readonly formRepository: FormRepository) {}
+export class ApplyFormRepository {
+  constructor(private readonly prisma: PrismaService) {}
 
-  async create(createApplyFormDto: CreateApplyFormDto) {
-    return this.formRepository.create(createApplyFormDto);
+  async create(data: ApplyFormDto): Promise<ApplyForm> {
+    return this.prisma.applyForm.create({
+      data,
+    });
   }
 
-  async findAll() {
-    return this.formRepository.findAll();
+  async findAll(): Promise<ApplyForm[]> {
+    return this.prisma.applyForm.findMany();
   }
 
-  async findOne(uuid: string) {
-    const form = await this.formRepository.findOne(uuid);
-    if (!form) throw new NotFoundException('지원서를 찾을 수 없습니다');
-    return form;
+  async findOne(uuid: string): Promise<ApplyForm | null> {
+    return this.prisma.applyForm.findUnique({
+      where: { uuid },
+    });
   }
 
-  async remove(uuid: string) {
-    return this.formRepository.remove(uuid);
+  async remove(uuid: string): Promise<ApplyForm> {
+    return this.prisma.applyForm.delete({
+      where: { uuid },
+    });
   }
 }
 
-export interface FormRepository {
-    create(data: CreateApplyFormDto): Promise<ApplyForm>;
-    findAll(): Promise<ApplyForm[]>;
-    findOne(uuid: string): Promise<ApplyForm | null>;
-    remove(uuid: string): Promise<ApplyForm>;
-  }
+export interface ApplyFormRepository {
+  create(data: ApplyFormDto): Promise<ApplyForm>;
+  findAll(): Promise<ApplyForm[]>;
+  findOne(uuid: string): Promise<ApplyForm | null>;
+  remove(uuid: string): Promise<ApplyForm>;
+}

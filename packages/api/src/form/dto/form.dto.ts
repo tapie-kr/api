@@ -2,7 +2,7 @@ import { IsString, IsEmail, IsEnum } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { MemberUnit } from '@tapie-kr/api-database/client'
 
-export class CreateApplyFormDto {
+export class ApplyFormDto {
   @ApiProperty({ description: '지원자 이름' })
   @IsString()
   name: string;

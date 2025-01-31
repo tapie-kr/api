@@ -1,13 +1,13 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateApplyFormDto } from './dto/form.dto';
-import { FormRepository } from './repository/form.repository'
+import { ApplyFormDto } from './dto/form.dto';
+import { ApplyFormRepository } from './repository/form.repository'
 
 @Injectable()
 export class ApplyFormService {
-  constructor(private readonly formRepository: FormRepository) {}
+  constructor(private readonly formRepository: ApplyFormRepository) {}
 
-  async create(createApplyFormDto: CreateApplyFormDto) {
-    return this.formRepository.create(createApplyFormDto);
+  async create(createFormDto: ApplyFormDto) {
+    return this.formRepository.create(createFormDto);
   }
 
   async findAll() {
