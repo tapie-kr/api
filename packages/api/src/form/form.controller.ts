@@ -19,7 +19,7 @@ export class ApplyFormController {
   }
 
   @Get()
-//   @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: '모든 지원서 조회' })
   @ApiQuery({ name: 'page', required: false, type: Number, description: '페이지 번호 (기본값: 1)' })
   @ApiQuery({

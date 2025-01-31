@@ -5,6 +5,7 @@ import { AuthModule } from './auth/auth.module';
 import { MembersModule } from './members/module/members.module';
 import { HealthModule } from './health/health.module';
 import { FormModule } from './form/form.module';
+import { ProfileLinkModule } from './members/module/profile-link.module';
 
 @Module({
   imports: [
@@ -14,9 +15,14 @@ import { FormModule } from './form/form.module';
     }),
     CacheModule.register({ isGlobal: true }),
     AuthModule,
+
+    // Members
     MembersModule,
-    HealthModule,
+    ProfileLinkModule,
+    // Form
     FormModule,
+    // Anggimotti
+    HealthModule,
   ],
 })
 export class AppModule {}
