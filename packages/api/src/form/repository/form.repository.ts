@@ -1,7 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { ApplyFormDto } from '../dto/form.dto';
-import { ApplyForm } from '@tapie-kr/api-database/client';
-import { PrismaService } from 'src/common/prisma/prisma.service'
+import { ApplyForm, MemberUnit, Prisma } from '@tapie-kr/api-database/client';
+import { PrismaService } from 'src/common/prisma/prisma.service';
+import { FindFormsQueryDto } from '../dto/find-form-query.dto';
 
 @Injectable()
 export class ApplyFormRepository {
@@ -13,8 +14,41 @@ export class ApplyFormRepository {
     });
   }
 
-  async findAll(): Promise<ApplyForm[]> {
-    return this.prisma.applyForm.findMany();
+  async findAll(query?: FindFormsQueryDto) {
+    const { page = 1, limit = 10, name = '', unit } = query || {};
+    const skip = (page - 1) * limit;
+
+    const where: Prisma.ApplyFormWhereInput = {};
+
+    if (name?.trim()) {
+      where.name = { contains: name.trim() };
+    }
+
+    if (unit) {
+      where.unit = unit;
+    }
+
+    const [total, forms] = await Promise.all([
+      this.prisma.applyForm.count({ where }),
+      this.prisma.applyForm.findMany({
+        where,
+        skip,
+        take: limit,
+        orderBy: {
+          createdAt: 'desc',
+        },
+      }),
+    ]);
+
+    return {
+      items: forms,
+      meta: {
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit),
+      },
+    };
   }
 
   async findOne(uuid: string): Promise<ApplyForm | null> {
@@ -32,7 +66,7 @@ export class ApplyFormRepository {
 
 export interface ApplyFormRepository {
   create(data: ApplyFormDto): Promise<ApplyForm>;
-  findAll(): Promise<ApplyForm[]>;
+  findAll(query: FindFormsQueryDto): Promise<{ items: ApplyForm[]; meta: { total: number; page: number; limit: number; totalPages: number; } }>;
   findOne(uuid: string): Promise<ApplyForm | null>;
   remove(uuid: string): Promise<ApplyForm>;
 }

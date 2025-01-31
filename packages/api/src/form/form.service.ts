@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { ApplyFormDto } from './dto/form.dto';
 import { ApplyFormRepository } from './repository/form.repository'
+import { FindFormsQueryDto } from './dto/find-form-query.dto'
 
 @Injectable()
 export class ApplyFormService {
@@ -10,8 +11,8 @@ export class ApplyFormService {
     return this.formRepository.create(createFormDto);
   }
 
-  async findAll() {
-    return this.formRepository.findAll();
+  async findAll(query: FindFormsQueryDto) {
+    return this.formRepository.findAll(query);
   }
 
   async findOne(uuid: string) {
