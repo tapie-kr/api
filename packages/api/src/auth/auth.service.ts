@@ -3,11 +3,11 @@ import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { GoogleAuthDto } from './dto/google-auth.dto';
 import { MemberPayloadDto } from './dto/member-payload.dto';
-import { MembersService } from 'src/members/members.service';
+import { MembersService } from 'src/members/service/members.service';
 import { omit } from 'src/common/utils/object';
 import { GetMemberMethod } from 'src/members/enums/member.enum';
-import { JWT_CONSTANTS } from 'src/common/constants/auth/jwt.constants'
-import AUTH_ERROR_MESSAGE from 'src/common/constants/error/auth-message.constants'
+import { JWT_CONSTANTS } from 'src/common/constants/auth/jwt.constants';
+import AUTH_ERROR_MESSAGE from 'src/common/constants/error/auth-message.constants';
 
 @Injectable()
 export class AuthService {

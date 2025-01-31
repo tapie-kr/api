@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { MemberRepository } from './repository/member.repository';
-import { GetMemberMethod } from './enums/member.enum';
+import { MemberRepository } from '../repository/member.repository';
+import { GetMemberMethod } from '../enums/member.enum';
 
 @Injectable()
 export class MembersService {
