@@ -16,6 +16,7 @@ export class ApplyFormRepository {
 
   async findAll(query?: FindFormsQueryDto) {
     const { page = 1, limit = 10, name = '', unit } = query || {};
+    console.log('query', query);
     const skip = (page - 1) * limit;
 
     const where: Prisma.ApplyFormWhereInput = {};

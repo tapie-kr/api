@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, UseGuards, Query } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiQuery } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { ApplyFormDto } from './dto/form.dto';
@@ -19,7 +19,7 @@ export class ApplyFormController {
   }
 
   @Get()
-  @UseGuards(JwtAuthGuard)
+//   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: '모든 지원서 조회' })
   @ApiQuery({ name: 'page', required: false, type: Number, description: '페이지 번호 (기본값: 1)' })
   @ApiQuery({
@@ -65,7 +65,7 @@ export class ApplyFormController {
       },
     },
   })
-  findAll(query: FindFormsQueryDto) {
+  findAll(@Query() query: FindFormsQueryDto) {
     return this.applyFormService.findAll(query);
   }
 
