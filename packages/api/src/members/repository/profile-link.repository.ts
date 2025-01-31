@@ -1,17 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { CreateProfileLinkDto } from '../dto/create-profile-link.dto';
 import { PrismaService } from 'src/common/prisma/prisma.service';
-import { UpdateProfileLinkDto } from '../dto/update-profile-link.dto';
+import { CreateProfileLinkDtoType, UpdateProfileLinkDtoType } from '../dto/profile-link.dto';
 
 @Injectable()
 export class ProfileLinkRepository {
   constructor(private prisma: PrismaService) {}
 
-  async create(data: CreateProfileLinkDto) {
+  async create(data: CreateProfileLinkDtoType) {
     return this.prisma.memberLink.create({
       data: {
         label: data.label,
-        href: data.url,
+        href: data.href,
         icon: data.icon,
         memberUUID: data.memberUUID,
       },
@@ -24,9 +23,15 @@ export class ProfileLinkRepository {
     });
   }
 
-  async update(data: Partial<UpdateProfileLinkDto>) {
+  async findOne(id: number) {
+    return this.prisma.memberLink.findUnique({
+      where: { id },
+    });
+  }
+
+  async update(id: number, data: UpdateProfileLinkDtoType) {
     return this.prisma.memberLink.update({
-      where: { id: data.id },
+      where: { id },
       data,
     });
   }
