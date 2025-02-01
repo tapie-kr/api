@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { ApplyFormDto } from '../dto/form.dto';
 import { ApplyForm, MemberUnit, Prisma } from '@tapie-kr/api-database/client';
 import { PrismaService } from 'src/common/prisma/prisma.service';
@@ -9,9 +9,18 @@ export class ApplyFormRepository {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(data: ApplyFormDto): Promise<ApplyForm> {
-    return this.prisma.applyForm.create({
-      data,
-    });
+    try {
+      return await this.prisma.applyForm.upsert({
+        where: { googleEmail: data.googleEmail },
+        create: data,
+        update: data
+      });
+    } catch (error) {
+      throw new InternalServerErrorException(
+        'Failed to create/upsert form',
+        error?.message
+      );
+    }
   }
 
   async findAll(query?: FindFormsQueryDto) {
