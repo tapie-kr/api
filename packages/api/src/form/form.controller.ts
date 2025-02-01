@@ -12,6 +12,7 @@ export class ApplyFormController {
   constructor(private readonly applyFormService: ApplyFormService) {}
 
   @Post()
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: '지원서 생성' })
   @ApiResponse({ status: 201, description: '지원서가 성공적으로 생성됨' })
   create(@Body() createApplyFormDto: ApplyFormDto) {
