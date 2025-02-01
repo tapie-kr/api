@@ -25,7 +25,7 @@ model Member {
 
   profile    Asset?             @relation(fields: [profileAssetUUID], references: [uuid], onDelete: Restrict)
   applyForm  ApplyForm?
-  links      MemberLink[]
+  links      MemberProfile[]
   portfolio  PortfolioMember[]  @relation(name: "MemberPortfolio")
   awards     Award[]            @relation(name: "MemberAward")
   skills     MemberSkill[]
@@ -39,7 +39,7 @@ model Member {
   updatedAt DateTime @updatedAt
 }
 
-model MemberLink {
+model MemberProfile {
   id         Int    @id @default(autoincrement())
   memberUUID String
 

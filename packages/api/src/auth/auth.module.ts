@@ -6,8 +6,8 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { GoogleStrategy } from './strategies/google.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
-import { MembersService } from 'src/members/members.service';
-import { MembersModule } from 'src/members/members.module';
+import { MembersService } from 'src/members/service/members.service';
+import { MembersModule } from 'src/members/module/members.module';
 
 @Module({
   imports: [

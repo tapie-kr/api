@@ -1,0 +1,19 @@
+enum MessageType {
+    ANNOUNCEMENT
+    MESSAGE
+}
+
+model Notification {
+    uuid          String  @id @default(uuid())
+    assetUUID     String?
+
+    content String
+    reason String 
+
+    channelName String
+
+    attachment   Asset?   @relation(name: "AssetNotificationAttachment", fields: [assetUUID], references: [uuid], onDelete: SetNull)
+    
+    createdAt    DateTime @default(now())
+    updatedAt    DateTime @updatedAt
+}
