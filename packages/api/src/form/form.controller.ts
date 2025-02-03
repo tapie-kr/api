@@ -6,13 +6,13 @@ import { ApplyFormService } from './form.service';
 import { FindFormsQueryDto } from './dto/find-form-query.dto';
 import { MemberUnit } from '@tapie-kr/api-database/client';
 
+@UseGuards(JwtAuthGuard)
 @ApiTags('Form')
 @Controller('form')
 export class ApplyFormController {
   constructor(private readonly applyFormService: ApplyFormService) {}
 
   @Post()
-  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: '지원서 생성' })
   @ApiResponse({ status: 201, description: '지원서가 성공적으로 생성됨' })
   create(@Body() createApplyFormDto: ApplyFormDto) {
@@ -20,7 +20,6 @@ export class ApplyFormController {
   }
 
   @Get()
-  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: '모든 지원서 조회' })
   @ApiQuery({ name: 'page', required: false, type: Number, description: '페이지 번호 (기본값: 1)' })
   @ApiQuery({
@@ -70,14 +69,12 @@ export class ApplyFormController {
     return this.applyFormService.findAll(query);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get(':uuid')
   @ApiOperation({ summary: '특정 지원서 조회' })
   findOne(@Param('uuid') uuid: string) {
     return this.applyFormService.findOne(uuid);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Delete(':uuid')
   @ApiOperation({ summary: '지원서 삭제' })
   remove(@Param('uuid') uuid: string) {
