@@ -8,3 +8,5 @@ dist/
 client/
 build/
 __test__/
+
+.github/copilot-instructions.md
