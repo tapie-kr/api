@@ -24,7 +24,7 @@ jobs:
         uses: bump-sh/github-action@v1
         with:
           doc: tapie-kr
-          token: ${{secrets.BUMP_ACCESS_TOKEN}}
+          token: ${{secrets.BUMP_TOKEN}}
           file: docs/openapi.yml
   api-diff:
     if: ${{ github.event_name == 'pull_request' }}
@@ -37,7 +37,7 @@ jobs:
         uses: bump-sh/github-action@v1
         with:
           doc: tapie-kr
-          token: ${{secrets.BUMP_ACCESS_TOKEN}}
+          token: ${{secrets.BUMP_TOKEN}}
           file: docs/openapi.yml
           command: diff
         env:
