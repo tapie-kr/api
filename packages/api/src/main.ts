@@ -37,7 +37,7 @@ async function bootstrap() {
     defaultVersion: '1',
   });
 
-  app.getHttpAdapter().get('/', (req, res) => {
+  app.getHttpAdapter().get('/', (_req, res) => {
     res.json({ status: 'ok', availableVersions: ['v1'] });
   });
 
