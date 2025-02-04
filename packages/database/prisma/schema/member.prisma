@@ -15,6 +15,7 @@ model Member {
   profileAssetUUID                  String?
   representativePortfolioMemberUUID String? @unique
   representativeAwardUUID           String?
+  formResponseUUID                  String? @unique
 
   username    String?    @unique
   googleEmail String     @unique
@@ -23,22 +24,20 @@ model Member {
   unit        MemberUnit
   permissions Int        @default(0)
 
-  profile    Asset?             @relation(fields: [profileAssetUUID], references: [uuid], onDelete: Restrict)
-  applyForm  ApplyForm?         @relation(fields: [applyFormId], references: [id])
-  links      MemberLink[]
-  portfolio  PortfolioMember[]  @relation(name: "MemberPortfolio")
-  awards     Award[]            @relation(name: "MemberAward")
-  skills     MemberSkill[]
-  history    MemberHistory[]
-  visitStats ProfileVisitStat[]
+  profile      Asset?             @relation(fields: [profileAssetUUID], references: [uuid], onDelete: Restrict)
+  formResponse FormResponse?      @relation(fields: [formResponseUUID], references: [uuid])
+  links        MemberLink[]
+  portfolio    PortfolioMember[]  @relation(name: "MemberPortfolio")
+  awards       Award[]            @relation(name: "MemberAward")
+  skills       MemberSkill[]
+  history      MemberHistory[]
+  visitStats   ProfileVisitStat[]
 
   representativePortfolioMember PortfolioMember? @relation(name: "MemberRepresentativePortfolioMember", fields: [representativePortfolioMemberUUID], references: [uuid], onDelete: Restrict)
   representativeAward           Award?           @relation(name: "MemberRepresentativeAward", fields: [representativeAwardUUID], references: [uuid], onDelete: Restrict)
 
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
-  FormResponse FormResponse?
-  applyFormId  Int?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model MemberLink {

@@ -5,7 +5,6 @@ model ApplyForm {
   endsAt    DateTime
   responses FormResponse[]
   createdAt DateTime       @default(now())
-  Member    Member[]
   Asset     Asset?         @relation(fields: [assetUuid], references: [uuid])
   assetUuid String?
 }
@@ -25,10 +24,10 @@ model FormResponse {
   expectedActivities String
   reasonToChoose     String
 
-  form      ApplyForm @relation(fields: [formId], references: [id])
-  member    Member?   @relation(fields: [memberUUID], references: [uuid], onDelete: SetNull)
-  portfolio Asset?    @relation(fields: [portfolioAssetUUID], references: [uuid], onDelete: Restrict)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  form       ApplyForm @relation(fields: [formId], references: [id])
+  member     Member?
+  portfolio  Asset?    @relation(fields: [portfolioAssetUUID], references: [uuid], onDelete: Restrict)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  memberUuid String?
 }
