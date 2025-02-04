@@ -3,7 +3,6 @@ import { ConfigModule } from '@nestjs/config';
 import { CacheModule } from '@nestjs/cache-manager';
 import { AuthModule } from './auth/auth.module';
 import { MembersModule } from './members/module/members.module';
-import { HealthModule } from './health/health.module';
 import { FormModule } from './form/form.module';
 import { ProfileLinkModule } from './members/module/profile-link.module';
 
@@ -19,10 +18,9 @@ import { ProfileLinkModule } from './members/module/profile-link.module';
     // Members
     MembersModule,
     ProfileLinkModule,
+
     // Form
     FormModule,
-    // Anggimotti
-    HealthModule,
   ],
 })
 export class AppModule {}
