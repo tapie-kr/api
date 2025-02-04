@@ -1,6 +1,11 @@
-import { ConflictException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { ProfileLinkRepository } from '../repository/profile-link.repository';
-import { CreateProfileLinkDtoType, UpdateProfileLinkDtoType } from '../dto/profile-link.dto'
+import { CreateProfileLinkDtoType, UpdateProfileLinkDtoType } from '../dto/profile-link.dto';
 
 @Injectable()
 export class ProfileLinkService {
@@ -8,13 +13,13 @@ export class ProfileLinkService {
 
   async create(createDto: CreateProfileLinkDtoType) {
     try {
-        const newProfileLink = await this.MemberProfileRepository.create(createDto);
-        return newProfileLink;
+      const newProfileLink = await this.MemberProfileRepository.create(createDto);
+      return newProfileLink;
     } catch (error) {
-        if(error.code === 'P2002') {
-            throw new ConflictException('이미 존재하는 [label, href] 조합입니다');
-        }
-        throw new InternalServerErrorException(error.name);
+      if (error.code === 'P2002') {
+        throw new ConflictException('이미 존재하는 [label, href] 조합입니다');
+      }
+      throw new InternalServerErrorException(error.name);
     }
   }
 
@@ -24,26 +29,26 @@ export class ProfileLinkService {
 
   async update(id: number, updateDto: UpdateProfileLinkDtoType) {
     try {
-        const updatedProfileLink = await this.MemberProfileRepository.update(id, updateDto);
-        return updatedProfileLink;
+      const updatedProfileLink = await this.MemberProfileRepository.update(id, updateDto);
+      return updatedProfileLink;
     } catch (error) {
-        if(error.code === 'P2025') {
-            throw new NotFoundException('프로필 링크를 찾을 수 없습니다');
-        } else {
-            throw new InternalServerErrorException(error.name);
-        }
+      if (error.code === 'P2025') {
+        throw new NotFoundException('프로필 링크를 찾을 수 없습니다');
+      } else {
+        throw new InternalServerErrorException(error.name);
+      }
     }
   }
 
   async delete(id: number) {
     try {
-        await this.MemberProfileRepository.delete(id);
+      await this.MemberProfileRepository.delete(id);
     } catch (error) {
-        if(error.code === 'P2025') {
-            throw new NotFoundException('프로필 링크를 찾을 수 없습니다');
-        } else {
-            throw new InternalServerErrorException(error.name);
-        }
+      if (error.code === 'P2025') {
+        throw new NotFoundException('프로필 링크를 찾을 수 없습니다');
+      } else {
+        throw new InternalServerErrorException(error.name);
+      }
     }
   }
 }

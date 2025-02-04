@@ -13,13 +13,10 @@ export class ApplyFormRepository {
       return await this.prisma.applyForm.upsert({
         where: { googleEmail: data.googleEmail },
         create: data,
-        update: data
+        update: data,
       });
     } catch (error) {
-      throw new InternalServerErrorException(
-        'Failed to create/upsert form',
-        error?.message
-      );
+      throw new InternalServerErrorException('Failed to create/upsert form', error?.message);
     }
   }
 
@@ -75,9 +72,7 @@ export class ApplyFormRepository {
 
 export interface ApplyFormRepository {
   create(data: ApplyFormDto): Promise<ApplyForm>;
-  findAll(
-    query: FindFormsQueryDto,
-  ): Promise<{
+  findAll(query: FindFormsQueryDto): Promise<{
     items: ApplyForm[];
     meta: { total: number; page: number; limit: number; totalPages: number };
   }>;
