@@ -24,7 +24,7 @@ model Member {
   permissions Int        @default(0)
 
   profile    Asset?             @relation(fields: [profileAssetUUID], references: [uuid], onDelete: Restrict)
-  applyForm  ApplyForm?
+  applyForm  ApplyForm?         @relation(fields: [applyFormId], references: [id])
   links      MemberLink[]
   portfolio  PortfolioMember[]  @relation(name: "MemberPortfolio")
   awards     Award[]            @relation(name: "MemberAward")
@@ -35,8 +35,10 @@ model Member {
   representativePortfolioMember PortfolioMember? @relation(name: "MemberRepresentativePortfolioMember", fields: [representativePortfolioMemberUUID], references: [uuid], onDelete: Restrict)
   representativeAward           Award?           @relation(name: "MemberRepresentativeAward", fields: [representativeAwardUUID], references: [uuid], onDelete: Restrict)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  FormResponse FormResponse?
+  applyFormId  Int?
 }
 
 model MemberLink {

@@ -9,5 +9,6 @@ model Asset {
   portfolioPresentation  Portfolio[]    @relation(name: "PortfolioPresentation")
   notificationAttachment Notification[] @relation(name: "AssetNotificationAttachment")
 
-  createdAt DateTime @default(now())
+  createdAt    DateTime      @default(now())
+  FormResponse FormResponse?
 }
