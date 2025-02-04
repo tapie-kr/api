@@ -4,11 +4,10 @@ model Asset {
   path String
 
   member                 Member[]
-  applyForm              ApplyForm[]
+  formResponse           FormResponse[]
   portfolioThumbnail     Portfolio[]    @relation(name: "PortfolioThumbnail")
   portfolioPresentation  Portfolio[]    @relation(name: "PortfolioPresentation")
   notificationAttachment Notification[] @relation(name: "AssetNotificationAttachment")
 
-  createdAt    DateTime      @default(now())
-  FormResponse FormResponse?
+  createdAt DateTime @default(now())
 }

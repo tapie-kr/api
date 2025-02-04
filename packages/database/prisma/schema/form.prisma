@@ -5,8 +5,6 @@ model ApplyForm {
   endsAt    DateTime
   responses FormResponse[]
   createdAt DateTime       @default(now())
-  Asset     Asset?         @relation(fields: [assetUuid], references: [uuid])
-  assetUuid String?
 }
 
 model FormResponse {
