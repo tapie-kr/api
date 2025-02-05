@@ -1,27 +1,34 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { ApplyFormDto } from './dto/form.dto';
+import { CreateApplyFormDto, UpdateApplyFormDto } from './dto/form.dto';
 import { ApplyFormRepository } from './repository/form.repository';
-import { FindFormsQueryDto } from './dto/find-form-query.dto';
 
 @Injectable()
 export class ApplyFormService {
   constructor(private readonly formRepository: ApplyFormRepository) {}
 
-  async create(createFormDto: ApplyFormDto) {
+  async create(createFormDto: CreateApplyFormDto) {
     return this.formRepository.create(createFormDto);
   }
 
-  async findAll(query: FindFormsQueryDto) {
-    return this.formRepository.findAll(query);
+  async update(id: number, updateFormDto: UpdateApplyFormDto) {
+    return this.formRepository.update(id, updateFormDto);
   }
 
-  async findOne(uuid: string) {
-    const form = await this.formRepository.findOne(uuid);
-    if (!form) throw new NotFoundException('지원서를 찾을 수 없습니다');
+  async remove(id: number) {
+    return this.formRepository.remove(id);
+  }
+
+  async findAll() {
+    return this.formRepository.findAll();
+  }
+
+  async findOne(id: number) {
+    const form = await this.formRepository.findOne(id);
+    if (!form) throw new NotFoundException('지원 폼을 찾을 수 없습니다');
     return form;
   }
 
-  async remove(uuid: string) {
-    return this.formRepository.remove(uuid);
+  async findAllResponses(id: number) {
+    return this.formRepository.findAllResponses(id);
   }
 }
