@@ -23,7 +23,7 @@ paths:
     get:
       summary: Health Checking
       description: ''
-      parameters: []
+      parameters: [ ]
       operationId: ''
       responses:
         '200':
@@ -36,34 +36,14 @@ paths:
                   - v1
       tags:
         - Health
-      security: []
+      security: [ ]
     summary: Health Checking
     description: ''
 externalDocs:
-  description: ''
+  description: 'Bump.sh Docs'
   url: 'https://docs.tapie.kr'
 components:
   schemas: {}
-  requestBodies:
-    Pet:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Pet'
-        application/xml:
-          schema:
-            $ref: '#/components/schemas/Pet'
-      description: Pet object that needs to be added to the store
-      required: true
-    UserArray:
-      content:
-        application/json:
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/User'
-      description: List of user object
-      required: true
   securitySchemes:
     Access Token:
       type: apiKey
