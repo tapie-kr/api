@@ -13,7 +13,8 @@ async function main() {
 
     const TEMPORARY_GOOGLE_EMAIL = process.env.TEMPORARY_GOOGLE_EMAIL;
     if (!TEMPORARY_GOOGLE_EMAIL) {
-      throw new Error('TEMPORARY_GOOGLE_EMAIL을 환경변수로 설정해주세요.');
+      console.error('TEMPORARY_GOOGLE_EMAIL을 환경변수로 설정해주세요.');
+      return;
     }
 
     await prisma.member.create({
