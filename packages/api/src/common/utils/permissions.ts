@@ -1,6 +1,4 @@
-export class Permissions {
-  static readonly NONE = 0;
-
+export class PermissionCore {
   static readonly PERMISSIONS = {
     DASHBOARD_ACCESS:       1 << 0,
     DESIGN_CLASS_ACCESS:    1 << 1,
@@ -16,6 +14,7 @@ export class Permissions {
   } as const;
 
   static readonly PERMISSION_SETS = {
+    NONE:                 0,
     DESIGN_CLASS_STUDENT: this.PERMISSIONS.DASHBOARD_ACCESS | this.PERMISSIONS.DESIGN_CLASS_ACCESS,
     DEVELOPER_CLASS_STUDENT:
       this.PERMISSIONS.DASHBOARD_ACCESS | this.PERMISSIONS.DEVELOPER_CLASS_ACCESS,
@@ -51,5 +50,5 @@ export class Permissions {
 }
 
 // 타입 추출
-export type Permission = keyof typeof Permissions.PERMISSIONS;
-export type PermissionSet = keyof typeof Permissions.PERMISSION_SETS;
+export const Permissions = PermissionCore.PERMISSIONS;
+export const PermissionSet = PermissionCore.PERMISSION_SETS;
