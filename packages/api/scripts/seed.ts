@@ -1,30 +1,30 @@
 /// <reference types="dotenv" />
 
-import 'dotenv/config';
-
 import { MemberRole, MemberUnit, PrismaClient } from '@tapie-kr/api-database';
 import { PrismaClientKnownRequestError } from '@tapie-kr/api-database/client/runtime/library';
 
+import 'dotenv/config';
+
 async function main() {
-  const prisma = new PrismaClient();
+  const prisma = new PrismaClient;
 
   try {
     await prisma.$connect();
 
     const TEMPORARY_GOOGLE_EMAIL = process.env.TEMPORARY_GOOGLE_EMAIL;
+
     if (!TEMPORARY_GOOGLE_EMAIL) {
       console.error('TEMPORARY_GOOGLE_EMAIL을 환경변수로 설정해주세요.');
+
       return;
     }
 
-    await prisma.member.create({
-      data: {
-        googleEmail: TEMPORARY_GOOGLE_EMAIL,
-        name: '임시 사용자',
-        role: MemberRole.MANAGER,
-        unit: MemberUnit.DEVELOPER,
-      },
-    });
+    await prisma.member.create({ data: {
+      googleEmail: TEMPORARY_GOOGLE_EMAIL,
+      name:        '임시 사용자',
+      role:        MemberRole.MANAGER,
+      unit:        MemberUnit.DEVELOPER,
+    } });
 
     console.log('임시 사용자가 생성되었습니다.');
   } catch (error) {

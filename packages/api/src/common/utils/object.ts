@@ -3,6 +3,7 @@ export function omit<T extends object>(obj: any, keys: Array<string>): T {
     if (!keys.includes(key)) {
       acc[key] = obj[key];
     }
+
     return acc;
   }, {} as T);
 }

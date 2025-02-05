@@ -4,9 +4,14 @@ import { MemberRepository } from '../repository/member.repository';
 import { MembersService } from '../service/members.service';
 
 @Module({
-  imports: [],
+  imports:     [],
   controllers: [],
-  providers: [MemberRepository, MembersService, PrismaService],
+  providers:   [
+    MemberRepository,
+    MembersService,
+    PrismaService,
+  ],
   exports: [MemberRepository, MembersService],
 })
-export class MembersModule {}
+export class MembersModule {
+}

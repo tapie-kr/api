@@ -1,4 +1,9 @@
-import { IsString, IsNotEmpty, IsUUID, IsNumber } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsNumber,
+  IsString,
+  IsUUID,
+} from 'class-validator';
 
 export class ProfileLinkDto {
   @IsNumber()

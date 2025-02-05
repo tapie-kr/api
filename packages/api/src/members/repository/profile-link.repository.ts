@@ -1,44 +1,32 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/common/prisma/prisma.service';
-import { CreateProfileLinkDtoType, UpdateProfileLinkDtoType } from '../dto/profile-link.dto';
+import { type PrismaService } from 'src/common/prisma/prisma.service';
+import { type CreateProfileLinkDtoType, type UpdateProfileLinkDtoType } from '../dto/profile-link.dto';
 
 @Injectable()
 export class ProfileLinkRepository {
-  constructor(private prisma: PrismaService) {}
-
+  constructor(private prisma: PrismaService) {
+  }
   async create(data: CreateProfileLinkDtoType) {
-    return this.prisma.memberLink.create({
-      data: {
-        label: data.label,
-        href: data.href,
-        icon: data.icon,
-        memberUUID: data.memberUUID,
-      },
-    });
+    return this.prisma.memberLink.create({ data: {
+      label:      data.label,
+      href:       data.href,
+      icon:       data.icon,
+      memberUUID: data.memberUUID,
+    } });
   }
-
   async findByMemberId(memberUUID: string) {
-    return this.prisma.memberLink.findMany({
-      where: { memberUUID },
-    });
+    return this.prisma.memberLink.findMany({ where: { memberUUID } });
   }
-
   async findOne(id: number) {
-    return this.prisma.memberLink.findUnique({
-      where: { id },
-    });
+    return this.prisma.memberLink.findUnique({ where: { id } });
   }
-
   async update(id: number, data: UpdateProfileLinkDtoType) {
     return this.prisma.memberLink.update({
       where: { id },
       data,
     });
   }
-
   async delete(id: number) {
-    return this.prisma.memberLink.delete({
-      where: { id },
-    });
+    return this.prisma.memberLink.delete({ where: { id } });
   }
 }

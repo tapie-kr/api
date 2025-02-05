@@ -7,5 +7,5 @@ export class APIResponseDto {
 
   public data: any = null;
 
-  public responseAt: Date = new Date();
+  public responseAt: Date = new Date;
 }

@@ -1,5 +1,10 @@
-import { IsString, IsEnum, IsPhoneNumber, IsUUID } from 'class-validator';
 import { MemberUnit } from '@tapie-kr/api-database/client';
+import {
+  IsEnum,
+  IsPhoneNumber,
+  IsString,
+  IsUUID,
+} from 'class-validator';
 
 export class FormResponseDto {
   @IsUUID()

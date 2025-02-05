@@ -2,17 +2,17 @@ export class Permissions {
   static readonly NONE = 0;
 
   static readonly PERMISSIONS = {
-    DASHBOARD_ACCESS: 1 << 0,
-    DESIGN_CLASS_ACCESS: 1 << 1,
-    DESIGN_CLASS_MANAGE: 1 << 2,
+    DASHBOARD_ACCESS:       1 << 0,
+    DESIGN_CLASS_ACCESS:    1 << 1,
+    DESIGN_CLASS_MANAGE:    1 << 2,
     DEVELOPER_CLASS_ACCESS: 1 << 3,
     DEVELOPER_CLASS_MANAGE: 1 << 4,
-    ATTENDANCE_MANAGE: 1 << 5,
-    MEMBER_MANAGE: 1 << 6,
-    PORTFOLIO_MANAGE: 1 << 7,
-    AWARDS_MANAGE: 1 << 8,
-    ANNOUNCEMENT_READ: 1 << 9,
-    ANNOUNCEMENT_MANAGE: 1 << 10,
+    ATTENDANCE_MANAGE:      1 << 5,
+    MEMBER_MANAGE:          1 << 6,
+    PORTFOLIO_MANAGE:       1 << 7,
+    AWARDS_MANAGE:          1 << 8,
+    ANNOUNCEMENT_READ:      1 << 9,
+    ANNOUNCEMENT_MANAGE:    1 << 10,
   } as const;
 
   static readonly PERMISSION_SETS = {
@@ -34,21 +34,17 @@ export class Permissions {
   static hasPermission(userPermissions: number, permission: number): boolean {
     return (userPermissions & permission) === permission;
   }
-
   static grantPermission(userPermissions: number, permission: number): number {
     return userPermissions | permission;
   }
-
   static revokePermission(userPermissions: number, permission: number): number {
     return userPermissions & ~permission;
   }
-
   static getPermissionList(userPermissions: number): string[] {
     return Object.entries(this.PERMISSIONS)
       .filter(([_, permission]) => this.hasPermission(userPermissions, permission))
       .map(([name]) => name);
   }
-
   static getAllPermissionNames(): string[] {
     return Object.keys(this.PERMISSIONS);
   }
