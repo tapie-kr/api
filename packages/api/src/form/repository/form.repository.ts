@@ -1,8 +1,7 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { ApplyFormDto, CreateApplyFormDto, UpdateApplyFormDto } from '../dto/form.dto';
-import { ApplyForm, FormResponse, MemberUnit, Prisma } from '@tapie-kr/api-database/client';
+import { CreateApplyFormDto, UpdateApplyFormDto } from '../dto/form.dto';
+import { ApplyForm, FormResponse } from '@tapie-kr/api-database/client';
 import { PrismaService } from 'src/common/prisma/prisma.service';
-import { FindFormsQueryDto } from '../dto/find-form-query-deprecated.dto';
 
 @Injectable()
 export class ApplyFormRepository {
