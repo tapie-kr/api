@@ -2,8 +2,8 @@
 
 import 'dotenv/config';
 
-import { MemberRole, MemberUnit, PrismaClient } from '../../database/client';
-import { PrismaClientKnownRequestError } from '../../database/client/runtime/library';
+import { MemberRole, MemberUnit, PrismaClient } from '@tapie-kr/api-database';
+import { PrismaClientKnownRequestError } from '@tapie-kr/api-database/client/runtime/library';
 
 async function main() {
   const prisma = new PrismaClient();
