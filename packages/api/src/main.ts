@@ -46,4 +46,4 @@ async function bootstrap() {
   logger.log(`Server running on ${await app.getUrl()}`);
 }
 
-bootstrap();
+bootstrap().then();
