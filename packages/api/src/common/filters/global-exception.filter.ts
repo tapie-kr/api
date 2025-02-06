@@ -7,7 +7,7 @@ import {
   Logger,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { type Response } from 'express';
+import { Response } from 'express';
 import { APIResponseDto } from '@/common/dto/response.dto';
 
 @Catch()

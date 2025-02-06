@@ -9,8 +9,8 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
-import { type CreateApplyFormDto, type UpdateApplyFormDto } from '@/form/dto/form.dto';
-import { type ApplyFormService } from '@/form/form.service';
+import { CreateApplyFormDto, UpdateApplyFormDto } from '@/form/dto/form.dto';
+import { ApplyFormService } from '@/form/form.service';
 
 @UseGuards(JwtAuthGuard)
 @Controller('form')

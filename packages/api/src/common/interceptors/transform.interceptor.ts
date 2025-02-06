@@ -5,8 +5,8 @@ import {
   Injectable,
   type NestInterceptor,
 } from '@nestjs/common';
-import { type Response } from 'express';
-import { type Observable } from 'rxjs';
+import { Response } from 'express';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { APIResponseDto } from '@/common/dto/response.dto';
 

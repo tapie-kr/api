@@ -7,9 +7,9 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { type Response } from 'express';
-import { type AuthService } from './auth.service';
-import { type GoogleAuthDto } from './dto/google-auth.dto';
+import { Response } from 'express';
+import { AuthService } from './auth.service';
+import { GoogleAuthDto } from './dto/google-auth.dto';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 
 @Controller('auth')

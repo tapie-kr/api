@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { type ConfigService } from '@nestjs/config';
+import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
-import { type Request } from 'express';
+import { Request } from 'express';
 import {
-  type Profile,
+  Profile,
   Strategy,
-  type StrategyOptions,
-  type VerifyCallback,
+  StrategyOptions,
+  VerifyCallback,
 } from 'passport-google-oauth20';
 import { GoogleAuthDto } from '@/auth/dto/google-auth.dto';
 

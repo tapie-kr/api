@@ -7,8 +7,8 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { type CreateProfileLinkDtoType, type UpdateProfileLinkDtoType } from '@/members/dto/profile-link.dto';
-import { type ProfileLinkService } from '@/members/service/profile-link.service';
+import { CreateProfileLinkDtoType, type UpdateProfileLinkDtoType } from '@/members/dto/profile-link.dto';
+import { ProfileLinkService } from '@/members/service/profile-link.service';
 
 @Controller('profile/link')
 export class ProfileLinkController {
