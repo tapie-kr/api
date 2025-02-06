@@ -20,6 +20,7 @@
     "@nestjs/jwt": "^10.2.0",
     "@nestjs/passport": "^10.0.3",
     "@nestjs/platform-express": "^11.0.7",
+    "@nestjs/swagger": "^11.0.3",
     "@prisma/client": "^6.3.0",
     "@tapie-kr/api-database": "workspace:*",
     "ajv": "^8.17.1",

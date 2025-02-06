@@ -7,6 +7,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiBearerAuth } from '@nestjs/swagger';
 import { Response } from 'express';
 import { AuthService } from './auth.service';
 import { GoogleAuthDto } from './dto/google-auth.dto';
@@ -36,6 +37,7 @@ export class AuthController {
   }
   @Get('me')
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('accessToken')
   async me(@Req() req: Response & {
     user: GoogleAuthDto;
   }) {
