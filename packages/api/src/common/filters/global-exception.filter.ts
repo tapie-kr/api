@@ -1,4 +1,3 @@
-import { APIResponseDto } from '@api/common/dto/response.dto';
 import {
   type ArgumentsHost,
   Catch,
@@ -9,6 +8,7 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { type Response } from 'express';
+import { APIResponseDto } from '@/common/dto/response.dto';
 
 @Catch()
 export class GlobalExceptionFilter implements ExceptionFilter {

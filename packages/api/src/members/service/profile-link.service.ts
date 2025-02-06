@@ -1,11 +1,11 @@
-import { type CreateProfileLinkDtoType, type UpdateProfileLinkDtoType } from '@api/members/dto/profile-link.dto';
-import { type ProfileLinkRepository } from '@api/members/repository/profile-link.repository';
 import {
   ConflictException,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
+import { type CreateProfileLinkDtoType, type UpdateProfileLinkDtoType } from '@/members/dto/profile-link.dto';
+import { type ProfileLinkRepository } from '@/members/repository/profile-link.repository';
 
 @Injectable()
 export class ProfileLinkService {

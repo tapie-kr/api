@@ -1,4 +1,3 @@
-import { APIResponseDto } from '@api/common/dto/response.dto';
 import {
   type CallHandler,
   type ExecutionContext,
@@ -9,6 +8,7 @@ import {
 import { type Response } from 'express';
 import { type Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { APIResponseDto } from '@/common/dto/response.dto';
 
 @Injectable()
 export class TransformInterceptor implements NestInterceptor {

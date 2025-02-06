@@ -1,6 +1,3 @@
-import { JwtAuthGuard } from '@api/auth/guards/jwt-auth.guard';
-import { type CreateApplyFormDto, type UpdateApplyFormDto } from '@api/form/dto/form.dto';
-import { type ApplyFormService } from '@api/form/form.service';
 import {
   Body,
   Controller,
@@ -11,6 +8,9 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
+import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
+import { type CreateApplyFormDto, type UpdateApplyFormDto } from '@/form/dto/form.dto';
+import { type ApplyFormService } from '@/form/form.service';
 
 @UseGuards(JwtAuthGuard)
 @Controller('form')

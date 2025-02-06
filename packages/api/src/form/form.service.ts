@@ -1,6 +1,6 @@
-import { type CreateApplyFormDto, type UpdateApplyFormDto } from '@api/form/dto/form.dto';
-import { type ApplyFormRepository } from '@api/form/repository/form.repository';
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { type CreateApplyFormDto, type UpdateApplyFormDto } from '@/form/dto/form.dto';
+import { type ApplyFormRepository } from '@/form/repository/form.repository';
 
 @Injectable()
 export class ApplyFormService {

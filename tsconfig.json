@@ -20,10 +20,10 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@database/client/*": ["packages/database/client/*"],
-      "@api/*": ["packages/api/src/*"]
+      "@/*": ["packages/api/src/*"],
+      "@tapie-kr/api-database/*": ["../database/client/*"],
     }
   },
-  "include": ["**/*.ts"],
+  "include": ["packages/api/src/**/*.ts"],
   "exclude": ["node_modules", "dist", "scripts/**/*.ts"]
 }

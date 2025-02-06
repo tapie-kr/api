@@ -1,8 +1,8 @@
-import { PrismaService } from '@api/common/prisma/prisma.service';
-import { ApplyFormController } from '@api/form/form.controller';
-import { ApplyFormService } from '@api/form/form.service';
-import { ApplyFormRepository } from '@api/form/repository/form.repository';
 import { Module } from '@nestjs/common';
+import { PrismaService } from '@/common/prisma/prisma.service';
+import { ApplyFormController } from '@/form/form.controller';
+import { ApplyFormService } from '@/form/form.service';
+import { ApplyFormRepository } from '@/form/repository/form.repository';
 
 @Module({
   imports:     [],

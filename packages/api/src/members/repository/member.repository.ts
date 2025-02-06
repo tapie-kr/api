@@ -1,5 +1,5 @@
-import { type PrismaService } from '@api/common/prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
+import { type PrismaService } from '@/common/prisma/prisma.service';
 
 @Injectable()
 export class MemberRepository {

@@ -1,7 +1,7 @@
 /// <reference types="dotenv" />
 
+import { MemberRole, MemberUnit, PrismaClient } from '@database/client/index';
 import { PrismaClientKnownRequestError } from '@database/client/runtime/library';
-import { MemberRole, MemberUnit, PrismaClient } from '@tapie-kr/api-database';
 import { createLogger, format, transports } from 'winston';
 
 import 'dotenv/config';
