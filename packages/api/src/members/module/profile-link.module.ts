@@ -1,8 +1,8 @@
+import { PrismaService } from '@api/common/prisma/prisma.service';
+import { ProfileLinkController } from '@api/members/controller/profile-link.controller';
+import { ProfileLinkRepository } from '@api/members/repository/profile-link.repository';
+import { ProfileLinkService } from '@api/members/service/profile-link.service';
 import { Module } from '@nestjs/common';
-import { PrismaService } from 'src/common/prisma/prisma.service';
-import { ProfileLinkController } from '../controller/profile-link.controller';
-import { ProfileLinkRepository } from '../repository/profile-link.repository';
-import { ProfileLinkService } from '../service/profile-link.service';
 
 @Module({
   imports:     [],

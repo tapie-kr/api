@@ -1,7 +1,7 @@
+import { PrismaService } from '@api/common/prisma/prisma.service';
+import { MemberRepository } from '@api/members/repository/member.repository';
+import { MembersService } from '@api/members/service/members.service';
 import { Module } from '@nestjs/common';
-import { PrismaService } from 'src/common/prisma/prisma.service';
-import { MemberRepository } from '../repository/member.repository';
-import { MembersService } from '../service/members.service';
 
 @Module({
   imports:     [],

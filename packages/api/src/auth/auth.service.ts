@@ -1,13 +1,13 @@
+import { type GoogleAuthDto } from '@api/auth/dto/google-auth.dto';
+import { type MemberPayloadDto } from '@api/auth/dto/member-payload.dto';
+import { JWT_CONSTANTS } from '@api/common/constants/auth/jwt.constants';
+import AUTH_ERROR_MESSAGE from '@api/common/constants/error/auth-message.constants';
+import { omit } from '@api/common/utils/object';
+import { GetMemberMethod } from '@api/members/enums/member.enum';
+import { type MembersService } from '@api/members/service/members.service';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { type ConfigService } from '@nestjs/config';
 import { type JwtService } from '@nestjs/jwt';
-import { JWT_CONSTANTS } from 'src/common/constants/auth/jwt.constants';
-import AUTH_ERROR_MESSAGE from 'src/common/constants/error/auth-message.constants';
-import { omit } from 'src/common/utils/object';
-import { GetMemberMethod } from 'src/members/enums/member.enum';
-import { type MembersService } from 'src/members/service/members.service';
-import { type GoogleAuthDto } from './dto/google-auth.dto';
-import { type MemberPayloadDto } from './dto/member-payload.dto';
 
 @Injectable()
 export class AuthService {

@@ -1,3 +1,3 @@
 export {
   default as AuthErrorMessage,
-} from './auth-message.constants';
+} from '@api/common/constants/error/auth-message.constants';

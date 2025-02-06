@@ -1,3 +1,5 @@
+import { type CreateProfileLinkDtoType, type UpdateProfileLinkDtoType } from '@api/members/dto/profile-link.dto';
+import { type ProfileLinkService } from '@api/members/service/profile-link.service';
 import {
   Body,
   Controller,
@@ -7,8 +9,6 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { type CreateProfileLinkDtoType, type UpdateProfileLinkDtoType } from '../dto/profile-link.dto';
-import { type ProfileLinkService } from '../service/profile-link.service';
 
 @Controller('profile/link')
 export class ProfileLinkController {

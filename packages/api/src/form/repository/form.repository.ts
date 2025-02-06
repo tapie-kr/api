@@ -1,7 +1,7 @@
+import { type PrismaService } from '@api/common/prisma/prisma.service';
+import { type CreateApplyFormDto, type UpdateApplyFormDto } from '@api/form/dto/form.dto';
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { type ApplyForm, type FormResponse } from '@tapie-kr/api-database/client';
-import { type PrismaService } from 'src/common/prisma/prisma.service';
-import { type CreateApplyFormDto, type UpdateApplyFormDto } from '../dto/form.dto';
 
 @Injectable()
 export class ApplyFormRepository {

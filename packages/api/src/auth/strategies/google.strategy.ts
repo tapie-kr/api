@@ -1,9 +1,9 @@
+import { GoogleAuthDto } from '@api/auth/dto/google-auth.dto';
 import { Injectable } from '@nestjs/common';
 import { type ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { type Request } from 'express';
 import { type Profile, Strategy, type VerifyCallback } from 'passport-google-oauth20';
-import { GoogleAuthDto } from '../dto/google-auth.dto';
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {

@@ -1,5 +1,5 @@
+import { PermissionCore, Permissions, PermissionSet } from '@api/common/utils/permissions';
 import { describe, expect, it } from '@jest/globals';
-import { PermissionCore, Permissions, PermissionSet } from '../src/common/utils/permissions';
 
 describe('Permissions', () => {
   describe('hasPermission', () => {

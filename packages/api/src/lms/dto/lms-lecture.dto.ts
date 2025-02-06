@@ -1,3 +1,5 @@
+import { UnitType } from '@api/common/enum/unit-type';
+import { HostDto } from '@api/lms/dto/lms-host.dto';
 import { Type } from 'class-transformer';
 import {
   IsEnum,
@@ -5,8 +7,6 @@ import {
   IsString,
   ValidateNested,
 } from 'class-validator';
-import { UnitType } from 'src/common/enum/unit-type';
-import { HostDto } from './lms-host.dto';
 
 export class LectureDto {
   @IsString()

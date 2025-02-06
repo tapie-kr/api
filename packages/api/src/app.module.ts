@@ -1,10 +1,10 @@
+import { AuthModule } from '@api/auth/auth.module';
+import { FormModule } from '@api/form/form.module';
+import { MembersModule } from '@api/members/module/members.module';
+import { ProfileLinkModule } from '@api/members/module/profile-link.module';
 import { CacheModule } from '@nestjs/cache-manager';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { AuthModule } from './auth/auth.module';
-import { FormModule } from './form/form.module';
-import { MembersModule } from './members/module/members.module';
-import { ProfileLinkModule } from './members/module/profile-link.module';
 
 @Module({ imports: [
   ConfigModule.forRoot({
