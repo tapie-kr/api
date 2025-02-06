@@ -50,7 +50,7 @@ export class AuthService {
       const jwtSecret = this.configService.get('JWT_SECRET');
 
       return this.jwtService.verifyAsync<MemberPayloadDto>(token, { secret: jwtSecret });
-    } catch (error) {
+    } catch (_error) {
       throw new UnauthorizedException(AUTH_ERROR_MESSAGE.TOKEN.INVALID_REFRESH);
     }
   }

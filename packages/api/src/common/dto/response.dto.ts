@@ -5,7 +5,7 @@ export class APIResponseDto {
 
   public message: string = 'OK';
 
-  public data: any = null;
+  public data: unknown = null;
 
   public responseAt: Date = new Date;
 }

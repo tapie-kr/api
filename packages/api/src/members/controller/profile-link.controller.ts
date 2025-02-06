@@ -31,7 +31,6 @@ export class ProfileLinkController {
   //   @UseGuards(JwtAuthGuard)
   async update(@Param('id') id: number, @Body() updateDto: UpdateProfileLinkDtoType) {
     // 프로필 링크 수정
-    console.log('id', id);
 
     return this.MemberProfileService.update(id, updateDto);
   }

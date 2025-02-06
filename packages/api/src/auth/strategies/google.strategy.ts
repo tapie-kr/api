@@ -3,7 +3,12 @@ import { Injectable } from '@nestjs/common';
 import { type ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { type Request } from 'express';
-import { type Profile, Strategy, type VerifyCallback } from 'passport-google-oauth20';
+import {
+  type Profile,
+  Strategy,
+  type StrategyOptions,
+  type VerifyCallback,
+} from 'passport-google-oauth20';
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
@@ -16,7 +21,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
       passReqToCallback: true,
     });
   }
-  authenticate(req: Request, options?: any) {
+  authenticate(req: Request, options?: StrategyOptions) {
     const serviceName = req.query.service as string;
     const callbackURLContext = new URL(this.configService.get('GOOGLE_CALLBACK_URL'));
 

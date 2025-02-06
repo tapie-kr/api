@@ -12,7 +12,7 @@ import { map } from 'rxjs/operators';
 
 @Injectable()
 export class TransformInterceptor implements NestInterceptor {
-  intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+  intercept(context: ExecutionContext, next: CallHandler): Observable<unknown> {
     const response = context.switchToHttp().getResponse<Response>();
 
     return next.handle().pipe(map(data => {
