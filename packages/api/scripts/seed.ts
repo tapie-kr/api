@@ -1,12 +1,19 @@
 /// <reference types="dotenv" />
 
+import { PrismaClientKnownRequestError } from '@database/client/runtime/library';
 import { MemberRole, MemberUnit, PrismaClient } from '@tapie-kr/api-database';
-import { PrismaClientKnownRequestError } from '@tapie-kr/api-database/client/runtime/library';
+import { createLogger, format, transports } from 'winston';
 
 import 'dotenv/config';
 
 async function main() {
   const prisma = new PrismaClient;
+
+  const logger = createLogger({
+    format: format.combine(format.timestamp(),
+      format.json()),
+    transports: [transports.Console],
+  });
 
   try {
     await prisma.$connect();
@@ -26,7 +33,7 @@ async function main() {
       unit:        MemberUnit.DEVELOPER,
     } });
 
-    console.log('임시 사용자가 생성되었습니다.');
+    logger.info('임시 사용자가 생성되었습니다.');
   } catch (error) {
     if (error instanceof PrismaClientKnownRequestError) {
       console.error('이미 같은 정보의 임시 사용자가 생성되어 있습니다.');
@@ -38,4 +45,4 @@ async function main() {
   }
 }
 
-main();
+main().then();
