@@ -3,10 +3,10 @@ import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { Request } from 'express';
 import {
-  Profile,
+  type Profile,
   Strategy,
-  StrategyOptions,
-  VerifyCallback,
+  type StrategyOptions,
+  type VerifyCallback,
 } from 'passport-google-oauth20';
 import { GoogleAuthDto } from '@/auth/dto/google-auth.dto';
 

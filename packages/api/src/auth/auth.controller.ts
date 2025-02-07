@@ -41,7 +41,6 @@ export class AuthController {
   async me(@Req() req: Response & {
     user: GoogleAuthDto;
   }) {
-    // 내 정보 보기 (Member 모델)
     return req.user;
   }
 }

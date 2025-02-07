@@ -1,8 +1,9 @@
+/* eslint-disable */
 /// <reference types="dotenv" />
 
-import { MemberRole, MemberUnit, PrismaClient } from '@database/client/index';
-import { PrismaClientKnownRequestError } from '@database/client/runtime/library';
 import { createLogger, format, transports } from 'winston';
+import { MemberRole, MemberUnit, PrismaClient } from '../../database';
+import { PrismaClientKnownRequestError } from '../../database/client/runtime/library';
 
 import 'dotenv/config';
 
@@ -12,7 +13,7 @@ async function main() {
   const logger = createLogger({
     format: format.combine(format.timestamp(),
       format.json()),
-    transports: [transports.Console],
+    transports: [new transports.Console],
   });
 
   try {

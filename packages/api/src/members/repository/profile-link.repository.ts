@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@/common/prisma/prisma.service';
-import { CreateProfileLinkDtoType, type UpdateProfileLinkDtoType } from '@/members/dto/profile-link.dto';
+import { CreateProfileLinkDtoType, UpdateProfileLinkDtoType } from '@/members/dto/profile-link.dto';
 
 @Injectable()
 export class ProfileLinkRepository {

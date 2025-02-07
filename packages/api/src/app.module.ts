@@ -4,7 +4,7 @@ import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from '@/auth/auth.module';
 import { FormModule } from '@/form/form.module';
 import { MembersModule } from '@/members/module/members.module';
-
+import { ProfileLinkModule } from '@/members/module/profile-link.module';
 
 @Module({ imports: [
   ConfigModule.forRoot({
@@ -17,7 +17,7 @@ import { MembersModule } from '@/members/module/members.module';
   // Members
   MembersModule,
 
-  // ProfileLinkModule,
+  ProfileLinkModule,
 
   // Form
   FormModule,
