@@ -7,7 +7,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiBearerAuth } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 import { Response } from 'express';
 import { AuthService } from './auth.service';
 import { GoogleAuthDto } from './dto/google-auth.dto';
@@ -19,8 +19,8 @@ export class AuthController {
   }
   @Get('google')
   @UseGuards(AuthGuard('google'))
+  @ApiOperation({ summary: 'Google Oauth 로그인으로 Redirect' })
   async googleAuth() {
-    // 구글 로그인 Oauth URL로 Redirect
   }
   @Get('google/callback')
   @UseGuards(AuthGuard('google'))
