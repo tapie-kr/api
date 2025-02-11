@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { PrismaService } from '@/common/prisma/prisma.service';
-import { ApplyFormController } from '@/form/form.controller';
+import { ApplyFormController } from '@/form/controllers/form.private.controller';
 import { ApplyFormService } from '@/form/form.service';
 import { ApplyFormRepository } from '@/form/repository/form.repository';
 
