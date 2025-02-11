@@ -5,6 +5,7 @@ model ApplyForm {
   endsAt    DateTime
   responses FormResponse[]
   createdAt DateTime       @default(now())
+  active    Boolean        @default(false)
 }
 
 model FormResponse {
