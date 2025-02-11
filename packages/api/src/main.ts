@@ -4,6 +4,7 @@ import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from '@/app.module';
 import { GlobalExceptionFilter } from '@/common/filters/global-exception.filter';
+import { PrismaExceptionFilter } from '@/common/filters/prisma-exception.filter';
 import { TransformInterceptor } from '@/common/interceptors/transform.interceptor';
 
 async function bootstrap() {
@@ -13,6 +14,8 @@ async function bootstrap() {
   const isProduction = configService.get('NODE_ENV') === 'production';
 
   app.useGlobalFilters(new GlobalExceptionFilter);
+
+  app.useGlobalFilters(new PrismaExceptionFilter);
 
   app.useGlobalInterceptors(new TransformInterceptor);
 
