@@ -1,17 +1,17 @@
 import {
-  ArgumentsHost,
-  Catch,
-  ExceptionFilter,
-  HttpStatus,
-} from '@nestjs/common';
-import { PrismaClientKnownRequestError } from '@tapie-kr/api-database/client/runtime/library';
-import { Response } from 'express';
-import {
   PrismaForeignKeyConstraintError,
   PrismaRecordDoesNotExistError,
   PrismaUniqueConstraintError,
   toTypedPrismaError,
 } from '@/common/prisma/prisma.exception';
+import {
+  ArgumentsHost,
+  Catch,
+  ExceptionFilter,
+  HttpStatus,
+} from '@nestjs/common';
+import { PrismaClientKnownRequestError } from '@tapie-kr/api-database/runtime/library';
+import { Response } from 'express';
 
 @Catch(PrismaClientKnownRequestError)
 export class PrismaExceptionFilter implements ExceptionFilter {
@@ -44,7 +44,7 @@ export class PrismaExceptionFilter implements ExceptionFilter {
     response.status(status).json({
       statusCode: status,
       message,
-      error:      prismaError.code,
+      error: prismaError.code,
     });
   }
 }

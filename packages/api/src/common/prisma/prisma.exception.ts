@@ -3,9 +3,9 @@ import { PrismaClientKnownRequestError } from '@tapie-kr/api-database/runtime/li
 class BaseError extends PrismaClientKnownRequestError {
   constructor(error: PrismaClientKnownRequestError) {
     super(error.message, {
-      code:            error.code,
-      clientVersion:   error.clientVersion,
-      meta:            error.meta,
+      code: error.code,
+      clientVersion: error.clientVersion,
+      meta: error.meta,
       batchRequestIdx: error.batchRequestIdx,
     });
   }
