@@ -44,4 +44,7 @@ export class ApplyFormService {
   async deactivateForm(id: number) {
     return this.formRepository.deactivateForm(id);
   }
+  async getActiveFormWithDetails() {
+
+  }
 }

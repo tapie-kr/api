@@ -20,7 +20,7 @@ import { ApplyFormService } from '@/form/form.service';
 @RequirePermissions(P.FORM_MANAGE)
 @UseGuards(JwtAuthGuard, PermissionGuard)
 @ApiBearerAuth('accessToken')
-export class ApplyFormController {
+export class ApplyFormPrivateController {
   constructor(private readonly applyFormService: ApplyFormService) {
   }
   @Post()
