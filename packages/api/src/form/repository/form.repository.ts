@@ -45,6 +45,24 @@ export class ApplyFormRepository {
       include: { responses: true },
     });
   }
+  async findOneResponse(responseId: string): Promise<FormResponse> {
+    return this.prisma.formResponse.findUnique({ where: { uuid: responseId } });
+  }
+  async getActiveForm(): Promise<ApplyForm> {
+    return this.prisma.applyForm.findFirst({ where: { active: true } });
+  }
+  async activateForm(id: number): Promise<ApplyForm> {
+    return this.prisma.applyForm.update({
+      where: { id },
+      data:  { active: true },
+    });
+  }
+  async deactivateForm(id: number): Promise<ApplyForm> {
+    return this.prisma.applyForm.update({
+      where: { id },
+      data:  { active: false },
+    });
+  }
 
   /*
    * async create(data: ApplyFormDto): Promise<ApplyForm> {

@@ -28,4 +28,20 @@ export class ApplyFormService {
   async findAllResponses(id: number) {
     return this.formRepository.findAllResponses(id);
   }
+  async findOneResponse(responseId: string) {
+    return this.formRepository.findOneResponse(responseId);
+  }
+  async getActiveForm() {
+    return this.formRepository.getActiveForm();
+  }
+  async activateForm(id: number) {
+    if (await this.formRepository.getActiveForm()) {
+      throw new Error('이미 활성화된 폼이 있습니다. 활성화된 폼을 비활성화한 후 다시 시도해주세요.');
+    }
+
+    return this.formRepository.activateForm(id);
+  }
+  async deactivateForm(id: number) {
+    return this.formRepository.deactivateForm(id);
+  }
 }
