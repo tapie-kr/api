@@ -1,4 +1,4 @@
-import { PrismaClientKnownRequestError } from '@tapie-kr/api-database/client/runtime/library';
+import { PrismaClientKnownRequestError } from '@tapie-kr/api-database/runtime/library';
 
 class BaseError extends PrismaClientKnownRequestError {
   constructor(error: PrismaClientKnownRequestError) {
