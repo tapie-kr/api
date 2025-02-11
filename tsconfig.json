@@ -21,7 +21,7 @@
     "noFallthroughCasesInSwitch": false,
     "paths": {
       "@/*": ["packages/api/src/*"],
-      "@tapie-kr/api-database/*": ["../database/client/*"],
+      "@tapie-kr/api-database/*": ["../database/*"],
     }
   },
   "include": ["packages/api/src/**/*.ts"],
