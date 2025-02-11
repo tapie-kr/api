@@ -11,6 +11,7 @@ export class PermissionCore {
     AWARDS_MANAGE:          1 << 8,
     ANNOUNCEMENT_READ:      1 << 9,
     ANNOUNCEMENT_MANAGE:    1 << 10,
+    FORM_MANAGE:            1 << 11,
   } as const;
 
   static readonly PERMISSION_SETS = {
@@ -27,7 +28,8 @@ export class PermissionCore {
       this.PERMISSIONS.PORTFOLIO_MANAGE |
       this.PERMISSIONS.AWARDS_MANAGE |
       this.PERMISSIONS.ANNOUNCEMENT_READ |
-      this.PERMISSIONS.ANNOUNCEMENT_MANAGE,
+      this.PERMISSIONS.ANNOUNCEMENT_MANAGE |
+      this.PERMISSIONS.FORM_MANAGE,
   } as const;
 
   static hasPermission(userPermissions: number, permission: number): boolean {
