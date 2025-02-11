@@ -5,7 +5,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { PERMISSIONS_KEY } from '@/auth/decorator/permission.decorator';
+import { PERMISSIONS_KEY } from '@/auth/decorators/permission.decorator';
 import { PermissionCore } from '@/common/utils/permissions';
 
 @Injectable()
