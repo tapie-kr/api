@@ -1,9 +1,13 @@
 import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
-import { ApplyForm, FormResponse } from '@tapie-kr/api-database';
+import { ApplyForm, Asset, FormResponse } from '@tapie-kr/api-database';
 import { PrismaRelationViolationError, PrismaUniqueConstraintError, toTypedPrismaError } from '@/common/prisma/prisma.exception';
 import { PrismaService } from '@/common/prisma/prisma.service';
 import { CreateApplyFormDto, UpdateApplyFormDto } from '@/form/dto/form.dto';
 import { CreateFormResponseDto, UpdateFormResponseDto } from '@/form/dto/response.dto';
+
+type FormResponseWithPortfolio = FormResponse & {
+  portfolio: Asset | null;
+};
 
 @Injectable()
 export class ApplyFormRepository {
@@ -44,7 +48,9 @@ export class ApplyFormRepository {
     });
   }
   async findOneResponse(responseId: string): Promise<FormResponse> {
-    return this.prisma.formResponse.findUnique({ where: { uuid: responseId } });
+    return this.prisma.formResponse.findUnique({
+      where: { uuid: responseId }, include: { portfolio: true },
+    });
   }
   async getActiveForm(): Promise<ApplyForm> {
     return this.prisma.applyForm.findFirst({ where: { active: true } });
@@ -87,19 +93,21 @@ export class ApplyFormRepository {
       throw new InternalServerErrorException('Failed to create response', error?.message);
     }
   }
-  async findResponse(formId: number, userId: string): Promise<FormResponse | null> {
-    return this.prisma.formResponse.findFirst({ where: {
-      formId,
-      memberUUID: userId,
-    } });
+  async findResponse(formId: number, userId: string): Promise<FormResponseWithPortfolio | null> {
+    return this.prisma.formResponse.findFirst({
+      where: {
+        formId,
+        memberUUID: userId,
+      },
+      include: { portfolio: true },
+    });
   }
   async updateResponse(formId: number, userId: string, data: UpdateFormResponseDto): Promise<FormResponse> {
+    const { uuid } = await this.findResponse(formId, userId);
+
     try {
       return this.prisma.formResponse.update({
-        where: {
-          formId,
-          memberUUID: userId,
-        },
+        where:   { uuid },
         data,
         include: { member: true },
       });
@@ -114,20 +122,25 @@ export class ApplyFormRepository {
     }
   }
   async attachFileToResponse(formId: number, userId: string, assetId: string): Promise<FormResponse> {
+    const { uuid } = await this.findResponse(formId, userId);
+
     return this.prisma.formResponse.update({
-      where: {
-        formId,
-        memberUUID: userId,
-      },
-      data:    { portfolio: { connect: { uuid: assetId } } },
-      include: { portfolio: true },
+      where: { uuid },
+      data:  { portfolio: { connect: { uuid: assetId } } },
+    });
+  }
+  async removeFileFromResponse(formId: number, userId: string): Promise<FormResponse> {
+    const { uuid } = await this.findResponse(formId, userId);
+
+    return this.prisma.formResponse.update({
+      where: { uuid },
+      data:  { portfolio: { disconnect: true } },
     });
   }
   async deleteResponse(formId: number, userId: string): Promise<FormResponse> {
-    return this.prisma.formResponse.delete({ where: {
-      formId,
-      memberUUID: userId,
-    } });
+    const { uuid } = await this.findResponse(formId, userId);
+
+    return this.prisma.formResponse.delete({ where: { uuid } });
   }
   async isResponseSubmitted(formId: number, userId: string): Promise<boolean> {
     const data = await this.findResponse(formId, userId);
@@ -135,12 +148,11 @@ export class ApplyFormRepository {
     return data.submitted;
   }
   async submitResponse(formId: number, userId: string): Promise<FormResponse> {
+    const { uuid } = await this.findResponse(formId, userId);
+
     return this.prisma.formResponse.update({
-      where: {
-        formId,
-        memberUUID: userId,
-      },
-      data: { submitted: true },
+      where: { uuid },
+      data:  { submitted: true },
     });
   }
   async isAvailableToAccessForm(formId: number): Promise<boolean> {
