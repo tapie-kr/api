@@ -3,11 +3,13 @@ import {
   Controller,
   Get,
   Post,
+  Query,
   Req,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiOperation } from '@nestjs/swagger';
+import { Member } from '@tapie-kr/api-database';
 import { Response } from 'express';
 import { AuthService } from './auth.service';
 import { GoogleAuthDto } from './dto/google-auth.dto';
@@ -24,13 +26,17 @@ export class AuthController {
   }
   @Get('google/callback')
   @UseGuards(AuthGuard('google'))
-  async googleAuthRedirect(@Req() req: Response & {
-    user: GoogleAuthDto;
-  }) {
+  async googleAuthRedirect(@Query('service') service: string,
+    @Req() req: Response & {
+      user: GoogleAuthDto;
+    })  {
     // 구글 로그인 Oauth Callback 처리
-    return this.authService.googleLogin(req.user);
+    return this.authService.googleLogin(req.user, service);
   }
   @Post('refresh')
+  @ApiBody({ schema: {
+    type: 'object', properties: { refreshToken: { type: 'string' } },
+  } })
   async refreshAccessToken(@Body('refreshToken') refreshToken: string) {
     // 토큰 Refresh 하기
     return this.authService.refreshAccessToken(refreshToken);
@@ -39,7 +45,7 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth('accessToken')
   async me(@Req() req: Response & {
-    user: GoogleAuthDto;
+    user: Member;
   }) {
     return req.user;
   }
