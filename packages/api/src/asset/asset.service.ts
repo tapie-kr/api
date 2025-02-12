@@ -1,13 +1,20 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import Minio from 'minio';
-import { FileType } from '@/minio/types/fileType';
+import { AssetRepository } from '@/asset/asset.repository';
+import { FileType } from '@/asset/types/fileType';
 
 @Injectable()
-export class MinioService {
-  constructor(private readonly configService: ConfigService) {
+export class AssetService {
+  constructor(private readonly configService: ConfigService,
+    private readonly assetRepository: AssetRepository) {
   }
-  async uploadFile(file: File, fileName: string, type: FileType) {
+  async uploadFile(file: File, fileName: string, type: FileType, assetName?: string) {
+    const url = await this.uploadFileToMinio(file, fileName, type);
+
+    return this.assetRepository.createAsset(url, assetName);
+  }
+  async uploadFileToMinio(file: File, fileName: string, type: FileType) {
     const minioClient = new Minio.Client({
       endPoint:  this.configService.get('MINIO_URL'),
       useSSL:    true,
