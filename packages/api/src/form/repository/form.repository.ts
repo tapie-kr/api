@@ -1,7 +1,9 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { ApplyForm, FormResponse } from '@tapie-kr/api-database/client';
+import { ApplyForm, FormResponse } from '@tapie-kr/api-database';
+import { PrismaUniqueConstraintError, toTypedPrismaError } from '@/common/prisma/prisma.exception';
 import { PrismaService } from '@/common/prisma/prisma.service';
 import { CreateApplyFormDto, UpdateApplyFormDto } from '@/form/dto/form.dto';
+import { CreateFormResponseDto } from '@/form/dto/response.dto';
 
 @Injectable()
 export class ApplyFormRepository {
@@ -24,12 +26,8 @@ export class ApplyFormRepository {
       throw new InternalServerErrorException('Failed to update form', error?.message);
     }
   }
-  async remove(id: number): Promise<ApplyForm> {
-    try {
-      return await this.prisma.applyForm.delete({ where: { id } });
-    } catch (error) {
-      throw new InternalServerErrorException('Failed to delete form', error?.message);
-    }
+  async remove(id: number): Promise<void> {
+    await this.prisma.applyForm.delete({ where: { id } });
   }
   async findOne(id: number): Promise<ApplyForm | null> {
     return this.prisma.applyForm.findUnique({ where: { id } });
@@ -63,9 +61,29 @@ export class ApplyFormRepository {
       data:  { active: false },
     });
   }
+  async createResponse(formId: number, userId: string, data: CreateFormResponseDto): Promise<FormResponse> {
+    try {
+      return await this.prisma.formResponse.create({
+        data: {
+          ...data,
+          form:   { connect: { id: formId } },
+          member: { connect: { uuid: userId } },
+        },
+        include: { member: true },
+      });
+    } catch (error) {
+      const prismaError = toTypedPrismaError(error);
+
+      if (prismaError instanceof PrismaUniqueConstraintError) {
+        throw new InternalServerErrorException('이미 사용된 전화번호입니다.');
+      }
+
+      throw new InternalServerErrorException('Failed to create response', error?.message);
+    }
+  }
 
   /*
-   * async create(data: ApplyFormDto): Promise<ApplyForm> {
+   * async create(data: ApplyFormDto): Promise<AppldddyForm> {
    *   try {
    *     return await this.prisma.applyForm.upsert({
    *       where: { googleEmail: data.googleEmail },
