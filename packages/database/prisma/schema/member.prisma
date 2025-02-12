@@ -16,7 +16,7 @@ model Member {
   profileAssetUUID                  String?
   representativePortfolioMemberUUID String? @unique
   representativeAwardUUID           String?
-  formResponseUUID                  String? @unique
+  formResponseUUID                  String?
 
   username    String?    @unique
   googleEmail String     @unique
@@ -26,7 +26,7 @@ model Member {
   permissions Int        @default(0)
 
   profile      Asset?             @relation(fields: [profileAssetUUID], references: [uuid], onDelete: Restrict)
-  formResponse FormResponse?
+  formResponse FormResponse[]
   links        MemberLink[]
   portfolio    PortfolioMember[]  @relation(name: "MemberPortfolio")
   awards       Award[]            @relation(name: "MemberAward")

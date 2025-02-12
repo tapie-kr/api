@@ -11,7 +11,7 @@ model ApplyForm {
 model FormResponse {
   uuid               String  @id @default(uuid())
   formId             Int
-  memberUUID         String  @unique
+  memberUUID         String
   portfolioAssetUUID String? @unique
 
   name               String
