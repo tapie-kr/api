@@ -63,6 +63,18 @@ export class ApplyFormPublicController {
   }, @UploadedFile() file: Express.Multer.File) {
     return this.applyFormService.attachFileToResponse(id, req.user.uuid, file);
   }
+  @Get(':id/response/file')
+  async getResponseFile(@Param('id') id: number, @Req() req: Response & {
+    user: Member;
+  }) {
+    return this.applyFormService.getFileFromResponse(id, req.user.uuid);
+  }
+  @Delete(':id/response/file')
+  async removeResponseFile(@Param('id') id: number, @Req() req: Response & {
+    user: Member;
+  }) {
+    return this.applyFormService.removeFileFromResponse(id, req.user.uuid);
+  }
   @Post(':id/response/apply')
   async applyForm(@Param('id') id: number, @Req() req: Response & {
     user: Member;
