@@ -8,6 +8,7 @@
     "start": "node dist/main.js",
     "seed": "ts-node -r tsconfig-paths/register scripts/seed.ts",
     "operate:perm": "ts-node -r tsconfig-paths/register scripts/add-permission.ts",
+    "generate:swagger": "ts-node -r tsconfig-paths/register scripts/swagger.ts",
     "test": "jest --transform='{\\\"^.+\\\\\\\\.(ts|tsx)$\\\":\\\"ts-jest\\\"}'",
     "lint": "eslint . --fix",
     "lint:dry": "eslint . --fix-dry-run"
