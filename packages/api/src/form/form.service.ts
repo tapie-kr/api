@@ -2,6 +2,7 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { v4 as uuidv4 } from 'uuid';
 import { AssetService } from '@/asset/asset.service';
 import { FileType } from '@/asset/types/fileType';
+import { decodeFileNameKorean } from '@/common/utils/string';
 import { CreateApplyFormDto, UpdateApplyFormDto } from '@/form/dto/form.dto';
 import { CreateFormResponseDto, UpdateFormResponseDto } from '@/form/dto/response.dto';
 import { ApplyFormRepository } from '@/form/repository/form.repository';
@@ -95,20 +96,65 @@ export class ApplyFormService {
       throw new BadRequestException('지원 가능한 시간이 아닙니다');
     }
 
-    const filename = this.generateFilename(file.originalname);
+    const isSubmitted = await this.formRepository.isResponseSubmitted(formId, userId);
 
-    const asset = await this.minioService.uploadFile(new File([file.buffer], file.originalname),
+    if (isSubmitted) {
+      throw new BadRequestException('이미 제출한 응답은 수정할 수 없습니다');
+    }
+
+    const originalFileName = decodeFileNameKorean(file.originalname);
+    const filename = this.generateFilename(originalFileName);
+
+    const asset = await this.minioService.uploadFile(new File([file.buffer], originalFileName),
       filename,
       FileType.FORM_PORTFOLIO,
-      file.originalname);
+      originalFileName);
 
     await this.formRepository.attachFileToResponse(formId, userId, asset.uuid);
+  }
+  async getFileFromResponse(formId: number, userId: string) {
+    const { portfolio } = await this.formRepository.findResponse(formId, userId);
+
+    if (!portfolio) {
+      throw new NotFoundException('포트폴리오 파일을 찾을 수 없습니다');
+    }
+
+    const { presignedUrl } = await this.minioService.getFileWithUrl(portfolio.uuid);
+
+    return { presignedUrl };
+  }
+  async removeFileFromResponse(formId: number, userId: string) {
+    const isAvailable = await this.formRepository.isAvailableToAccessForm(formId);
+
+    if (!isAvailable) {
+      throw new BadRequestException('지원 가능한 시간이 아닙니다');
+    }
+
+    const isSubmitted = await this.formRepository.isResponseSubmitted(formId, userId);
+
+    if (isSubmitted) {
+      throw new BadRequestException('이미 제출한 응답은 수정할 수 없습니다');
+    }
+
+    const { portfolio } = await this.formRepository.findResponse(formId, userId);
+
+    if (!portfolio) {
+      throw new NotFoundException('포트폴리오 파일을 찾을 수 없습니다');
+    }
+
+    return this.formRepository.removeFileFromResponse(formId, userId);
   }
   async removeResponse(formId: number, userId: string) {
     const isAvailable = await this.formRepository.isAvailableToAccessForm(formId);
 
     if (!isAvailable) {
       throw new BadRequestException('지원 가능한 시간이 아닙니다');
+    }
+
+    const isSubmitted = await this.formRepository.isResponseSubmitted(formId, userId);
+
+    if (isSubmitted) {
+      throw new BadRequestException('이미 제출한 응답은 수정할 수 없습니다');
     }
 
     return this.formRepository.deleteResponse(formId, userId);
@@ -118,6 +164,12 @@ export class ApplyFormService {
 
     if (!isAvailable) {
       throw new BadRequestException('지원 가능한 시간이 아닙니다');
+    }
+
+    const isSubmitted = await this.formRepository.isResponseSubmitted(formId, userId);
+
+    if (isSubmitted) {
+      throw new BadRequestException('이미 응답을 제출했습니다.');
     }
 
     return this.formRepository.submitResponse(formId, userId);
