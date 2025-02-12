@@ -11,7 +11,7 @@ RUN corepack enable
 RUN corepack prepare pnpm --activate
 RUN pnpm install --frozen-lockfile
 
-EXPOSE 3000
+EXPOSE 8877
 
 WORKDIR /app/packages/database
 RUN pnpm run generate
