@@ -1,20 +1,31 @@
 model ApplyForm {
+  id        Int            @id @default(autoincrement())
+  name      String
+  startsAt  DateTime
+  endsAt    DateTime
+  responses FormResponse[]
+  createdAt DateTime       @default(now())
+  active    Boolean        @default(false)
+}
+
+model FormResponse {
   uuid               String  @id @default(uuid())
-  memberUUID         String? @unique
+  formId             Int
+  memberUUID         String
   portfolioAssetUUID String? @unique
 
   name               String
   unit               MemberUnit
-  googleEmail        String     @unique
   phoneNumber        String     @unique
   introduction       String
   motivation         String
   expectedActivities String
   reasonToChoose     String
 
-  member    Member? @relation(fields: [memberUUID], references: [uuid], onDelete: SetNull)
-  portfolio Asset?  @relation(fields: [portfolioAssetUUID], references: [uuid], onDelete: Restrict)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  form      ApplyForm @relation(fields: [formId], references: [id])
+  member    Member    @relation(fields: [memberUUID], references: [uuid], onDelete: Restrict)
+  portfolio Asset?    @relation(fields: [portfolioAssetUUID], references: [uuid], onDelete: Restrict)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  submitted Boolean   @default(false)
 }

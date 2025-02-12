@@ -1,0 +1,888 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/auth/google": {
+      "get": {
+        "operationId": "AuthController_googleAuth",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "summary": "Google Oauth 로그인으로 Redirect",
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/auth/google/callback": {
+      "get": {
+        "operationId": "AuthController_googleAuthRedirect",
+        "parameters": [
+          {
+            "name": "service",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/auth/refresh": {
+      "post": {
+        "operationId": "AuthController_refreshAccessToken",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "refreshToken": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/auth/me": {
+      "get": {
+        "operationId": "AuthController_me",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "accessToken": []
+          }
+        ],
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/profile/link": {
+      "post": {
+        "operationId": "ProfileLinkController_create",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "ProfileLink"
+        ]
+      }
+    },
+    "/profile/link/{memberId}": {
+      "get": {
+        "operationId": "ProfileLinkController_findByMemberId",
+        "parameters": [
+          {
+            "name": "memberId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "ProfileLink"
+        ]
+      }
+    },
+    "/profile/link/{id}": {
+      "put": {
+        "operationId": "ProfileLinkController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "ProfileLink"
+        ]
+      },
+      "delete": {
+        "operationId": "ProfileLinkController_delete",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "ProfileLink"
+        ]
+      }
+    },
+    "/form/admin": {
+      "post": {
+        "description": "지원 폼을 생성합니다. (응답 생성 X)",
+        "operationId": "ApplyFormPrivateController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateApplyFormDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "accessToken": []
+          }
+        ],
+        "summary": "지원 폼 생성",
+        "tags": [
+          "ApplyFormPrivate"
+        ]
+      },
+      "get": {
+        "operationId": "ApplyFormPrivateController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "accessToken": []
+          }
+        ],
+        "summary": "지원 폼 모두 가져오기",
+        "tags": [
+          "ApplyFormPrivate"
+        ]
+      }
+    },
+    "/form/admin/{id}": {
+      "patch": {
+        "operationId": "ApplyFormPrivateController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateApplyFormDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "accessToken": []
+          }
+        ],
+        "summary": "특정 지원 폼 수정",
+        "tags": [
+          "ApplyFormPrivate"
+        ]
+      },
+      "delete": {
+        "operationId": "ApplyFormPrivateController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "accessToken": []
+          }
+        ],
+        "summary": "지원 폼 삭제",
+        "tags": [
+          "ApplyFormPrivate"
+        ]
+      },
+      "get": {
+        "operationId": "ApplyFormPrivateController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "accessToken": []
+          }
+        ],
+        "summary": "지원 폼 데이터 가져오기",
+        "tags": [
+          "ApplyFormPrivate"
+        ]
+      }
+    },
+    "/form/admin/{id}/responses": {
+      "get": {
+        "operationId": "ApplyFormPrivateController_findAllResponses",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "accessToken": []
+          }
+        ],
+        "summary": "특정 지원 폼의 모든 응답 가져오기",
+        "tags": [
+          "ApplyFormPrivate"
+        ]
+      }
+    },
+    "/form/admin/responses/{responseId}": {
+      "get": {
+        "operationId": "ApplyFormPrivateController_findOneResponse",
+        "parameters": [
+          {
+            "name": "responseId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "accessToken": []
+          }
+        ],
+        "summary": "특정 지원 폼의 특정 응답 가져오기",
+        "tags": [
+          "ApplyFormPrivate"
+        ]
+      }
+    },
+    "/form/admin/{id}/activate": {
+      "post": {
+        "operationId": "ApplyFormPrivateController_activateForm",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "accessToken": []
+          }
+        ],
+        "summary": "지원 폼 활성화",
+        "tags": [
+          "ApplyFormPrivate"
+        ]
+      }
+    },
+    "/form/admin/{id}/deactivate": {
+      "post": {
+        "operationId": "ApplyFormPrivateController_deactivateForm",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "accessToken": []
+          }
+        ],
+        "summary": "지원 폼 비활성화",
+        "tags": [
+          "ApplyFormPrivate"
+        ]
+      }
+    },
+    "/form": {
+      "get": {
+        "operationId": "ApplyFormPublicController_findActiveForm",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "accessToken": []
+          }
+        ],
+        "tags": [
+          "ApplyFormPublic"
+        ]
+      }
+    },
+    "/form/{id}/response": {
+      "post": {
+        "operationId": "ApplyFormPublicController_createResponse",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateFormResponseDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "accessToken": []
+          }
+        ],
+        "tags": [
+          "ApplyFormPublic"
+        ]
+      },
+      "get": {
+        "operationId": "ApplyFormPublicController_findResponse",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "accessToken": []
+          }
+        ],
+        "tags": [
+          "ApplyFormPublic"
+        ]
+      },
+      "patch": {
+        "operationId": "ApplyFormPublicController_updateResponse",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateFormResponseDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "accessToken": []
+          }
+        ],
+        "tags": [
+          "ApplyFormPublic"
+        ]
+      },
+      "delete": {
+        "operationId": "ApplyFormPublicController_removeResponse",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "accessToken": []
+          }
+        ],
+        "tags": [
+          "ApplyFormPublic"
+        ]
+      }
+    },
+    "/form/{id}/response/file": {
+      "patch": {
+        "operationId": "ApplyFormPublicController_updateResponseFile",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "포트폴리오 파일"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "accessToken": []
+          }
+        ],
+        "tags": [
+          "ApplyFormPublic"
+        ]
+      },
+      "get": {
+        "operationId": "ApplyFormPublicController_getResponseFile",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "accessToken": []
+          }
+        ],
+        "tags": [
+          "ApplyFormPublic"
+        ]
+      },
+      "delete": {
+        "operationId": "ApplyFormPublicController_removeResponseFile",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "accessToken": []
+          }
+        ],
+        "tags": [
+          "ApplyFormPublic"
+        ]
+      }
+    },
+    "/form/{id}/response/apply": {
+      "post": {
+        "operationId": "ApplyFormPublicController_applyForm",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "accessToken": []
+          }
+        ],
+        "tags": [
+          "ApplyFormPublic"
+        ]
+      }
+    },
+    "/form/{id}/accessibility": {
+      "get": {
+        "operationId": "ApplyFormPublicController_isAvailableToAccessForm",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "accessToken": []
+          }
+        ],
+        "tags": [
+          "ApplyFormPublic"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "TAPIE API",
+    "description": "TAPIE System API",
+    "version": "0.0.5",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [
+    {
+      "url": "http://localhost:8877",
+      "description": "Local Development"
+    },
+    {
+      "url": "https://tapie-api-development.vport.dev",
+      "description": "Remote Development"
+    },
+    {
+      "url": "https://api.tapie.kr",
+      "description": "Remote Production"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "accessToken": {
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "type": "http"
+      }
+    },
+    "schemas": {
+      "CreateApplyFormDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "폼 이름"
+          },
+          "startsAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "시작 날짜"
+          },
+          "endsAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "종료 날짜"
+          }
+        },
+        "required": [
+          "name",
+          "startsAt",
+          "endsAt"
+        ]
+      },
+      "UpdateApplyFormDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "폼 이름"
+          },
+          "startsAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "시작 날짜"
+          },
+          "endsAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "종료 날짜"
+          }
+        }
+      },
+      "CreateFormResponseDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "이름"
+          },
+          "unit": {
+            "type": "string",
+            "description": "유닛",
+            "enum": [
+              "DEVELOPER",
+              "DESIGNER",
+              "EXTERNAL"
+            ]
+          },
+          "phoneNumber": {
+            "type": "string",
+            "description": "전화번호"
+          },
+          "introduction": {
+            "type": "string",
+            "description": "자기소개"
+          },
+          "motivation": {
+            "type": "string",
+            "description": "지원동기"
+          },
+          "expectedActivities": {
+            "type": "string",
+            "description": "기대활동"
+          },
+          "reasonToChoose": {
+            "type": "string",
+            "description": "지원이유"
+          }
+        },
+        "required": [
+          "name",
+          "unit",
+          "phoneNumber",
+          "introduction",
+          "motivation",
+          "expectedActivities",
+          "reasonToChoose"
+        ]
+      },
+      "UpdateFormResponseDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "이름"
+          },
+          "unit": {
+            "type": "string",
+            "description": "유닛",
+            "enum": [
+              "DEVELOPER",
+              "DESIGNER",
+              "EXTERNAL"
+            ]
+          },
+          "phoneNumber": {
+            "type": "string",
+            "description": "전화번호"
+          },
+          "introduction": {
+            "type": "string",
+            "description": "자기소개"
+          },
+          "motivation": {
+            "type": "string",
+            "description": "지원동기"
+          },
+          "expectedActivities": {
+            "type": "string",
+            "description": "기대활동"
+          },
+          "reasonToChoose": {
+            "type": "string",
+            "description": "지원이유"
+          }
+        }
+      }
+    }
+  }
+}

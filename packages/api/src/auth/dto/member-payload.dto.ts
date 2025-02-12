@@ -1,5 +1,10 @@
-import { MemberRole } from '@tapie-kr/api-database/client';
-import { IsEmail, IsEnum, IsOptional, IsString } from 'class-validator';
+import { MemberRole } from '@tapie-kr/api-database';
+import {
+  IsEmail,
+  IsEnum,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export class MemberPayloadDto {
   @IsString()

@@ -3,10 +3,10 @@
 
   - The values [ADMIN] on the enum `MemberRole` will be removed. If these variants are still used in the database, this will fail.
   - You are about to drop the column `additionalTitle` on the `Member` table. All the data in the column will be lost.
-  - You are about to drop the column `link` on the `MemberLink` table. All the data in the column will be lost.
+  - You are about to drop the column `link` on the `MemberProfile` table. All the data in the column will be lost.
   - You are about to drop the column `links` on the `Portfolio` table. All the data in the column will be lost.
-  - A unique constraint covering the columns `[label,href]` on the table `MemberLink` will be added. If there are existing duplicate values, this will fail.
-  - Added the required column `href` to the `MemberLink` table without a default value. This is not possible if the table is not empty.
+  - A unique constraint covering the columns `[label,href]` on the table `MemberProfile` will be added. If there are existing duplicate values, this will fail.
+  - Added the required column `href` to the `MemberProfile` table without a default value. This is not possible if the table is not empty.
 
 */
 -- CreateEnum
@@ -27,13 +27,13 @@ COMMIT;
 DROP INDEX "Member_name_additionalTitle_key";
 
 -- DropIndex
-DROP INDEX "MemberLink_label_link_key";
+DROP INDEX "MemberProfile_label_link_key";
 
 -- AlterTable
 ALTER TABLE "Member" DROP COLUMN "additionalTitle";
 
 -- AlterTable
-ALTER TABLE "MemberLink" DROP COLUMN "link",
+ALTER TABLE "MemberProfile" DROP COLUMN "link",
 ADD COLUMN     "href" TEXT NOT NULL;
 
 -- AlterTable
@@ -53,7 +53,7 @@ CREATE TABLE "PortfolioLink" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "MemberLink_label_href_key" ON "MemberLink"("label", "href");
+CREATE UNIQUE INDEX "MemberProfile_label_href_key" ON "MemberProfile"("label", "href");
 
 -- AddForeignKey
 ALTER TABLE "PortfolioLink" ADD CONSTRAINT "PortfolioLink_portfolioUUID_fkey" FOREIGN KEY ("portfolioUUID") REFERENCES "Portfolio"("uuid") ON DELETE CASCADE ON UPDATE CASCADE;

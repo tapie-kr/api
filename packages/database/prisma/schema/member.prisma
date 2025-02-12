@@ -1,6 +1,7 @@
 enum MemberUnit {
   DEVELOPER
   DESIGNER
+  EXTERNAL
 }
 
 enum MemberRole {
@@ -15,6 +16,7 @@ model Member {
   profileAssetUUID                  String?
   representativePortfolioMemberUUID String? @unique
   representativeAwardUUID           String?
+  formResponseUUID                  String?
 
   username    String?    @unique
   googleEmail String     @unique
@@ -23,14 +25,14 @@ model Member {
   unit        MemberUnit
   permissions Int        @default(0)
 
-  profile    Asset?             @relation(fields: [profileAssetUUID], references: [uuid], onDelete: Restrict)
-  applyForm  ApplyForm?
-  links      MemberLink[]
-  portfolio  PortfolioMember[]  @relation(name: "MemberPortfolio")
-  awards     Award[]            @relation(name: "MemberAward")
-  skills     MemberSkill[]
-  history    MemberHistory[]
-  visitStats ProfileVisitStat[]
+  profile      Asset?             @relation(fields: [profileAssetUUID], references: [uuid], onDelete: Restrict)
+  formResponse FormResponse[]
+  links        MemberLink[]
+  portfolio    PortfolioMember[]  @relation(name: "MemberPortfolio")
+  awards       Award[]            @relation(name: "MemberAward")
+  skills       MemberSkill[]
+  history      MemberHistory[]
+  visitStats   ProfileVisitStat[]
 
   representativePortfolioMember PortfolioMember? @relation(name: "MemberRepresentativePortfolioMember", fields: [representativePortfolioMemberUUID], references: [uuid], onDelete: Restrict)
   representativeAward           Award?           @relation(name: "MemberRepresentativeAward", fields: [representativeAwardUUID], references: [uuid], onDelete: Restrict)
