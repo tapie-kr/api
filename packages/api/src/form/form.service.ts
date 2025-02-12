@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateApplyFormDto, UpdateApplyFormDto } from '@/form/dto/form.dto';
 import { CreateFormResponseDto, UpdateFormResponseDto } from '@/form/dto/response.dto';
 import { ApplyFormRepository } from '@/form/repository/form.repository';
@@ -46,19 +46,58 @@ export class ApplyFormService {
 
     return this.formRepository.activateForm(id);
   }
+  async isResponseSubmitted(formId: number, userId: string) {
+    return this.formRepository.isResponseSubmitted(formId, userId);
+  }
   async deactivateForm(id: number) {
     return this.formRepository.deactivateForm(id);
   }
   async createResponse(formId: number, userId: string, data: CreateFormResponseDto) {
+    const isAvailable = await this.formRepository.isAvailableToAccessForm(formId);
+
+    if (!isAvailable) {
+      throw new BadRequestException('지원 가능한 시간이 아닙니다');
+    }
+
     return this.formRepository.createResponse(formId, userId, data);
   }
-  async findResponse(responseId: string, userId: string) {
-    return this.formRepository.findResponse(responseId, userId);
+  async findResponse(formId: number, userId: string) {
+    return this.formRepository.findResponse(formId, userId);
   }
-  async updateResponse(responseId: string, userId: string, data: UpdateFormResponseDto) {
-    return this.formRepository.updateResponse(responseId, userId, data);
+  async updateResponse(formId: number, userId: string, data: UpdateFormResponseDto) {
+    const isAvailable = await this.formRepository.isAvailableToAccessForm(formId);
+
+    if (!isAvailable) {
+      throw new BadRequestException('지원 가능한 시간이 아닙니다');
+    }
+
+    const isSubmitted = await this.formRepository.isResponseSubmitted(formId, userId);
+
+    if (isSubmitted) {
+      throw new BadRequestException('이미 제출한 응답은 수정할 수 없습니다');
+    }
+
+    return this.formRepository.updateResponse(formId, userId, data);
   }
-  async deleteResponse(responseId: string, userId: string) {
-    return this.formRepository.deleteResponse(responseId, userId);
+  async removeResponse(formId: number, userId: string) {
+    const isAvailable = await this.formRepository.isAvailableToAccessForm(formId);
+
+    if (!isAvailable) {
+      throw new BadRequestException('지원 가능한 시간이 아닙니다');
+    }
+
+    return this.formRepository.deleteResponse(formId, userId);
+  }
+  async submitResponse(formId: number, userId: string) {
+    const isAvailable = await this.formRepository.isAvailableToAccessForm(formId);
+
+    if (!isAvailable) {
+      throw new BadRequestException('지원 가능한 시간이 아닙니다');
+    }
+
+    return this.formRepository.submitResponse(formId, userId);
+  }
+  async isAvailableToAccessForm(formId: number) {
+    return this.formRepository.isAvailableToAccessForm(formId);
   }
 }
