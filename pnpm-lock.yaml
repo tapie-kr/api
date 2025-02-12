@@ -85,6 +85,9 @@ importers:
       source-map-support:
         specifier: ^0.5.21
         version: 0.5.21
+      swagger-themes:
+        specifier: ^1.4.3
+        version: 1.4.3
       ts-node:
         specifier: ^10.9.2
         version: 10.9.2(@swc/core@1.10.14)(@types/node@22.13.1)(typescript@5.7.3)
@@ -4535,6 +4538,9 @@ packages:
   supports-preserve-symlinks-flag@1.0.0:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
+
+  swagger-themes@1.4.3:
+    resolution: {integrity: sha512-1G0CqJC1IBbNxkAOyJoREd9hfwXH1R6+3GOFxLhQho2w2i+AbaJqkF4mTJhkce4yhaEMUXvv4KKu1YO/qpe6nQ==}
 
   swagger-ui-dist@5.18.2:
     resolution: {integrity: sha512-J+y4mCw/zXh1FOj5wGJvnAajq6XgHOyywsa9yITmwxIlJbMqITq3gYRZHaeqLVH/eV/HOPphE6NjF+nbSNC5Zw==}
@@ -10088,6 +10094,8 @@ snapshots:
       has-flag: 4.0.0
 
   supports-preserve-symlinks-flag@1.0.0: {}
+
+  swagger-themes@1.4.3: {}
 
   swagger-ui-dist@5.18.2:
     dependencies:
