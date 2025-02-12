@@ -1,4 +1,4 @@
-import { MemberRole } from '@tapie-kr/api-database/client';
+import { MemberRole } from '@tapie-kr/api-database';
 import {
   IsEmail,
   IsEnum,

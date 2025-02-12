@@ -1,4 +1,4 @@
-import { MemberUnit } from '@tapie-kr/api-database/client';
+import { MemberUnit } from '@tapie-kr/api-database';
 import { Type } from 'class-transformer';
 import {
   IsEnum,
