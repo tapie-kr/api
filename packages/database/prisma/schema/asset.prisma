@@ -1,7 +1,8 @@
 model Asset {
   uuid String @id @default(uuid())
 
-  path String
+  filename String?
+  path     String
 
   member                 Member[]
   formResponse           FormResponse[]
