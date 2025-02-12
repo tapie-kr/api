@@ -1,4 +1,4 @@
 export enum FileType {
-  FORM_ASSET = 'form-asset',
+  FORM_PORTFOLIO = 'form-portfolio',
   PROFILE_IMAGE = 'profile-image',
 }
