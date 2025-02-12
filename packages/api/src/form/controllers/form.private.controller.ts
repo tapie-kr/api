@@ -63,11 +63,6 @@ export class ApplyFormPrivateController {
     // 특정 지원 폼의 특정 응답 조회하기
     return this.applyFormService.findOneResponse(responseId);
   }
-  @Get('active')
-  @ApiOperation({ summary: '활성화된 지원 폼 가져오기' })
-  getActiveForm() {
-    return this.applyFormService.getActiveForm();
-  }
   @Post(':id/activate')
   @ApiOperation({ summary: '지원 폼 활성화' })
   activateForm(@Param('id') id: number) {
