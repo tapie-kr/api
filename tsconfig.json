@@ -9,7 +9,7 @@
     "allowSyntheticDefaultImports": true,
     "target": "ESNext",
     "sourceMap": true,
-    "outDir": "./dist",
+    "outDir": "packages/api/dist",
     "baseUrl": "./",
     "incremental": true,
     "skipLibCheck": true,
@@ -26,5 +26,5 @@
     }
   },
   "include": ["packages/api/src/**/*.ts"],
-  "exclude": ["node_modules", "dist", "scripts/**/*.ts"]
+  "exclude": ["node_modules", "packages/api/dist", "scripts/**/*.ts"]
 }
