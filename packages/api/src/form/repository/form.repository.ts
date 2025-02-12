@@ -95,7 +95,7 @@ export class ApplyFormRepository {
   }
   async updateResponse(formId: number, userId: string, data: UpdateFormResponseDto): Promise<FormResponse> {
     try {
-      return await this.prisma.formResponse.update({
+      return this.prisma.formResponse.update({
         where: {
           formId,
           memberUUID: userId,
@@ -112,6 +112,16 @@ export class ApplyFormRepository {
 
       throw new InternalServerErrorException('Failed to update response', error?.message);
     }
+  }
+  async attachFileToResponse(formId: number, userId: string, assetId: string): Promise<FormResponse> {
+    return this.prisma.formResponse.update({
+      where: {
+        formId,
+        memberUUID: userId,
+      },
+      data:    { portfolio: { connect: { uuid: assetId } } },
+      include: { portfolio: true },
+    });
   }
   async deleteResponse(formId: number, userId: string): Promise<FormResponse> {
     return this.prisma.formResponse.delete({ where: {

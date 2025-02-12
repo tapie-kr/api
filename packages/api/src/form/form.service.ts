@@ -1,11 +1,20 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { v4 as uuidv4 } from 'uuid';
+import { AssetService } from '@/asset/asset.service';
+import { FileType } from '@/asset/types/fileType';
 import { CreateApplyFormDto, UpdateApplyFormDto } from '@/form/dto/form.dto';
 import { CreateFormResponseDto, UpdateFormResponseDto } from '@/form/dto/response.dto';
 import { ApplyFormRepository } from '@/form/repository/form.repository';
 
 @Injectable()
 export class ApplyFormService {
-  constructor(private readonly formRepository: ApplyFormRepository) {
+  constructor(private readonly formRepository: ApplyFormRepository,
+    private readonly minioService: AssetService) {
+  }
+  private generateFilename(originalName: string): string {
+    const extension = originalName.split('.').pop();
+
+    return `${uuidv4()}.${extension}`;
   }
   async create(createFormDto: CreateApplyFormDto) {
     return this.formRepository.create(createFormDto);
@@ -78,6 +87,22 @@ export class ApplyFormService {
     }
 
     return this.formRepository.updateResponse(formId, userId, data);
+  }
+  async attachFileToResponse(formId: number, userId: string, file: Express.Multer.File) {
+    const isAvailable = await this.formRepository.isAvailableToAccessForm(formId);
+
+    if (!isAvailable) {
+      throw new BadRequestException('지원 가능한 시간이 아닙니다');
+    }
+
+    const filename = this.generateFilename(file.originalname);
+
+    const asset = await this.minioService.uploadFile(new File([file.buffer], file.originalname),
+      filename,
+      FileType.FORM_PORTFOLIO,
+      file.originalname);
+
+    await this.formRepository.attachFileToResponse(formId, userId, asset.uuid);
   }
   async removeResponse(formId: number, userId: string) {
     const isAvailable = await this.formRepository.isAvailableToAccessForm(formId);
