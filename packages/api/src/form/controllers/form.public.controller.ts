@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
@@ -40,14 +41,24 @@ export class ApplyFormPublicController {
   @Patch(':id/response')
   async updateResponse(@Param('id') id: number, @Req() req: Response & {
     user: Member;
-  }, @Body() _updateResponseDto: UpdateFormResponseDto) {
-    return this.applyFormService.updateResponse(id, req.user.uuid);
+  }, @Body() updateFormResponseDto: UpdateFormResponseDto) {
+    return this.applyFormService.updateResponse(id, req.user.uuid, updateFormResponseDto);
   }
   @Post(':id/response/apply')
   async applyForm(@Param('id') id: number, @Req() req: Response & {
     user: Member;
   }) {
-    return this.applyFormService.createResponse(id, req.user.uuid);
+    return this.applyFormService.submitResponse(id, req.user.uuid);
+  }
+  @Delete(':id/response')
+  async removeResponse(@Param('id') id: number, @Req() req: Response & {
+    user: Member;
+  }) {
+    return this.applyFormService.removeResponse(id, req.user.uuid);
+  }
+  @Get(':id/accessibility')
+  async isAvailableToAccessForm(@Param('id') id: number) {
+    return this.applyFormService.isAvailableToAccessForm(id);
   }
 }
 
