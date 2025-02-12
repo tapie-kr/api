@@ -5,6 +5,7 @@ import { AuthModule } from '@/auth/auth.module';
 import { FormModule } from '@/form/form.module';
 import { MembersModule } from '@/members/module/members.module';
 import { ProfileLinkModule } from '@/members/module/profile-link.module';
+import { MinioModule } from '@/minio/minio.module';
 
 @Module({ imports: [
   ConfigModule.forRoot({
@@ -21,6 +22,9 @@ import { ProfileLinkModule } from '@/members/module/profile-link.module';
 
   // Form
   FormModule,
+
+  // Minio (S3)
+  MinioModule,
 ] })
 export class AppModule {
 }
