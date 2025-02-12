@@ -1,6 +1,7 @@
 enum MemberUnit {
   DEVELOPER
   DESIGNER
+  EXTERNAL
 }
 
 enum MemberRole {
@@ -25,7 +26,7 @@ model Member {
   permissions Int        @default(0)
 
   profile      Asset?             @relation(fields: [profileAssetUUID], references: [uuid], onDelete: Restrict)
-  formResponse FormResponse?      @relation(fields: [formResponseUUID], references: [uuid])
+  formResponse FormResponse?
   links        MemberLink[]
   portfolio    PortfolioMember[]  @relation(name: "MemberPortfolio")
   awards       Award[]            @relation(name: "MemberAward")
