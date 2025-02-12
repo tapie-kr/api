@@ -7,9 +7,12 @@ import {
   Patch,
   Post,
   Req,
+  UploadedFile,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
-import { ApiBearerAuth } from '@nestjs/swagger';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { ApiBearerAuth, ApiBody, ApiConsumes } from '@nestjs/swagger';
 import { Member } from '@tapie-kr/api-database';
 import { Response } from 'express';
 import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
@@ -43,6 +46,22 @@ export class ApplyFormPublicController {
     user: Member;
   }, @Body() updateFormResponseDto: UpdateFormResponseDto) {
     return this.applyFormService.updateResponse(id, req.user.uuid, updateFormResponseDto);
+  }
+  @Patch(':id/response/file')
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({ schema: {
+    type:       'object',
+    properties: { file: {
+      type:        'string',
+      format:      'binary',
+      description: '포트폴리오 파일',
+    } },
+  } })
+  @UseInterceptors(FileInterceptor('file'))
+  async updateResponseFile(@Param('id') id: number, @Req() req: Response & {
+    user: Member;
+  }, @UploadedFile() file: Express.Multer.File) {
+    return this.applyFormService.attachFileToResponse(id, req.user.uuid, file);
   }
   @Post(':id/response/apply')
   async applyForm(@Param('id') id: number, @Req() req: Response & {
