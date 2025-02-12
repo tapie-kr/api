@@ -1,9 +1,9 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { ApplyForm, FormResponse } from '@tapie-kr/api-database';
-import { PrismaUniqueConstraintError, toTypedPrismaError } from '@/common/prisma/prisma.exception';
+import { PrismaRelationViolationError, PrismaUniqueConstraintError, toTypedPrismaError } from '@/common/prisma/prisma.exception';
 import { PrismaService } from '@/common/prisma/prisma.service';
 import { CreateApplyFormDto, UpdateApplyFormDto } from '@/form/dto/form.dto';
-import { CreateFormResponseDto } from '@/form/dto/response.dto';
+import { CreateFormResponseDto, UpdateFormResponseDto } from '@/form/dto/response.dto';
 
 @Injectable()
 export class ApplyFormRepository {
@@ -69,17 +69,75 @@ export class ApplyFormRepository {
           form:   { connect: { id: formId } },
           member: { connect: { uuid: userId } },
         },
+        include: {
+          member: true, form: true,
+        },
+      });
+    } catch (error) {
+      const prismaError = toTypedPrismaError(error);
+
+      if (prismaError instanceof PrismaUniqueConstraintError) {
+        throw new BadRequestException('이미 사용된 전화번호입니다.');
+      }
+
+      if (prismaError instanceof PrismaRelationViolationError) {
+        throw new BadRequestException('이미 폼 응답을 생성했습니다.');
+      }
+
+      throw new InternalServerErrorException('Failed to create response', error?.message);
+    }
+  }
+  async findResponse(formId: number, userId: string): Promise<FormResponse | null> {
+    return this.prisma.formResponse.findFirst({ where: {
+      formId,
+      memberUUID: userId,
+    } });
+  }
+  async updateResponse(formId: number, userId: string, data: UpdateFormResponseDto): Promise<FormResponse> {
+    try {
+      return await this.prisma.formResponse.update({
+        where: {
+          formId,
+          memberUUID: userId,
+        },
+        data,
         include: { member: true },
       });
     } catch (error) {
       const prismaError = toTypedPrismaError(error);
 
       if (prismaError instanceof PrismaUniqueConstraintError) {
-        throw new InternalServerErrorException('이미 사용된 전화번호입니다.');
+        throw new BadRequestException('이미 사용된 전화번호입니다.');
       }
 
-      throw new InternalServerErrorException('Failed to create response', error?.message);
+      throw new InternalServerErrorException('Failed to update response', error?.message);
     }
+  }
+  async deleteResponse(formId: number, userId: string): Promise<FormResponse> {
+    return this.prisma.formResponse.delete({ where: {
+      formId,
+      memberUUID: userId,
+    } });
+  }
+  async isResponseSubmitted(formId: number, userId: string): Promise<boolean> {
+    const data = await this.findResponse(formId, userId);
+
+    return data.submitted;
+  }
+  async submitResponse(formId: number, userId: string): Promise<FormResponse> {
+    return this.prisma.formResponse.update({
+      where: {
+        formId,
+        memberUUID: userId,
+      },
+      data: { submitted: true },
+    });
+  }
+  async isAvailableToAccessForm(formId: number): Promise<boolean> {
+    const form = await this.prisma.applyForm.findUnique({ where: { id: formId } });
+    const now = new Date;
+
+    return now >= form.startsAt && now <= form.endsAt;
   }
 
   /*
