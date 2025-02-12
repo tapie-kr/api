@@ -1,3 +1,4 @@
+import { CacheModule } from '@nestjs/cache-manager';
 import { Module } from '@nestjs/common';
 import { AssetModule } from '@/asset/asset.module';
 import { PrismaService } from '@/common/prisma/prisma.service';
@@ -7,7 +8,7 @@ import { ApplyFormService } from '@/form/form.service';
 import { ApplyFormRepository } from '@/form/repository/form.repository';
 
 @Module({
-  imports:     [AssetModule],
+  imports:     [AssetModule, CacheModule.register()],
   controllers: [ApplyFormPrivateController, ApplyFormPublicController],
   providers:   [
     ApplyFormService,
