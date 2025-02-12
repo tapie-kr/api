@@ -728,11 +728,24 @@
   "info": {
     "title": "TAPIE API",
     "description": "TAPIE System API",
-    "version": "1.0",
+    "version": "0.0.5",
     "contact": {}
   },
   "tags": [],
-  "servers": [],
+  "servers": [
+    {
+      "url": "http://localhost:8877",
+      "description": "Local Development"
+    },
+    {
+      "url": "https://tapie-api-development.vport.dev",
+      "description": "Remote Development"
+    },
+    {
+      "url": "https://api.tapie.kr",
+      "description": "Remote Production"
+    }
+  ],
   "components": {
     "securitySchemes": {
       "accessToken": {
