@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateApplyFormDto, UpdateApplyFormDto } from '@/form/dto/form.dto';
+import { CreateFormResponseDto, UpdateFormResponseDto } from '@/form/dto/response.dto';
 import { ApplyFormRepository } from '@/form/repository/form.repository';
 
 @Injectable()
@@ -13,7 +14,11 @@ export class ApplyFormService {
     return this.formRepository.update(id, updateFormDto);
   }
   async remove(id: number) {
-    return this.formRepository.remove(id);
+    try {
+      await this.formRepository.remove(id);
+    } catch (_error) {
+      throw new NotFoundException('지원 폼을 찾을 수 없습니다');
+    }
   }
   async findAll() {
     return this.formRepository.findAll();
@@ -44,7 +49,16 @@ export class ApplyFormService {
   async deactivateForm(id: number) {
     return this.formRepository.deactivateForm(id);
   }
-  async getActiveFormWithDetails() {
-
+  async createResponse(formId: number, userId: string, data: CreateFormResponseDto) {
+    return this.formRepository.createResponse(formId, userId, data);
+  }
+  async findResponse(responseId: string, userId: string) {
+    return this.formRepository.findResponse(responseId, userId);
+  }
+  async updateResponse(responseId: string, userId: string, data: UpdateFormResponseDto) {
+    return this.formRepository.updateResponse(responseId, userId, data);
+  }
+  async deleteResponse(responseId: string, userId: string) {
+    return this.formRepository.deleteResponse(responseId, userId);
   }
 }
