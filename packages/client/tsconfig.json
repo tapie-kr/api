@@ -1,21 +1,23 @@
 {
   "compilerOptions": {
-    "target": "ES2020",                          // 최신 JS 기능 사용 (필요에 따라 조정)
-    "module": "ESNext",                          // 모듈 시스템 (소비자 빌드 환경에 맞춰 ESNext 또는 CommonJS 선택)
-    "lib": ["DOM", "ES2020"],                     // 브라우저 환경 및 최신 ECMAScript API 지원
-    "allowJs": false,                            // JS 파일 허용 여부 (TS 전용)
-    "declaration": true,                         // 타입 선언 파일(.d.ts) 생성
-    "declarationMap": true,                      // 선언 파일과 원본 소스 간의 매핑 생성
-    "sourceMap": true,                           // 디버깅을 위한 sourcemap 생성
-    "outDir": "./dist",                          // 빌드 결과물이 저장될 디렉토리
-    "rootDir": "./src",                          // 소스 파일의 루트 디렉토리
-    "strict": true,                              // 엄격한 타입 검사 옵션 활성화
-    "moduleResolution": "node",                  // Node.js 스타일 모듈 해석
-    "esModuleInterop": true,                     // CommonJS 모듈과의 호환성 지원
-    "skipLibCheck": true,                        // 라이브러리 타입 검사 건너뛰기 (빌드 속도 개선)
-    "forceConsistentCasingInFileNames": true,    // 파일명 대소문자 일관성 강제
-    "isolatedModules": true,                     // 각 파일을 독립 모듈로 취급 (babel과의 호환성)
-    "resolveJsonModule": true                    // JSON 파일 import 허용
+    "target": "ES2020",
+    "module": "ESNext",
+    "lib": ["DOM", "ES2020"],
+    "jsx": "react-jsx",
+    "allowJs": false,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "strict": true,
+    "moduleResolution": "bundler",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "resolveJsonModule": true,
+    "types": ["node", "react", "react-dom"]
   },
   "include": ["src"],
   "exclude": ["node_modules", "dist", "tests"]
