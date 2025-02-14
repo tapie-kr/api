@@ -1,0 +1,30 @@
+{
+  "name": "@tapie-kr/api-client",
+  "version": "0.0.1",
+  "description": "Type-safe API client for TAPIE API",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tapie-kr/api.git"
+  },
+  "author": {
+    "name": "Taeyeong Kim",
+    "email": "taeyeong.kim@algorix.io",
+    "url": "https://github.com/cottons-kr"
+  },
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "@tanstack/react-query": "^5.66.0",
+    "@types/node": "^22.13.0",
+    "axios": "^1.7.9",
+    "zod": "^3.24.2"
+  },
+  "peerDependencies": {
+    "@tanstack/react-query": "^5.66.0",
+    "axios": "^1.7.9",
+    "zod": "^3.24.2"
+  }
+}
