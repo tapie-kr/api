@@ -8,10 +8,10 @@ interface TapieApiProviderProps {
   initialIsOpen?: boolean;
 }
 
-const queryClient = new QueryClient();
-
 export default function TapieApiProvider(props: TapieApiProviderProps) {
   const { devtools = false, initialIsOpen = false } = props;
+
+  const queryClient = new QueryClient();
 
   return (
     <QueryClientProvider client={queryClient}>
