@@ -18,11 +18,11 @@ export class ApplyFormDto {
   endsAt: Date;
 }
 
-export type CreateApplyFormType = Omit<ApplyFormDto, 'id'>;
-export type UpdateApplyFormType = Partial<CreateApplyFormDto>;
+export type CreateFormType = Omit<ApplyFormDto, 'id'>;
+export type UpdateFormType = Partial<CreateFormDto>;
 
-export class CreateApplyFormDto extends OmitType(ApplyFormDto, ['id'] as const) {
+export class CreateFormDto extends OmitType(ApplyFormDto, ['id'] as const) {
 }
 
-export class UpdateApplyFormDto extends PartialType(CreateApplyFormDto) {
+export class UpdateFormDto extends PartialType(CreateFormDto) {
 }

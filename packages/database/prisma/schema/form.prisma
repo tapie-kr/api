@@ -11,10 +11,12 @@ model ApplyForm {
 model FormResponse {
   uuid               String  @id @default(uuid())
   formId             Int
-  memberUUID         String
+  memberUUID         String?
   portfolioAssetUUID String? @unique
 
   name               String
+  studentId          String
+  googleEmail        String
   unit               MemberUnit
   phoneNumber        String     @unique
   introduction       String
@@ -23,7 +25,7 @@ model FormResponse {
   reasonToChoose     String
 
   form      ApplyForm @relation(fields: [formId], references: [id])
-  member    Member    @relation(fields: [memberUUID], references: [uuid], onDelete: Restrict)
+  member    Member?   @relation(fields: [memberUUID], references: [uuid], onDelete: Restrict)
   portfolio Asset?    @relation(fields: [portfolioAssetUUID], references: [uuid], onDelete: Restrict)
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt

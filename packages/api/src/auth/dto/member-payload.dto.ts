@@ -1,29 +1,22 @@
-import { MemberRole } from '@tapie-kr/api-database';
-import {
-  IsEmail,
-  IsEnum,
-  IsOptional,
-  IsString,
-} from 'class-validator';
+import { IsEmail, IsString } from 'class-validator';
+
+export enum TokenType {
+  ACCESS_TOKEN = 'accessToken',
+  REFRESH_TOKEN = 'refreshToken',
+}
 
 export class MemberPayloadDto {
   @IsString()
-  public username: string;
+  public type: TokenType;
+
+  @IsString()
+  public id?: string;
 
   @IsEmail()
-  public googleEmail: string;
-
-  @IsEnum(MemberRole)
-  public role: MemberRole;
+  public email: string;
 
   @IsString()
   public name: string;
-
-  @IsOptional()
-  @IsString()
-  public unit?: string;
-
-  @IsOptional()
-  @IsString()
-  public additionalTitle?: string;
 }
+
+export type MemberGuestPayload = Omit<MemberPayloadDto, 'id'>;
