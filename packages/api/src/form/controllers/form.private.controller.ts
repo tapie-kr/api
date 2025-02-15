@@ -10,15 +10,15 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 import { RequirePermissions } from '@/auth/decorators/permission.decorator';
-import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
 import { PermissionGuard } from '@/auth/guards/permission.guard';
+import { UserAuthGuard } from '@/auth/guards/user-auth.guard';
 import { Permissions as P } from '@/common/utils/permissions';
 import { CreateApplyFormDto, UpdateApplyFormDto } from '@/form/dto/form.dto';
 import { ApplyFormService } from '@/form/form.service';
 
 @Controller('form/admin')
 @RequirePermissions(P.FORM_MANAGE)
-@UseGuards(JwtAuthGuard, PermissionGuard)
+@UseGuards(UserAuthGuard, PermissionGuard)
 @ApiBearerAuth('accessToken')
 export class ApplyFormPrivateController {
   constructor(private readonly applyFormService: ApplyFormService) {
