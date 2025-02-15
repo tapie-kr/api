@@ -6,6 +6,7 @@ import { ApplyFormPrivateController } from '@/form/controllers/form.private.cont
 import { ApplyFormPublicController } from '@/form/controllers/form.public.controller';
 import { ApplyFormService } from '@/form/form.service';
 import { ApplyFormRepository } from '@/form/repository/form.repository';
+import { MembersService } from '@/members/service/members.service';
 
 @Module({
   imports:     [AssetModule, CacheModule.register()],
@@ -14,6 +15,7 @@ import { ApplyFormRepository } from '@/form/repository/form.repository';
     ApplyFormService,
     ApplyFormRepository,
     PrismaService,
+    MembersService,
   ],
   exports: [ApplyFormService, ApplyFormRepository],
 })
