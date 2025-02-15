@@ -11,7 +11,7 @@ type FormResponseWithPortfolio = FormResponse & {
 };
 
 @Injectable()
-export class ApplyFormRepository {
+export class FormRepository {
   constructor(private readonly prisma: PrismaService) {
   }
   separateName(input: string): {

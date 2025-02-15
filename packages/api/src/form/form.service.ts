@@ -4,13 +4,13 @@ import { AssetService } from '@/asset/asset.service';
 import { FileType } from '@/asset/types/fileType';
 import { MemberGuestPayload } from '@/auth/dto/member-payload.dto';
 import { decodeFileNameKorean } from '@/common/utils/string';
-import { CreateApplyFormDto, UpdateApplyFormDto } from '@/form/dto/form.dto';
+import { CreateFormDto, UpdateFormDto } from '@/form/dto/form.dto';
 import { CreateFormResponseDto, UpdateFormResponseDto } from '@/form/dto/response.dto';
-import { ApplyFormRepository } from '@/form/repository/form.repository';
+import { FormRepository } from '@/form/repository/form.repository';
 
 @Injectable()
-export class ApplyFormService {
-  constructor(private readonly formRepository: ApplyFormRepository,
+export class FormService {
+  constructor(private readonly formRepository: FormRepository,
     private readonly minioService: AssetService) {
   }
   private generateFilename(originalName: string): string {
@@ -18,10 +18,10 @@ export class ApplyFormService {
 
     return `${uuidv4()}.${extension}`;
   }
-  async create(createFormDto: CreateApplyFormDto) {
+  async create(createFormDto: CreateFormDto) {
     return this.formRepository.create(createFormDto);
   }
-  async update(id: number, updateFormDto: UpdateApplyFormDto) {
+  async update(id: number, updateFormDto: UpdateFormDto) {
     return this.formRepository.update(id, updateFormDto);
   }
   async remove(id: number) {
