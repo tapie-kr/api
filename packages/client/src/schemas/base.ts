@@ -7,3 +7,7 @@ export const baseResponseSchema = <T extends z.ZodTypeAny>(dataSchema: T) =>
     responseAt: z.string().datetime(),
     data: dataSchema,
   });
+
+export type BaseResponse<T extends z.ZodTypeAny> = z.infer<
+  ReturnType<typeof baseResponseSchema<T>>
+>;
