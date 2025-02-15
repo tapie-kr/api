@@ -6,7 +6,7 @@ import { AxiosRequestConfig } from 'axios';
 import { apiRequest } from '../request';
 
 export function useQuery<T>(
-  queryKey: string[],
+  queryKey: any | any[],
   config: AxiosRequestConfig,
   options?: UseQueryOptions<T>,
 ) {
