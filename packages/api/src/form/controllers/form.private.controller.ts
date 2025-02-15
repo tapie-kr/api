@@ -10,29 +10,29 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 import { RequirePermissions } from '@/auth/decorators/permission.decorator';
-import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
 import { PermissionGuard } from '@/auth/guards/permission.guard';
+import { UserAuthGuard } from '@/auth/guards/user-auth.guard';
 import { Permissions as P } from '@/common/utils/permissions';
-import { CreateApplyFormDto, UpdateApplyFormDto } from '@/form/dto/form.dto';
-import { ApplyFormService } from '@/form/form.service';
+import { CreateFormDto, UpdateFormDto } from '@/form/dto/form.dto';
+import { FormService } from '@/form/form.service';
 
 @Controller('form/admin')
 @RequirePermissions(P.FORM_MANAGE)
-@UseGuards(JwtAuthGuard, PermissionGuard)
+@UseGuards(UserAuthGuard, PermissionGuard)
 @ApiBearerAuth('accessToken')
-export class ApplyFormPrivateController {
-  constructor(private readonly applyFormService: ApplyFormService) {
+export class FormPrivateController {
+  constructor(private readonly applyFormService: FormService) {
   }
   @Post()
   @ApiOperation({
     summary: '지원 폼 생성', description: '지원 폼을 생성합니다. (응답 생성 X)',
   })
-  create(@Body() createFormDto: CreateApplyFormDto) {
+  create(@Body() createFormDto: CreateFormDto) {
     return this.applyFormService.create(createFormDto);
   }
   @Patch(':id')
   @ApiOperation({ summary: '특정 지원 폼 수정' })
-  update(@Param('id') id: number, @Body() updateFormDto: UpdateApplyFormDto) {
+  update(@Param('id') id: number, @Body() updateFormDto: UpdateFormDto) {
     return this.applyFormService.update(id, updateFormDto);
   }
   @Delete(':id')

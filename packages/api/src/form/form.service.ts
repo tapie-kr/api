@@ -2,14 +2,15 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { v4 as uuidv4 } from 'uuid';
 import { AssetService } from '@/asset/asset.service';
 import { FileType } from '@/asset/types/fileType';
+import { MemberGuestPayload } from '@/auth/dto/member-payload.dto';
 import { decodeFileNameKorean } from '@/common/utils/string';
-import { CreateApplyFormDto, UpdateApplyFormDto } from '@/form/dto/form.dto';
+import { CreateFormDto, UpdateFormDto } from '@/form/dto/form.dto';
 import { CreateFormResponseDto, UpdateFormResponseDto } from '@/form/dto/response.dto';
-import { ApplyFormRepository } from '@/form/repository/form.repository';
+import { FormRepository } from '@/form/repository/form.repository';
 
 @Injectable()
-export class ApplyFormService {
-  constructor(private readonly formRepository: ApplyFormRepository,
+export class FormService {
+  constructor(private readonly formRepository: FormRepository,
     private readonly minioService: AssetService) {
   }
   private generateFilename(originalName: string): string {
@@ -17,10 +18,10 @@ export class ApplyFormService {
 
     return `${uuidv4()}.${extension}`;
   }
-  async create(createFormDto: CreateApplyFormDto) {
+  async create(createFormDto: CreateFormDto) {
     return this.formRepository.create(createFormDto);
   }
-  async update(id: number, updateFormDto: UpdateApplyFormDto) {
+  async update(id: number, updateFormDto: UpdateFormDto) {
     return this.formRepository.update(id, updateFormDto);
   }
   async remove(id: number) {
@@ -52,47 +53,53 @@ export class ApplyFormService {
   async activateForm(id: number) {
     return this.formRepository.activateForm(id);
   }
-  async isResponseSubmitted(formId: number, userId: string) {
-    return this.formRepository.isResponseSubmitted(formId, userId);
+  async isResponseSubmitted(formId: number, user: MemberGuestPayload) {
+    return this.formRepository.isResponseSubmitted(formId, user);
   }
   async deactivateForm(id: number) {
     return this.formRepository.deactivateForm(id);
   }
-  async createResponse(formId: number, userId: string, data: CreateFormResponseDto) {
+  async createResponse(formId: number, user: MemberGuestPayload, data: CreateFormResponseDto) {
     const isAvailable = await this.formRepository.isAvailableToAccessForm(formId);
 
     if (!isAvailable) {
       throw new BadRequestException('지원 가능한 시간이 아닙니다');
     }
 
-    return this.formRepository.createResponse(formId, userId, data);
+    const response =  await this.findResponse(formId, user);
+
+    if (response) {
+      throw new BadRequestException('이미 응답을 제출했습니다.');
+    }
+
+    return this.formRepository.createResponse(formId, user, data);
   }
-  async findResponse(formId: number, userId: string) {
-    return this.formRepository.findResponse(formId, userId);
+  async findResponse(formId: number, user: MemberGuestPayload) {
+    return this.formRepository.findResponse(formId, user.email);
   }
-  async updateResponse(formId: number, userId: string, data: UpdateFormResponseDto) {
+  async updateResponse(formId: number, user: MemberGuestPayload, data: UpdateFormResponseDto) {
     const isAvailable = await this.formRepository.isAvailableToAccessForm(formId);
 
     if (!isAvailable) {
       throw new BadRequestException('지원 가능한 시간이 아닙니다');
     }
 
-    const isSubmitted = await this.formRepository.isResponseSubmitted(formId, userId);
+    const isSubmitted = await this.formRepository.isResponseSubmitted(formId, user);
 
     if (isSubmitted) {
       throw new BadRequestException('이미 제출한 응답은 수정할 수 없습니다');
     }
 
-    return this.formRepository.updateResponse(formId, userId, data);
+    return this.formRepository.updateResponse(formId, user, data);
   }
-  async attachFileToResponse(formId: number, userId: string, file: Express.Multer.File) {
+  async attachFileToResponse(formId: number, user: MemberGuestPayload, file: Express.Multer.File) {
     const isAvailable = await this.formRepository.isAvailableToAccessForm(formId);
 
     if (!isAvailable) {
       throw new BadRequestException('지원 가능한 시간이 아닙니다');
     }
 
-    const isSubmitted = await this.formRepository.isResponseSubmitted(formId, userId);
+    const isSubmitted = await this.formRepository.isResponseSubmitted(formId, user);
 
     if (isSubmitted) {
       throw new BadRequestException('이미 제출한 응답은 수정할 수 없습니다');
@@ -106,10 +113,10 @@ export class ApplyFormService {
       FileType.FORM_PORTFOLIO,
       originalFileName);
 
-    await this.formRepository.attachFileToResponse(formId, userId, asset.uuid);
+    await this.formRepository.attachFileToResponse(formId, user, asset.uuid);
   }
-  async getFileFromResponse(formId: number, userId: string) {
-    const { portfolio } = await this.formRepository.findResponse(formId, userId);
+  async getFileFromResponse(formId: number, user: MemberGuestPayload) {
+    const { portfolio } = await this.formRepository.findResponse(formId, user.email);
 
     if (!portfolio) {
       throw new NotFoundException('포트폴리오 파일을 찾을 수 없습니다');
@@ -119,56 +126,56 @@ export class ApplyFormService {
 
     return { presignedUrl };
   }
-  async removeFileFromResponse(formId: number, userId: string) {
+  async removeFileFromResponse(formId: number, user: MemberGuestPayload) {
     const isAvailable = await this.formRepository.isAvailableToAccessForm(formId);
 
     if (!isAvailable) {
       throw new BadRequestException('지원 가능한 시간이 아닙니다');
     }
 
-    const isSubmitted = await this.formRepository.isResponseSubmitted(formId, userId);
+    const isSubmitted = await this.formRepository.isResponseSubmitted(formId, user);
 
     if (isSubmitted) {
       throw new BadRequestException('이미 제출한 응답은 수정할 수 없습니다');
     }
 
-    const { portfolio } = await this.formRepository.findResponse(formId, userId);
+    const { portfolio } = await this.formRepository.findResponse(formId, user.email);
 
     if (!portfolio) {
       throw new NotFoundException('포트폴리오 파일을 찾을 수 없습니다');
     }
 
-    return this.formRepository.removeFileFromResponse(formId, userId);
+    return this.formRepository.removeFileFromResponse(formId, user);
   }
-  async removeResponse(formId: number, userId: string) {
+  async removeResponse(formId: number, user: MemberGuestPayload) {
     const isAvailable = await this.formRepository.isAvailableToAccessForm(formId);
 
     if (!isAvailable) {
       throw new BadRequestException('지원 가능한 시간이 아닙니다');
     }
 
-    const isSubmitted = await this.formRepository.isResponseSubmitted(formId, userId);
+    const isSubmitted = await this.formRepository.isResponseSubmitted(formId, user);
 
     if (isSubmitted) {
       throw new BadRequestException('이미 제출한 응답은 수정할 수 없습니다');
     }
 
-    return this.formRepository.deleteResponse(formId, userId);
+    return this.formRepository.deleteResponse(formId, user);
   }
-  async submitResponse(formId: number, userId: string) {
+  async submitResponse(formId: number, user: MemberGuestPayload) {
     const isAvailable = await this.formRepository.isAvailableToAccessForm(formId);
 
     if (!isAvailable) {
       throw new BadRequestException('지원 가능한 시간이 아닙니다');
     }
 
-    const isSubmitted = await this.formRepository.isResponseSubmitted(formId, userId);
+    const isSubmitted = await this.formRepository.isResponseSubmitted(formId, user);
 
     if (isSubmitted) {
       throw new BadRequestException('이미 응답을 제출했습니다.');
     }
 
-    return this.formRepository.submitResponse(formId, userId);
+    return this.formRepository.submitResponse(formId, user);
   }
   async isAvailableToAccessForm(formId: number) {
     return this.formRepository.isAvailableToAccessForm(formId);

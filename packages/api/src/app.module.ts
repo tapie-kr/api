@@ -11,11 +11,11 @@ import { MembersModule } from '@/members/members.module';
     isGlobal:    true,
     envFilePath: ['.env', '.env.development'],
   }),
+  MembersModule,
   CacheModule.register({ isGlobal: true }),
   AuthModule,
 
   // Members
-  MembersModule,
 
   // Form
   FormModule,

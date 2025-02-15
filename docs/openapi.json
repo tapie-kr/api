@@ -79,7 +79,7 @@
         },
         "security": [
           {
-            "accessToken": []
+            "AccessToken": []
           }
         ],
         "tags": [
@@ -87,98 +87,17 @@
         ]
       }
     },
-    "/profile/link": {
-      "post": {
-        "operationId": "ProfileLinkController_create",
-        "parameters": [],
-        "responses": {
-          "201": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "ProfileLink"
-        ]
-      }
-    },
-    "/profile/link/{memberId}": {
-      "get": {
-        "operationId": "ProfileLinkController_findByMemberId",
-        "parameters": [
-          {
-            "name": "memberId",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "ProfileLink"
-        ]
-      }
-    },
-    "/profile/link/{id}": {
-      "put": {
-        "operationId": "ProfileLinkController_update",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "number"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "ProfileLink"
-        ]
-      },
-      "delete": {
-        "operationId": "ProfileLinkController_delete",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "number"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "ProfileLink"
-        ]
-      }
-    },
     "/form/admin": {
       "post": {
         "description": "지원 폼을 생성합니다. (응답 생성 X)",
-        "operationId": "ApplyFormPrivateController_create",
+        "operationId": "FormPrivateController_create",
         "parameters": [],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateApplyFormDto"
+                "$ref": "#/components/schemas/CreateFormDto"
               }
             }
           }
@@ -195,11 +114,11 @@
         ],
         "summary": "지원 폼 생성",
         "tags": [
-          "ApplyFormPrivate"
+          "FormPrivate"
         ]
       },
       "get": {
-        "operationId": "ApplyFormPrivateController_findAll",
+        "operationId": "FormPrivateController_findAll",
         "parameters": [],
         "responses": {
           "200": {
@@ -213,13 +132,13 @@
         ],
         "summary": "지원 폼 모두 가져오기",
         "tags": [
-          "ApplyFormPrivate"
+          "FormPrivate"
         ]
       }
     },
     "/form/admin/{id}": {
       "patch": {
-        "operationId": "ApplyFormPrivateController_update",
+        "operationId": "FormPrivateController_update",
         "parameters": [
           {
             "name": "id",
@@ -235,7 +154,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateApplyFormDto"
+                "$ref": "#/components/schemas/UpdateFormDto"
               }
             }
           }
@@ -252,11 +171,11 @@
         ],
         "summary": "특정 지원 폼 수정",
         "tags": [
-          "ApplyFormPrivate"
+          "FormPrivate"
         ]
       },
       "delete": {
-        "operationId": "ApplyFormPrivateController_remove",
+        "operationId": "FormPrivateController_remove",
         "parameters": [
           {
             "name": "id",
@@ -279,11 +198,11 @@
         ],
         "summary": "지원 폼 삭제",
         "tags": [
-          "ApplyFormPrivate"
+          "FormPrivate"
         ]
       },
       "get": {
-        "operationId": "ApplyFormPrivateController_findOne",
+        "operationId": "FormPrivateController_findOne",
         "parameters": [
           {
             "name": "id",
@@ -306,13 +225,13 @@
         ],
         "summary": "지원 폼 데이터 가져오기",
         "tags": [
-          "ApplyFormPrivate"
+          "FormPrivate"
         ]
       }
     },
     "/form/admin/{id}/responses": {
       "get": {
-        "operationId": "ApplyFormPrivateController_findAllResponses",
+        "operationId": "FormPrivateController_findAllResponses",
         "parameters": [
           {
             "name": "id",
@@ -335,13 +254,13 @@
         ],
         "summary": "특정 지원 폼의 모든 응답 가져오기",
         "tags": [
-          "ApplyFormPrivate"
+          "FormPrivate"
         ]
       }
     },
     "/form/admin/responses/{responseId}": {
       "get": {
-        "operationId": "ApplyFormPrivateController_findOneResponse",
+        "operationId": "FormPrivateController_findOneResponse",
         "parameters": [
           {
             "name": "responseId",
@@ -364,13 +283,13 @@
         ],
         "summary": "특정 지원 폼의 특정 응답 가져오기",
         "tags": [
-          "ApplyFormPrivate"
+          "FormPrivate"
         ]
       }
     },
     "/form/admin/{id}/activate": {
       "post": {
-        "operationId": "ApplyFormPrivateController_activateForm",
+        "operationId": "FormPrivateController_activateForm",
         "parameters": [
           {
             "name": "id",
@@ -393,13 +312,13 @@
         ],
         "summary": "지원 폼 활성화",
         "tags": [
-          "ApplyFormPrivate"
+          "FormPrivate"
         ]
       }
     },
     "/form/admin/{id}/deactivate": {
       "post": {
-        "operationId": "ApplyFormPrivateController_deactivateForm",
+        "operationId": "FormPrivateController_deactivateForm",
         "parameters": [
           {
             "name": "id",
@@ -422,13 +341,13 @@
         ],
         "summary": "지원 폼 비활성화",
         "tags": [
-          "ApplyFormPrivate"
+          "FormPrivate"
         ]
       }
     },
     "/form": {
       "get": {
-        "operationId": "ApplyFormPublicController_findActiveForm",
+        "operationId": "FormPublicController_findActiveForm",
         "parameters": [],
         "responses": {
           "200": {
@@ -440,14 +359,15 @@
             "accessToken": []
           }
         ],
+        "summary": "활성화 된 폼 찾기",
         "tags": [
-          "ApplyFormPublic"
+          "FormPublic"
         ]
       }
     },
     "/form/{id}/response": {
       "post": {
-        "operationId": "ApplyFormPublicController_createResponse",
+        "operationId": "FormPublicController_createResponse",
         "parameters": [
           {
             "name": "id",
@@ -478,12 +398,13 @@
             "accessToken": []
           }
         ],
+        "summary": "새 응답 만들기",
         "tags": [
-          "ApplyFormPublic"
+          "FormPublic"
         ]
       },
       "get": {
-        "operationId": "ApplyFormPublicController_findResponse",
+        "operationId": "FormPublicController_findResponse",
         "parameters": [
           {
             "name": "id",
@@ -504,12 +425,13 @@
             "accessToken": []
           }
         ],
+        "summary": "내 응답 가져오기",
         "tags": [
-          "ApplyFormPublic"
+          "FormPublic"
         ]
       },
       "patch": {
-        "operationId": "ApplyFormPublicController_updateResponse",
+        "operationId": "FormPublicController_updateResponse",
         "parameters": [
           {
             "name": "id",
@@ -540,12 +462,13 @@
             "accessToken": []
           }
         ],
+        "summary": "내 응답 수정하기",
         "tags": [
-          "ApplyFormPublic"
+          "FormPublic"
         ]
       },
       "delete": {
-        "operationId": "ApplyFormPublicController_removeResponse",
+        "operationId": "FormPublicController_removeResponse",
         "parameters": [
           {
             "name": "id",
@@ -566,14 +489,15 @@
             "accessToken": []
           }
         ],
+        "summary": "내 응답 삭제하기",
         "tags": [
-          "ApplyFormPublic"
+          "FormPublic"
         ]
       }
     },
     "/form/{id}/response/file": {
       "patch": {
-        "operationId": "ApplyFormPublicController_updateResponseFile",
+        "operationId": "FormPublicController_updateResponseFile",
         "parameters": [
           {
             "name": "id",
@@ -611,12 +535,13 @@
             "accessToken": []
           }
         ],
+        "summary": "내 응답에 파일 첨부하기",
         "tags": [
-          "ApplyFormPublic"
+          "FormPublic"
         ]
       },
       "get": {
-        "operationId": "ApplyFormPublicController_getResponseFile",
+        "operationId": "FormPublicController_getResponseFile",
         "parameters": [
           {
             "name": "id",
@@ -637,12 +562,13 @@
             "accessToken": []
           }
         ],
+        "summary": "내 응답에 있는 파일 가져오기",
         "tags": [
-          "ApplyFormPublic"
+          "FormPublic"
         ]
       },
       "delete": {
-        "operationId": "ApplyFormPublicController_removeResponseFile",
+        "operationId": "FormPublicController_removeResponseFile",
         "parameters": [
           {
             "name": "id",
@@ -663,14 +589,16 @@
             "accessToken": []
           }
         ],
+        "summary": "내 응답에 있는 파일 삭제하기",
         "tags": [
-          "ApplyFormPublic"
+          "FormPublic"
         ]
       }
     },
     "/form/{id}/response/apply": {
       "post": {
-        "operationId": "ApplyFormPublicController_applyForm",
+        "description": "응답을 제출하면 수정할 수 없음 (GET 요청만 허용)",
+        "operationId": "FormPublicController_applyForm",
         "parameters": [
           {
             "name": "id",
@@ -691,14 +619,15 @@
             "accessToken": []
           }
         ],
+        "summary": "내 응답 제출하기",
         "tags": [
-          "ApplyFormPublic"
+          "FormPublic"
         ]
       }
     },
     "/form/{id}/accessibility": {
       "get": {
-        "operationId": "ApplyFormPublicController_isAvailableToAccessForm",
+        "operationId": "FormPublicController_isAvailableToAccessForm",
         "parameters": [
           {
             "name": "id",
@@ -719,8 +648,9 @@
             "accessToken": []
           }
         ],
+        "summary": "해당 폼 접근 가능 여부",
         "tags": [
-          "ApplyFormPublic"
+          "FormPublic"
         ]
       }
     }
@@ -728,7 +658,7 @@
   "info": {
     "title": "TAPIE API",
     "description": "TAPIE System API",
-    "version": "0.0.5",
+    "version": "0.0.6",
     "contact": {}
   },
   "tags": [],
@@ -755,7 +685,7 @@
       }
     },
     "schemas": {
-      "CreateApplyFormDto": {
+      "CreateFormDto": {
         "type": "object",
         "properties": {
           "name": {
@@ -779,7 +709,7 @@
           "endsAt"
         ]
       },
-      "UpdateApplyFormDto": {
+      "UpdateFormDto": {
         "type": "object",
         "properties": {
           "name": {

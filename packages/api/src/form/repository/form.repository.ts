@@ -1,8 +1,9 @@
 import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { ApplyForm, Asset, FormResponse } from '@tapie-kr/api-database';
-import { PrismaRelationViolationError, PrismaUniqueConstraintError, toTypedPrismaError } from '@/common/prisma/prisma.exception';
+import { MemberGuestPayload } from '@/auth/dto/member-payload.dto';
+import { PrismaUniqueConstraintError, toTypedPrismaError } from '@/common/prisma/prisma.exception';
 import { PrismaService } from '@/common/prisma/prisma.service';
-import { CreateApplyFormDto, UpdateApplyFormDto } from '@/form/dto/form.dto';
+import { CreateFormDto, UpdateFormDto } from '@/form/dto/form.dto';
 import { CreateFormResponseDto, UpdateFormResponseDto } from '@/form/dto/response.dto';
 
 type FormResponseWithPortfolio = FormResponse & {
@@ -10,17 +11,24 @@ type FormResponseWithPortfolio = FormResponse & {
 };
 
 @Injectable()
-export class ApplyFormRepository {
+export class FormRepository {
   constructor(private readonly prisma: PrismaService) {
   }
-  async create(data: CreateApplyFormDto): Promise<ApplyForm> {
+  separateName(input: string): {
+    studentId: string; name: string;
+  } {
+    return {
+      studentId: input.slice(0, 5), name: input.slice(5),
+    };
+  }
+  async create(data: CreateFormDto): Promise<ApplyForm> {
     try {
       return await this.prisma.applyForm.create({ data });
     } catch (error) {
       throw new InternalServerErrorException('Failed to create form', error?.message);
     }
   }
-  async update(id: number, data: UpdateApplyFormDto): Promise<ApplyForm> {
+  async update(id: number, data: UpdateFormDto): Promise<ApplyForm> {
     try {
       return await this.prisma.applyForm.update({
         where: { id },
@@ -67,17 +75,19 @@ export class ApplyFormRepository {
       data:  { active: false },
     });
   }
-  async createResponse(formId: number, userId: string, data: CreateFormResponseDto): Promise<FormResponse> {
+  async createResponse(formId: number, user: MemberGuestPayload, data: CreateFormResponseDto): Promise<FormResponse> {
     try {
+      const { studentId, name } = this.separateName(user.name);
+
       return await this.prisma.formResponse.create({
         data: {
           ...data,
-          form:   { connect: { id: formId } },
-          member: { connect: { uuid: userId } },
+          name:        name,
+          studentId:   studentId.toString(),
+          googleEmail: user.email,
+          form:        { connect: { id: formId } },
         },
-        include: {
-          member: true, form: true,
-        },
+        include: { form: true },
       });
     } catch (error) {
       const prismaError = toTypedPrismaError(error);
@@ -86,30 +96,25 @@ export class ApplyFormRepository {
         throw new BadRequestException('이미 사용된 전화번호입니다.');
       }
 
-      if (prismaError instanceof PrismaRelationViolationError) {
-        throw new BadRequestException('이미 폼 응답을 생성했습니다.');
-      }
-
       throw new InternalServerErrorException('Failed to create response', error?.message);
     }
   }
-  async findResponse(formId: number, userId: string): Promise<FormResponseWithPortfolio | null> {
+  async findResponse(formId: number, email: string): Promise<FormResponseWithPortfolio | null> {
     return this.prisma.formResponse.findFirst({
       where: {
         formId,
-        memberUUID: userId,
+        googleEmail: email,
       },
       include: { portfolio: true },
     });
   }
-  async updateResponse(formId: number, userId: string, data: UpdateFormResponseDto): Promise<FormResponse> {
-    const { uuid } = await this.findResponse(formId, userId);
+  async updateResponse(formId: number, user: MemberGuestPayload, data: UpdateFormResponseDto): Promise<FormResponse> {
+    const { uuid } = await this.findResponse(formId, user.email);
 
     try {
       return this.prisma.formResponse.update({
-        where:   { uuid },
+        where: { uuid },
         data,
-        include: { member: true },
       });
     } catch (error) {
       const prismaError = toTypedPrismaError(error);
@@ -121,34 +126,34 @@ export class ApplyFormRepository {
       throw new InternalServerErrorException('Failed to update response', error?.message);
     }
   }
-  async attachFileToResponse(formId: number, userId: string, assetId: string): Promise<FormResponse> {
-    const { uuid } = await this.findResponse(formId, userId);
+  async attachFileToResponse(formId: number, user: MemberGuestPayload, assetId: string): Promise<FormResponse> {
+    const { uuid } = await this.findResponse(formId, user.email);
 
     return this.prisma.formResponse.update({
       where: { uuid },
       data:  { portfolio: { connect: { uuid: assetId } } },
     });
   }
-  async removeFileFromResponse(formId: number, userId: string): Promise<FormResponse> {
-    const { uuid } = await this.findResponse(formId, userId);
+  async removeFileFromResponse(formId: number, user: MemberGuestPayload): Promise<FormResponse> {
+    const { uuid } = await this.findResponse(formId, user.email);
 
     return this.prisma.formResponse.update({
       where: { uuid },
       data:  { portfolio: { disconnect: true } },
     });
   }
-  async deleteResponse(formId: number, userId: string): Promise<FormResponse> {
-    const { uuid } = await this.findResponse(formId, userId);
+  async deleteResponse(formId: number, user: MemberGuestPayload): Promise<FormResponse> {
+    const { uuid } = await this.findResponse(formId, user.email);
 
     return this.prisma.formResponse.delete({ where: { uuid } });
   }
-  async isResponseSubmitted(formId: number, userId: string): Promise<boolean> {
-    const data = await this.findResponse(formId, userId);
+  async isResponseSubmitted(formId: number, user: MemberGuestPayload): Promise<boolean> {
+    const data = await this.findResponse(formId, user.email);
 
     return data.submitted;
   }
-  async submitResponse(formId: number, userId: string): Promise<FormResponse> {
-    const { uuid } = await this.findResponse(formId, userId);
+  async submitResponse(formId: number, user: MemberGuestPayload): Promise<FormResponse> {
+    const { uuid } = await this.findResponse(formId, user.email);
 
     return this.prisma.formResponse.update({
       where: { uuid },
