@@ -13,7 +13,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiBody, ApiOperation } from '@nestjs/swagger';
 import { Response } from 'express';
 import { MemberPayloadDto } from '@/auth/dto/member-payload.dto';
-import { UserAuthGuard } from '@/auth/guards/user-auth.guard';
+import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
 import { AuthService } from './auth.service';
 import { GoogleAuthDto } from './dto/google-auth.dto';
 
@@ -70,7 +70,7 @@ export class AuthController {
     });
   }
   @Get('me')
-  @UseGuards(UserAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @ApiBearerAuth('AccessToken')
   async me(@Req() req: Response & {
     user: MemberPayloadDto;
