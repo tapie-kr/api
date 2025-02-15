@@ -18,7 +18,6 @@ model Member {
   representativeAwardUUID           String?
   formResponseUUID                  String?
 
-  username    String?    @unique
   googleEmail String     @unique
   role        MemberRole @default(GUEST)
   name        String
