@@ -2,10 +2,9 @@ import { HttpService } from '@nestjs/axios';
 import { Injectable, InternalServerErrorException, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import { MemberRole, MemberUnit } from '@tapie-kr/api-database';
 import { map } from 'rxjs/operators';
 import { GoogleAuthDto } from '@/auth/dto/google-auth.dto';
-import { MemberPayloadDto } from '@/auth/dto/member-payload.dto';
+import { MemberPayloadDto, TokenType } from '@/auth/dto/member-payload.dto';
 import { JWT_CONSTANTS } from '@/common/constants/auth/jwt.constants';
 import AUTH_ERROR_MESSAGE from '@/common/constants/error/auth-message.constants';
 import { omit } from '@/common/utils/object';
@@ -32,33 +31,38 @@ export class AuthService {
     }
 
     let payload: MemberPayloadDto;
+    let refreshPayload: MemberPayloadDto;
 
     if (!existsMember && service == 'form') {
-      const newMember = await new Promise(async (resolve, reject) => {
-        this.httpService
-          .get<GoogleProfile>('/userinfo/v2/me', { headers: { Authorization: `Bearer ${googleUser.accessToken}` } })
+      const googleProfileData = await new Promise<GoogleProfile>(async (resolve, reject) => {
+        this.httpService.get('/userinfo/v2/me', { headers: { Authorization: `Bearer ${googleUser.accessToken}` } })
           .pipe(map(response => response.data))
           .subscribe({
-            next: async data => {
-              const member = await this.membersService.createMember({
-                googleEmail: data.email,
-                name:        data.name,
-                role:        MemberRole.GUEST,
-                unit:        MemberUnit.EXTERNAL,
-              });
-
-              resolve(member);
-            },
+            next:  data => resolve(data),
             error: _error => {
-              reject(new InternalServerErrorException('구글로 회원가입하던 중 오류가 발생했습니다.'));
+              reject(new InternalServerErrorException('구글 계정 정보를 가져오던 중 오류가 발생했습니다.'));
             },
           });
       });
 
-      payload = newMember as MemberPayloadDto;
+      payload = {
+        type:  TokenType.ACCESS_TOKEN,
+        email: googleProfileData.email,
+        name:  googleProfileData.name,
+      } as MemberPayloadDto;
     } else {
-      payload = existsMember;
+      payload = {
+        type:  TokenType.ACCESS_TOKEN,
+        id:    existsMember.uuid,
+        email: existsMember.googleEmail,
+        name:  existsMember.name,
+      } as MemberPayloadDto;
     }
+
+    refreshPayload = {
+      ...payload,
+      type: TokenType.REFRESH_TOKEN,
+    } as MemberPayloadDto;
 
     const jwtSecret = this.configService.get('JWT_SECRET');
     const refreshSecret = this.configService.get('JWT_REFRESH_SECRET');
@@ -68,14 +72,16 @@ export class AuthService {
       expiresIn: JWT_CONSTANTS.ACCESS_TOKEN_EXPIRES_IN,
     });
 
-    const refreshToken = this.jwtService.sign(payload, {
+    const refreshToken = this.jwtService.sign(refreshPayload, {
       secret:    refreshSecret,
       expiresIn: JWT_CONSTANTS.REFRESH_TOKEN_EXPIRES_IN,
     });
 
     return {
-      accessToken,
-      refreshToken,
+      tokens: {
+        accessToken, refreshToken,
+      },
+      user: payload,
     };
   }
   async validateToken(token: string) {
@@ -94,7 +100,14 @@ export class AuthService {
       const verifiedPayload =
         await this.jwtService.verifyAsync<MemberPayloadDto>(refreshToken, { secret: refreshSecret });
 
+      if (verifiedPayload.type !== TokenType.REFRESH_TOKEN) {
+        throw new UnauthorizedException('Invalid token type');
+      }
+
       const payload = omit<MemberPayloadDto>(verifiedPayload, ['iat', 'exp']);
+
+      payload.type = TokenType.ACCESS_TOKEN;
+
       const jwtSecret = this.configService.get('JWT_SECRET');
 
       const accessToken = this.jwtService.sign(payload, {
