@@ -1,4 +1,4 @@
 export const AuthQueryKeys = {
-  REFRESH: 'auth/refresh',
-  ME: 'auth/me',
+  ME: ['auth/me'],
+  GOOGLE_CALLBACK: ['auth/google/callback'],
 };
