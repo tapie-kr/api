@@ -1,5 +1,5 @@
 import {
-  Body,
+  BadRequestException,
   Controller,
   Get,
   Post,
@@ -10,8 +10,8 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiBearerAuth, ApiBody, ApiOperation } from '@nestjs/swagger';
-import { Response } from 'express';
+import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
+import { Request, Response } from 'express';
 import { MemberPayloadDto } from '@/auth/dto/member-payload.dto';
 import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
 import { AuthService } from './auth.service';
@@ -55,19 +55,23 @@ export class AuthController {
     };
   }
   @Post('refresh')
-  @ApiBody({ schema: {
-    type: 'object', properties: { refreshToken: { type: 'string' } },
-  } })
-  async refreshAccessToken(@Body('refreshToken') refreshToken: string,
-    @Res({ passthrough: true }) res: Response) {
+  @ApiBearerAuth('RefreshToken')
+  async refreshAccessToken(@Res({ passthrough: true }) res: Response, @Req() req: Request) {
     // 토큰 Refresh 하기
-    const { accessToken } = await this.authService.refreshAccessToken(refreshToken);
+
+    if (!req.cookies?.refreshToken) {
+      throw new BadRequestException('Refresh Token이 없습니다.');
+    }
+
+    const { accessToken } = await this.authService.refreshAccessToken(req.cookies?.refreshToken);
 
     res.cookie('accessToken', accessToken, {
       httpOnly: true,
       secure:   this.configService.get('NODE_ENV') === 'production',
       sameSite: 'lax',
     });
+
+    return 'ok';
   }
   @Get('me')
   @UseGuards(JwtAuthGuard)
