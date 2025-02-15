@@ -3,7 +3,7 @@ import { ApplyForm, Asset, FormResponse } from '@tapie-kr/api-database';
 import { MemberGuestPayload } from '@/auth/dto/member-payload.dto';
 import { PrismaUniqueConstraintError, toTypedPrismaError } from '@/common/prisma/prisma.exception';
 import { PrismaService } from '@/common/prisma/prisma.service';
-import { CreateApplyFormDto, UpdateApplyFormDto } from '@/form/dto/form.dto';
+import { CreateFormDto, UpdateFormDto } from '@/form/dto/form.dto';
 import { CreateFormResponseDto, UpdateFormResponseDto } from '@/form/dto/response.dto';
 
 type FormResponseWithPortfolio = FormResponse & {
@@ -21,14 +21,14 @@ export class FormRepository {
       studentId: input.slice(0, 5), name: input.slice(5),
     };
   }
-  async create(data: CreateApplyFormDto): Promise<ApplyForm> {
+  async create(data: CreateFormDto): Promise<ApplyForm> {
     try {
       return await this.prisma.applyForm.create({ data });
     } catch (error) {
       throw new InternalServerErrorException('Failed to create form', error?.message);
     }
   }
-  async update(id: number, data: UpdateApplyFormDto): Promise<ApplyForm> {
+  async update(id: number, data: UpdateFormDto): Promise<ApplyForm> {
     try {
       return await this.prisma.applyForm.update({
         where: { id },

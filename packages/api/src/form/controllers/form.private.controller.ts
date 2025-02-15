@@ -13,7 +13,7 @@ import { RequirePermissions } from '@/auth/decorators/permission.decorator';
 import { PermissionGuard } from '@/auth/guards/permission.guard';
 import { UserAuthGuard } from '@/auth/guards/user-auth.guard';
 import { Permissions as P } from '@/common/utils/permissions';
-import { CreateApplyFormDto, UpdateApplyFormDto } from '@/form/dto/form.dto';
+import { CreateFormDto, UpdateFormDto } from '@/form/dto/form.dto';
 import { FormService } from '@/form/form.service';
 
 @Controller('form/admin')
@@ -27,12 +27,12 @@ export class FormPrivateController {
   @ApiOperation({
     summary: '지원 폼 생성', description: '지원 폼을 생성합니다. (응답 생성 X)',
   })
-  create(@Body() createFormDto: CreateApplyFormDto) {
+  create(@Body() createFormDto: CreateFormDto) {
     return this.applyFormService.create(createFormDto);
   }
   @Patch(':id')
   @ApiOperation({ summary: '특정 지원 폼 수정' })
-  update(@Param('id') id: number, @Body() updateFormDto: UpdateApplyFormDto) {
+  update(@Param('id') id: number, @Body() updateFormDto: UpdateFormDto) {
     return this.applyFormService.update(id, updateFormDto);
   }
   @Delete(':id')
