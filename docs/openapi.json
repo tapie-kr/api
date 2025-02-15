@@ -43,26 +43,16 @@
       "post": {
         "operationId": "AuthController_refreshAccessToken",
         "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "refreshToken": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          }
-        },
         "responses": {
           "201": {
             "description": ""
           }
         },
+        "security": [
+          {
+            "RefreshToken": []
+          }
+        ],
         "tags": [
           "Auth"
         ]
@@ -658,7 +648,7 @@
   "info": {
     "title": "TAPIE API",
     "description": "TAPIE System API",
-    "version": "0.0.6",
+    "version": "0.0.7",
     "contact": {}
   },
   "tags": [],
