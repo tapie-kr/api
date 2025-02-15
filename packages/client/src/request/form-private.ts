@@ -1,10 +1,11 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { HttpMethod } from '../constants/http-method';
 import { FormPrivateQueryKeys } from '../constants/query-keys';
+import { FormId } from '../constants/query-keys/form-private';
 import { useMutation } from '../hooks/use-mutation';
 import { CreateForm, CreateFormResponse } from '../schemas/form';
 
-export const useCreateApplyForm = () => {
+export const useCreateForm = () => {
   const queryClient = useQueryClient();
 
   return useMutation<CreateFormResponse, CreateForm>(
@@ -17,26 +18,28 @@ export const useCreateApplyForm = () => {
         queryClient.invalidateQueries({ queryKey: FormPrivateQueryKeys.FORM });
       },
       onError: (error) => {
-        console.error('Error creating applyForm:', error);
+        console.error('Error creating form:', error);
       },
     },
   );
 };
 
-export const useUpdateApplyForm = () => {
+export const useUpdateForm = (id: FormId) => {
   const queryClient = useQueryClient();
 
   return useMutation<CreateForm, CreateForm>(
     {
       method: HttpMethod.PATCH,
-      url: '/form/admin',
+      url: `/form/admin/${id}`,
     },
     {
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: FormPrivateQueryKeys.FORM });
+        queryClient.invalidateQueries({
+          queryKey: FormPrivateQueryKeys.FORM_DETAIL(id),
+        });
       },
       onError: (error) => {
-        console.error('Error updating applyForm:', error);
+        console.error('Error updating form:', error);
       },
     },
   );

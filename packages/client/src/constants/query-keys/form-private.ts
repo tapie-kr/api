@@ -1,14 +1,16 @@
+export type FormId = number;
+
 export const FormPrivateQueryKeys = {
   FORM: 'form/private/form',
-  FORM_DETAIL: (id: string) => [FormPrivateQueryKeys.FORM, id],
-  FORM_RESPONSE: (id: string) => [FormPrivateQueryKeys.FORM, id, 'response'],
-  FORM_RESPONSE_DETAIL: (responseId: string) => [
+  FORM_DETAIL: (id: FormId) => [FormPrivateQueryKeys.FORM, id],
+  FORM_RESPONSE: (id: FormId) => [FormPrivateQueryKeys.FORM, id, 'response'],
+  FORM_RESPONSE_DETAIL: (responseId: FormId) => [
     FormPrivateQueryKeys.FORM,
     'response',
     responseId,
   ],
-  FORM_ACTIVATE: (id: string) => [FormPrivateQueryKeys.FORM, id, 'activate'],
-  FORM_DEACTIVATE: (id: string) => [
+  FORM_ACTIVATE: (id: FormId) => [FormPrivateQueryKeys.FORM, id, 'activate'],
+  FORM_DEACTIVATE: (id: FormId) => [
     FormPrivateQueryKeys.FORM,
     id,
     'deactivate',
