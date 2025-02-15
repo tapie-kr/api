@@ -6,10 +6,15 @@ import { ApplyFormPrivateController } from '@/form/controllers/form.private.cont
 import { ApplyFormPublicController } from '@/form/controllers/form.public.controller';
 import { ApplyFormService } from '@/form/form.service';
 import { ApplyFormRepository } from '@/form/repository/form.repository';
+import { MembersModule } from '@/members/members.module';
 import { MembersService } from '@/members/service/members.service';
 
 @Module({
-  imports:     [AssetModule, CacheModule.register()],
+  imports: [
+    AssetModule,
+    CacheModule.register(),
+    MembersModule,
+  ],
   controllers: [ApplyFormPrivateController, ApplyFormPublicController],
   providers:   [
     ApplyFormService,
