@@ -18,3 +18,5 @@ export class MemberPayloadDto {
   @IsString()
   public name: string;
 }
+
+export type MemberGuestPayload = Omit<MemberPayloadDto, 'id'>;
