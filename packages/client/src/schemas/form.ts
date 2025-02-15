@@ -11,6 +11,6 @@ export const createFormResponseSchema = baseResponseSchema(z.object({}));
 
 export const updateFormSchema = createFormSchema.partial();
 
-export type CreateApplyForm = z.infer<typeof createFormSchema>;
-export type CreateApplyFormResponse = z.infer<typeof createFormResponseSchema>;
-export type UpdateApplyForm = z.infer<typeof updateFormSchema>;
+export type CreateForm = z.infer<typeof createFormSchema>;
+export type CreateFormResponse = z.infer<typeof createFormResponseSchema>;
+export type UpdateForm = z.infer<typeof updateFormSchema>;
