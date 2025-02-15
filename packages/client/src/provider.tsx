@@ -1,3 +1,5 @@
+'use client'
+
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import React from 'react';
@@ -8,7 +10,7 @@ interface TapieApiProviderProps {
   initialIsOpen?: boolean;
 }
 
-export default function TapieApiProvider(props: TapieApiProviderProps) {
+export function TapieApiProvider(props: TapieApiProviderProps) {
   const { devtools = false, initialIsOpen = false } = props;
 
   const queryClient = new QueryClient();
