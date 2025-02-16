@@ -49,4 +49,7 @@ export class AssetService {
 
     return path;
   }
+  buildPublicUrl(path: string) {
+    return `${this.configService.get('MINIO_PUBLIC_URL')}/${path}`;
+  }
 }
