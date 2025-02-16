@@ -6,7 +6,7 @@ import {
   IsString,
 } from 'class-validator';
 
-export class ApplyFormDto {
+export class FormDto {
   @IsNumber()
   @ApiProperty({
     description: '폼 ID', example: 1,
@@ -32,10 +32,10 @@ export class ApplyFormDto {
   active: boolean;
 }
 
-export type CreateFormType = Omit<ApplyFormDto, 'id'>;
+export type CreateFormType = Omit<FormDto, 'id'>;
 export type UpdateFormType = Partial<CreateFormDto>;
 
-export class CreateFormDto extends OmitType(ApplyFormDto, ['id'] as const) {
+export class CreateFormDto extends OmitType(FormDto, ['id'] as const) {
 }
 
 export class UpdateFormDto extends PartialType(CreateFormDto) {
