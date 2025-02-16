@@ -15,9 +15,9 @@ async function bootstrap() {
   const logger = new Logger('bootstrap');
   const isProduction = configService.get('NODE_ENV') === 'production';
 
-  app.useGlobalFilters(new GlobalExceptionFilter);
-
   app.useGlobalFilters(new PrismaExceptionFilter);
+
+  app.useGlobalFilters(new GlobalExceptionFilter);
 
   app.useGlobalInterceptors(new TransformInterceptor);
 
