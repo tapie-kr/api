@@ -9,6 +9,14 @@ export class MemberRepository {
   async getMember(uuid: string) {
     return this.prisma.member.findUnique({ where: { uuid } });
   }
+  async getMemberWithData(uuid: string) {
+    return this.prisma.member.findUnique({
+      where:   { uuid },
+      include: {
+        profile: true, links: true, portfolio: true, awards: true, skills: true, history: true, visitStats: true,
+      },
+    });
+  }
   async getMemberByUsername(username: string) {
     return this.prisma.member.findUnique({ where: { username } });
   }
@@ -20,5 +28,11 @@ export class MemberRepository {
   }
   async createMember(data: CreateMemberDto) {
     return this.prisma.member.create({ data });
+  }
+  async updateMemberProfileImage(uuid: string, assetUUID: string) {
+    return this.prisma.member.update({
+      where: { uuid },
+      data:  { profile: { connect: { uuid: assetUUID } } },
+    });
   }
 }
