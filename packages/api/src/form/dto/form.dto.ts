@@ -3,10 +3,15 @@ import { IsDateString, IsNumber, IsString } from 'class-validator';
 
 export class ApplyFormDto {
   @IsNumber()
+  @ApiProperty({
+    description: '폼 ID', example: 1,
+  })
   id: number;
 
   @IsString()
-  @ApiProperty({ description: '폼 이름' })
+  @ApiProperty({
+    description: '폼 이름', example: 'Sample Form',
+  })
   name: string;
 
   @IsDateString()
