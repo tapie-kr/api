@@ -30,6 +30,8 @@ export class FormService {
     } catch (_error) {
       throw new NotFoundException('지원 폼을 찾을 수 없습니다');
     }
+
+    return 'ok';
   }
   async findAll() {
     return this.formRepository.findAll();
