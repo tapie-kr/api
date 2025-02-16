@@ -24,7 +24,7 @@ import { CreateFormDto, FormDto, UpdateFormDto } from '@/form/dto/form.dto';
 import { FormResponseDto } from '@/form/dto/response.dto';
 import { FormService } from '@/form/form.service';
 
-@Controller('form/admin')
+@Controller('admin/form')
 @RequirePermissions(P.FORM_MANAGE)
 @UseGuards(UserAuthGuard, PermissionGuard)
 @ApiBearerAuth('accessToken')
@@ -71,7 +71,7 @@ export class FormPrivateController {
     // 특정 지원 폼 조회하기
     return this.applyFormService.findOne(id);
   }
-  @Get(':id/responses')
+  @Get(':id/applications')
   @ApiOperation({ summary: '특정 지원 폼의 모든 응답 가져오기' })
   @ApiCommonResponse(HttpStatus.OK, {
     type: 'array', items: { $ref: getSchemaPath(FormResponseDto) },
@@ -80,7 +80,7 @@ export class FormPrivateController {
     // 특정 지원 폼의 응답 조회하기
     return this.applyFormService.findAllResponses(id);
   }
-  @Get('responses/:responseId')
+  @Get('applications/:responseId')
   @ApiOperation({ summary: '특정 지원 폼의 특정 응답 가져오기' })
   @ApiCommonResponse(HttpStatus.OK, { $ref: getSchemaPath(FormResponseDto) })
   findOneResponse(@Param('responseId') responseId: string) {
