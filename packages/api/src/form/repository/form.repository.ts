@@ -164,6 +164,10 @@ export class FormRepository {
     const form = await this.prisma.applyForm.findUnique({ where: { id: formId } });
     const now = new Date;
 
+    if (!form) {
+      throw new BadRequestException('Form not found');
+    }
+
     return now >= form.startsAt && now <= form.endsAt;
   }
 

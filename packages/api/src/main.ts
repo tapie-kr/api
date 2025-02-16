@@ -5,6 +5,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import cookieParser from 'cookie-parser';
 import { SwaggerTheme, SwaggerThemeNameEnum } from 'swagger-themes';
 import { AppModule } from '@/app.module';
+import {  APIResponseDto } from '@/common/dto/response.dto';
 import { GlobalExceptionFilter } from '@/common/filters/global-exception.filter';
 import { PrismaExceptionFilter } from '@/common/filters/prisma-exception.filter';
 import { TransformInterceptor } from '@/common/interceptors/transform.interceptor';
@@ -15,9 +16,9 @@ async function bootstrap() {
   const logger = new Logger('bootstrap');
   const isProduction = configService.get('NODE_ENV') === 'production';
 
-  app.useGlobalFilters(new GlobalExceptionFilter);
-
   app.useGlobalFilters(new PrismaExceptionFilter);
+
+  app.useGlobalFilters(new GlobalExceptionFilter);
 
   app.useGlobalInterceptors(new TransformInterceptor);
 
@@ -56,7 +57,7 @@ async function bootstrap() {
     }, 'refreshToken')
     .build();
 
-  const document = SwaggerModule.createDocument(app, config);
+  const document = SwaggerModule.createDocument(app, config, { extraModels: [APIResponseDto] });
 
   SwaggerModule.setup('api-docs', app, document, {
     jsonDocumentUrl: 'api-docs/json',
