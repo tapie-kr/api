@@ -6,12 +6,10 @@ import { useMutation } from '../hooks/use-mutation';
 import { useQuery } from '../hooks/use-query';
 import {
   CreateForm,
-  CreateFormResponse,
   DeleteFormResponse,
   FormListResponse,
   FormResponse,
   UpdateForm,
-  UpdateFormResponse,
 } from '../schemas/form';
 
 export const useFormList = () => {
@@ -28,10 +26,27 @@ export const useForm = (id: FormId) => {
   });
 };
 
+export const useFormResponseList = (id: FormId) => {
+  return useQuery<unknown>(FormPrivateQueryKeys.FORM_RESPONSE(id), {
+    method: HttpMethod.GET,
+    url: `/form/admin/${id}/responses`,
+  });
+};
+
+export const useFormResponse = (responseId: FormId) => {
+  return useQuery<unknown>(
+    FormPrivateQueryKeys.FORM_RESPONSE_DETAIL(responseId),
+    {
+      method: HttpMethod.GET,
+      url: `/form/admin/responses/${responseId}`,
+    },
+  );
+};
+
 export const useCreateForm = () => {
   const queryClient = useQueryClient();
 
-  return useMutation<CreateFormResponse, CreateForm>(
+  return useMutation<FormResponse, CreateForm>(
     {
       method: HttpMethod.POST,
       url: '/form/admin',
@@ -47,10 +62,52 @@ export const useCreateForm = () => {
   );
 };
 
+export const useActivateForm = (id: FormId) => {
+  const queryClient = useQueryClient();
+
+  return useMutation<unknown, unknown>(
+    {
+      method: HttpMethod.POST,
+      url: `/form/admin/${id}/activate`,
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: FormPrivateQueryKeys.FORM_DETAIL(id),
+        });
+      },
+      onError: (error) => {
+        console.error('Error activating form:', error);
+      },
+    },
+  );
+};
+
+export const useDeactivateForm = (id: FormId) => {
+  const queryClient = useQueryClient();
+
+  return useMutation<unknown, unknown>(
+    {
+      method: HttpMethod.POST,
+      url: `/form/admin/${id}/deactivate`,
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: FormPrivateQueryKeys.FORM_DETAIL(id),
+        });
+      },
+      onError: (error) => {
+        console.error('Error deactivating form:', error);
+      },
+    },
+  );
+};
+
 export const useUpdateForm = (id: FormId) => {
   const queryClient = useQueryClient();
 
-  return useMutation<UpdateFormResponse, UpdateForm>(
+  return useMutation<FormResponse, UpdateForm>(
     {
       method: HttpMethod.PATCH,
       url: `/form/admin/${id}`,
