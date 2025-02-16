@@ -1,8 +1,8 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, OmitType } from '@nestjs/swagger';
 import { MemberRole, MemberUnit } from '@tapie-kr/api-database';
 import { IsEnum, IsNumber, IsString } from 'class-validator';
 
-export class MemberPublicOnlyDto {
+export class MemberDto {
   @IsNumber()
   @ApiProperty({
     description: '회원 ID', format: 'uuid',
@@ -21,6 +21,12 @@ export class MemberPublicOnlyDto {
   })
   username: string;
 
+  @IsString()
+  @ApiProperty({
+    description: '회원 이메일', example: 'noreply@tapie.kr',
+  })
+  googleEmail: string;
+
   @IsEnum(MemberRole)
   @ApiProperty({
     description: '회원 역할', example: 'user', enum: MemberRole,
@@ -34,5 +40,14 @@ export class MemberPublicOnlyDto {
   unit: MemberUnit;
 
   @IsString()
+  @ApiProperty({
+    description: '프로필 URI', example: 'https://tapie.kr/profile.png',
+  })
   profileUri: string;
+}
+
+export class CreateMemberDto extends OmitType(MemberDto, ['uuid', 'profileUri'] as const) {
+}
+
+export class PublicOnlyMemberDto extends OmitType(MemberDto, ['googleEmail'] as const) {
 }
