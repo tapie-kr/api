@@ -68,7 +68,7 @@ export class AuthController {
     };
   }
   @Post('refresh')
-  @ApiBearerAuth('RefreshToken')
+  @ApiBearerAuth('refreshToken')
   @ApiCommonResponse(HttpStatus.OK, {
     type: 'string', example: 'ok',
   })
@@ -94,7 +94,7 @@ export class AuthController {
   }
   @Get('me')
   @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth('AccessToken')
+  @ApiBearerAuth('accessToken')
   @ApiCommonResponse(HttpStatus.OK, { $ref: getSchemaPath(MemberPayloadWithoutTypeDto) })
   @ApiOperation({ summary: '내 정보 가져오기' })
   async me(@Req() req: Response & {
