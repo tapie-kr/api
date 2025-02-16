@@ -7,3 +7,4 @@ export interface CreateMemberDto {
   unit:        MemberUnit;
   username?:   string;
 }
+
