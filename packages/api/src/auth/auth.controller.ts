@@ -12,8 +12,9 @@ import { ConfigService } from '@nestjs/config';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 import { Request, Response } from 'express';
-import { MemberPayloadDto } from '@/auth/dto/member-payload.dto';
+import { MemberPayloadDto, MemberPayloadWithoutTypeDto } from '@/auth/dto/member-payload.dto';
 import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
+import { ApiCommonResponse, ApiFixedResponse } from '@/common/utils/swagger';
 import { AuthService } from './auth.service';
 import { GoogleAuthDto } from './dto/google-auth.dto';
 
@@ -29,7 +30,12 @@ export class AuthController {
   }
   @Get('google/callback')
   @UseGuards(AuthGuard('google'))
+  @ApiOperation({
+    summary: 'Google Oauth Code로 서비스에 로그인', description: 'accessToken과 refreshToken은 쿠키로 관리됩니다',
+  })
+  @ApiCommonResponse(MemberPayloadWithoutTypeDto)
   async googleAuthRedirect(@Query('service') service: string,
+    @Query('code') _code: string,
     @Req() req: Response & {
       user: GoogleAuthDto;
     },
@@ -56,6 +62,10 @@ export class AuthController {
   }
   @Post('refresh')
   @ApiBearerAuth('RefreshToken')
+  @ApiFixedResponse('ok')
+  @ApiOperation({
+    summary: 'Access Token을 Refresh하기', description: '*쿠키에 refreshToken을 설정해야 합니다.',
+  })
   async refreshAccessToken(@Res({ passthrough: true }) res: Response, @Req() req: Request) {
     // 토큰 Refresh 하기
 
@@ -76,9 +86,15 @@ export class AuthController {
   @Get('me')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth('AccessToken')
+  @ApiCommonResponse(MemberPayloadWithoutTypeDto)
+  @ApiOperation({ summary: '내 정보 가져오기' })
   async me(@Req() req: Response & {
     user: MemberPayloadDto;
   }) {
-    return req.user;
+    return {
+      id:    req.user.id,
+      email: req.user.email,
+      name:  req.user.name,
+    } as MemberPayloadWithoutTypeDto;
   }
 }

@@ -1,11 +1,18 @@
 import { HttpStatus } from '@nestjs/common';
+import { ApiProperty } from '@nestjs/swagger';
 
-export class APIResponseDto {
-  public status: HttpStatus = HttpStatus.OK;
+export class APIResponseDto<T> {
+  @ApiProperty({ example: HttpStatus.OK })
+  public status: HttpStatus;
 
-  public message: string = 'OK';
+  @ApiProperty({ example: 'OK' })
+  public message: string;
 
-  public data: unknown = null;
+  @ApiProperty({
+    required: false, nullable: true,
+  })
+  public data: T;
 
-  public responseAt: Date = new Date;
+  @ApiProperty({ example: (new Date).toISOString() })
+  public responseAt: string;
 }
