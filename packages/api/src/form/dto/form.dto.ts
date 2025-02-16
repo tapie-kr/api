@@ -1,5 +1,10 @@
 import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger';
-import { IsDateString, IsNumber, IsString } from 'class-validator';
+import {
+  IsBoolean,
+  IsDateString,
+  IsNumber,
+  IsString,
+} from 'class-validator';
 
 export class ApplyFormDto {
   @IsNumber()
@@ -21,6 +26,10 @@ export class ApplyFormDto {
   @IsDateString()
   @ApiProperty({ description: '종료 날짜' })
   endsAt: Date;
+
+  @IsBoolean()
+  @ApiProperty({ description: '활성화 여부' })
+  active: boolean;
 }
 
 export type CreateFormType = Omit<ApplyFormDto, 'id'>;
