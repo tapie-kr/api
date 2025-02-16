@@ -10,5 +10,6 @@
   },
   "typescript.format.semicolons": "remove",
   "javascript.format.semicolons": "remove",
-  "cSpell.words": ["tyeongkim"]
+  "cSpell.words": ["tyeongkim"],
+  "eslint.enable": false
 }
