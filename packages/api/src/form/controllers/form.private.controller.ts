@@ -1,3 +1,14 @@
+import { RequirePermissions } from '@/auth/decorators/permission.decorator';
+import { PermissionGuard } from '@/auth/guards/permission.guard';
+import { UserAuthGuard } from '@/auth/guards/user-auth.guard';
+import { Permissions as P } from '@/common/utils/permissions';
+import { ApiCommonResponse, ApiFixedResponse } from '@/common/utils/swagger';
+import {
+  ApplyFormDto,
+  CreateFormDto,
+  UpdateFormDto,
+} from '@/form/dto/form.dto';
+import { FormService } from '@/form/form.service';
 import {
   Body,
   Controller,
@@ -9,24 +20,17 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
-import { RequirePermissions } from '@/auth/decorators/permission.decorator';
-import { PermissionGuard } from '@/auth/guards/permission.guard';
-import { UserAuthGuard } from '@/auth/guards/user-auth.guard';
-import { Permissions as P } from '@/common/utils/permissions';
-import { ApiCommonResponse, ApiFixedResponse } from '@/common/utils/swagger';
-import { ApplyFormDto, CreateFormDto, UpdateFormDto } from '@/form/dto/form.dto';
-import { FormService } from '@/form/form.service';
 
 @Controller('form/admin')
 @RequirePermissions(P.FORM_MANAGE)
 @UseGuards(UserAuthGuard, PermissionGuard)
 @ApiBearerAuth('accessToken')
 export class FormPrivateController {
-  constructor(private readonly applyFormService: FormService) {
-  }
+  constructor(private readonly applyFormService: FormService) {}
   @Post()
   @ApiOperation({
-    summary: '지원 폼 생성', description: '지원 폼을 생성합니다. (응답 생성 X)',
+    summary: '지원 폼 생성',
+    description: '지원 폼을 생성합니다. (응답 생성 X)',
   })
   @ApiCommonResponse(ApplyFormDto)
   create(@Body() createFormDto: CreateFormDto) {
@@ -45,8 +49,8 @@ export class FormPrivateController {
     return this.applyFormService.remove(id);
   }
   @Get()
-  @ApiCommonResponse([ApplyFormDto])
   @ApiOperation({ summary: '지원 폼 모두 가져오기' })
+  @ApiCommonResponse(ApplyFormDto)
   findAll() {
     return this.applyFormService.findAll();
   }

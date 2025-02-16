@@ -1,15 +1,16 @@
+import { APIResponseDto } from '@/common/dto/response.dto';
 import { applyDecorators, Type } from '@nestjs/common';
 import { ApiExtraModels, ApiResponse, getSchemaPath } from '@nestjs/swagger';
-import { APIResponseDto } from '@/common/dto/response.dto';
 
 export const ApiCommonResponse = <TModel extends Type<unknown> | object>(
   model?: TModel,
 ) => {
   const baseProperties = {
-    status:     { type: 'number' },
-    message:    { type: 'string' },
+    status: { type: 'number' },
+    message: { type: 'string' },
     responseAt: {
-      type: 'string', format: 'date-time',
+      type: 'string',
+      format: 'date-time',
     },
   };
 
@@ -17,48 +18,71 @@ export const ApiCommonResponse = <TModel extends Type<unknown> | object>(
     ? model instanceof Function
       ? { $ref: getSchemaPath(model) }
       : {
-        type: 'object', example: model,
-      }
+          type: 'object',
+          example: model,
+        }
     : {
-      type: 'object', nullable: true, example: {},
-    };
+        type: 'object',
+        nullable: true,
+        example: {},
+      };
 
-  const schema = { allOf: [
-    { $ref: getSchemaPath(APIResponseDto) },
-    { properties: {
-      ...baseProperties,
-      data: dataProperty,
-    } },
-  ] };
+  const schema = {
+    allOf: [
+      { $ref: getSchemaPath(APIResponseDto) },
+      {
+        properties: {
+          ...baseProperties,
+          data: dataProperty,
+        },
+      },
+    ],
+  };
 
-  return applyDecorators(model && model instanceof Function ? ApiExtraModels(model) : applyDecorators(),
+  return applyDecorators(
+    model && model instanceof Function
+      ? ApiExtraModels(model)
+      : applyDecorators(),
     ApiResponse({
-      status: 200, schema,
-    }));
+      status: 200,
+      schema,
+    }),
+  );
 };
 
 export const ApiFixedResponse = (fixedValue: unknown) => {
   const baseProperties = {
-    status:     { type: 'number' },
-    message:    { type: 'string' },
+    status: { type: 'number' },
+    message: { type: 'string' },
     responseAt: {
-      type: 'string', format: 'date-time',
+      type: 'string',
+      format: 'date-time',
     },
   };
 
-  const fixedProperty = { data: {
-    type: typeof fixedValue, example: fixedValue,
-  } };
+  const fixedProperty = {
+    data: {
+      type: typeof fixedValue,
+      example: fixedValue,
+    },
+  };
 
-  const schema = { allOf: [
-    { $ref: getSchemaPath(APIResponseDto) },
-    { properties: {
-      ...baseProperties,
-      ...fixedProperty,
-    } },
-  ] };
+  const schema = {
+    allOf: [
+      { $ref: getSchemaPath(APIResponseDto) },
+      {
+        properties: {
+          ...baseProperties,
+          ...fixedProperty,
+        },
+      },
+    ],
+  };
 
-  return applyDecorators(ApiResponse({
-    status: 200, schema,
-  }));
+  return applyDecorators(
+    ApiResponse({
+      status: 200,
+      schema,
+    }),
+  );
 };

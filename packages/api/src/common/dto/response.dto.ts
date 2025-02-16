@@ -9,10 +9,11 @@ export class APIResponseDto<T> {
   public message: string;
 
   @ApiProperty({
-    required: false, nullable: true,
+    required: false,
+    nullable: true,
   })
   public data: T;
 
-  @ApiProperty({ example: (new Date).toISOString() })
+  @ApiProperty({ example: new Date().toISOString() })
   public responseAt: string;
 }

@@ -1,3 +1,4 @@
+import { APIResponseDto } from '@/common/dto/response.dto';
 import {
   type CallHandler,
   type ExecutionContext,
@@ -8,21 +9,22 @@ import {
 import { Response } from 'express';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { APIResponseDto } from '@/common/dto/response.dto';
 
 @Injectable()
 export class TransformInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<unknown> {
     const response = context.switchToHttp().getResponse<Response>();
 
-    return next.handle().pipe(map(data => {
-      const apiResponse = new APIResponseDto;
+    return next.handle().pipe(
+      map((data) => {
+        const apiResponse = new APIResponseDto();
 
-      apiResponse.status = response.statusCode || HttpStatus.OK;
+        apiResponse.status = response.statusCode || HttpStatus.OK;
 
-      apiResponse.data = data;
+        apiResponse.data = data;
 
-      response.status(HttpStatus.OK).send(apiResponse);
-    }));
+        response.status(HttpStatus.OK).send(apiResponse);
+      }),
+    );
   }
 }
