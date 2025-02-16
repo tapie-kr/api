@@ -13,7 +13,8 @@ import { RequirePermissions } from '@/auth/decorators/permission.decorator';
 import { PermissionGuard } from '@/auth/guards/permission.guard';
 import { UserAuthGuard } from '@/auth/guards/user-auth.guard';
 import { Permissions as P } from '@/common/utils/permissions';
-import { CreateFormDto, UpdateFormDto } from '@/form/dto/form.dto';
+import { ApiCommonResponse, ApiFixedResponse } from '@/common/utils/swagger';
+import { ApplyFormDto, CreateFormDto, UpdateFormDto } from '@/form/dto/form.dto';
 import { FormService } from '@/form/form.service';
 
 @Controller('form/admin')
@@ -27,20 +28,24 @@ export class FormPrivateController {
   @ApiOperation({
     summary: '지원 폼 생성', description: '지원 폼을 생성합니다. (응답 생성 X)',
   })
+  @ApiCommonResponse(ApplyFormDto)
   create(@Body() createFormDto: CreateFormDto) {
     return this.applyFormService.create(createFormDto);
   }
   @Patch(':id')
   @ApiOperation({ summary: '특정 지원 폼 수정' })
+  @ApiCommonResponse(ApplyFormDto)
   update(@Param('id') id: number, @Body() updateFormDto: UpdateFormDto) {
     return this.applyFormService.update(id, updateFormDto);
   }
   @Delete(':id')
   @ApiOperation({ summary: '지원 폼 삭제' })
+  @ApiFixedResponse(null)
   remove(@Param('id') id: number) {
     return this.applyFormService.remove(id);
   }
   @Get()
+  @ApiCommonResponse([ApplyFormDto])
   @ApiOperation({ summary: '지원 폼 모두 가져오기' })
   findAll() {
     return this.applyFormService.findAll();
