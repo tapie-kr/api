@@ -19,6 +19,8 @@ export class TransformInterceptor implements NestInterceptor {
       map((data) => {
         const apiResponse = new APIResponseDto();
 
+        console.log('API RESPONSE', apiResponse);
+
         apiResponse.status = response.statusCode || HttpStatus.OK;
 
         apiResponse.data = data;

@@ -17,10 +17,12 @@ export const ApiCommonResponse = <TModel extends Type<unknown> | object>(
   const dataProperty = model
     ? model instanceof Function
       ? { $ref: getSchemaPath(model) }
-      : {
-          type: 'object',
-          example: model,
-        }
+      : Array.isArray(model)
+        ? { type: 'array', items: { $ref: getSchemaPath(model[0]) } }
+        : {
+            type: 'object',
+            example: model,
+          }
     : {
         type: 'object',
         nullable: true,
@@ -42,7 +44,7 @@ export const ApiCommonResponse = <TModel extends Type<unknown> | object>(
   return applyDecorators(
     model && model instanceof Function
       ? ApiExtraModels(model)
-      : applyDecorators(),
+      : ApiExtraModels(APIResponseDto),
     ApiResponse({
       status: 200,
       schema,
