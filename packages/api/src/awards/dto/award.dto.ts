@@ -1,19 +1,24 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, OmitType } from '@nestjs/swagger';
 import {
   IsDate,
   IsNumber,
   IsString,
   IsUUID,
 } from 'class-validator';
-import { MemberCompetitionDto } from '@/members/dto/member-competition.dto';
+import { CompetitionPreviewDto, ConnectCompetitionDto } from '@/awards/dto/competition.dto';
+import { MemberPreviewDto } from '@/members/dto/member.dto';
 
-export class MemberAwardDto {
+export class AwardDto {
   @IsUUID()
-  @ApiProperty({ description: '수상실적 UUID' })
+  @ApiProperty({
+    description: '수상실적 UUID', example: '123e4567-e89b-12d3-a456-426614174000',
+  })
   uuid: string;
 
   @IsUUID()
-  @ApiProperty({ description: '대회 UUID' })
+  @ApiProperty({
+    description: '대회 UUID', example: '123e4567-e89b-12d3-a456-426614174000',
+  })
   competitionUUID: string;
 
   @IsString()
@@ -35,9 +40,14 @@ export class MemberAwardDto {
   rewardedAt: Date;
 
   @ApiProperty({
-    type: () => MemberCompetitionDto, isArray: true,
+    type: () => CompetitionPreviewDto, isArray: true,
   })
-  competition?: MemberCompetitionDto[];
+  competition?: CompetitionPreviewDto[];
+
+  @ApiProperty({
+    type: () => MemberPreviewDto, isArray: true,
+  })
+  members?: MemberPreviewDto[];
 
   @IsDate()
   @ApiProperty({ description: '수상 데이터 생성일' })
@@ -46,4 +56,25 @@ export class MemberAwardDto {
   @IsDate()
   @ApiProperty({ description: '수상 데이터 수정일' })
   updatedAt: Date;
+}
+
+export class CreateAwardDto extends OmitType(AwardDto, [
+  'competition',
+  'members',
+  'createdAt',
+  'updatedAt',
+  'uuid',
+  'competitionUUID',
+  'competition',
+] as const) {
+  @ApiProperty({ type: () => ConnectCompetitionDto })
+  competition: ConnectCompetitionDto;
+
+  @ApiProperty({
+    type:  'array',
+    items: {
+      type: 'string', example: '123e4567-e89b-12d3-a456-426614174000',
+    },
+  })
+  membersUUID?: string[];
 }
