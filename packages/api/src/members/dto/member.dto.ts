@@ -39,6 +39,12 @@ export class MemberDto {
   })
   unit: MemberUnit;
 
+  @IsNumber()
+  @ApiProperty({
+    description: '기수', example: 119,
+  })
+  generation: number;
+
   @IsString()
   @ApiProperty({
     description: '프로필 URI', example: 'https://tapie.kr/profile.png',
