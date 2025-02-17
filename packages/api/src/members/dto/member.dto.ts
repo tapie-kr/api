@@ -52,6 +52,15 @@ export class MemberDto {
   profileUri: string;
 }
 
+export class MemberPreviewDto extends OmitType(MemberDto, [
+  'googleEmail',
+  'role',
+  'unit',
+  'generation',
+  'profileUri',
+] as const) {
+}
+
 export class CreateMemberDto extends OmitType(MemberDto, ['uuid', 'profileUri'] as const) {
 }
 
