@@ -15,21 +15,21 @@ import {
 export const useFormList = () => {
   return useQuery<FormListResponse>(FormPrivateQueryKeys.FORM, {
     method: HttpMethod.GET,
-    url: '/form/admin',
+    url: '/admin/form',
   });
 };
 
 export const useForm = (id: FormId) => {
   return useQuery<FormResponse>(FormPrivateQueryKeys.FORM, {
     method: HttpMethod.GET,
-    url: `/form/admin/${id}`,
+    url: `/admin/form/${id}`,
   });
 };
 
 export const useFormResponseList = (id: FormId) => {
   return useQuery<unknown>(FormPrivateQueryKeys.FORM_RESPONSE(id), {
     method: HttpMethod.GET,
-    url: `/form/admin/${id}/responses`,
+    url: `/admin/form/${id}/responses`,
   });
 };
 
@@ -38,7 +38,7 @@ export const useFormResponse = (responseId: FormId) => {
     FormPrivateQueryKeys.FORM_RESPONSE_DETAIL(responseId),
     {
       method: HttpMethod.GET,
-      url: `/form/admin/responses/${responseId}`,
+      url: `/admin/form/responses/${responseId}`,
     },
   );
 };
@@ -49,7 +49,7 @@ export const useCreateForm = () => {
   return useMutation<FormResponse, CreateForm>(
     {
       method: HttpMethod.POST,
-      url: '/form/admin',
+      url: '/admin/form',
     },
     {
       onSuccess: () => {
@@ -68,7 +68,7 @@ export const useActivateForm = (id: FormId) => {
   return useMutation<unknown, unknown>(
     {
       method: HttpMethod.POST,
-      url: `/form/admin/${id}/activate`,
+      url: `/admin/form/${id}/activate`,
     },
     {
       onSuccess: () => {
@@ -89,7 +89,7 @@ export const useDeactivateForm = (id: FormId) => {
   return useMutation<unknown, unknown>(
     {
       method: HttpMethod.POST,
-      url: `/form/admin/${id}/deactivate`,
+      url: `/admin/form/${id}/deactivate`,
     },
     {
       onSuccess: () => {
@@ -110,7 +110,7 @@ export const useUpdateForm = (id: FormId) => {
   return useMutation<FormResponse, UpdateForm>(
     {
       method: HttpMethod.PATCH,
-      url: `/form/admin/${id}`,
+      url: `/admin/form/${id}`,
     },
     {
       onSuccess: () => {
@@ -131,7 +131,7 @@ export const useDeleteForm = (id: FormId) => {
   return useMutation<DeleteFormResponse, unknown>(
     {
       method: HttpMethod.DELETE,
-      url: `/form/admin/${id}`,
+      url: `/admin/form/${id}`,
     },
     {
       onSuccess: () => {
