@@ -1,6 +1,6 @@
 import { MemberRole, MemberUnit } from '@tapie-kr/api-database';
 
-export interface CreateMemberDto {
+export interface CreateMemberPrismaDto {
   googleEmail: string;
   name:        string;
   role:        MemberRole;
