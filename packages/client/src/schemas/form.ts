@@ -56,3 +56,21 @@ export type FormDetailResponse = BaseResponse<typeof formDetailScheme>;
 export type FormDetailListResponse = BaseResponse<
   typeof formDetailListResponseSchema
 >;
+
+// Public Form API
+export const createFormApplicationSchema = formDetailScheme.pick({
+  unit: true,
+  phoneNumber: true,
+  introduction: true,
+  motivation: true,
+  expectedActivities: true,
+  reasonToChoose: true,
+})
+export const updateFormApplicationScheme = createFormApplicationSchema.partial();
+export const formApplicationFile = z.object({
+  presignedUrl: z.string(),
+})
+
+export type CreateFormApplication = z.infer<typeof createFormApplicationSchema>;
+export type UpdateFormApplication = z.infer<typeof updateFormApplicationScheme>;
+export type FormApplicationFile = BaseResponse<typeof formApplicationFile>;

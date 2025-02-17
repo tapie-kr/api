@@ -14,21 +14,21 @@ import {
   UpdateForm,
 } from '../schemas/form';
 
-export const useFormList = () => {
+export const useAdminFormList = () => {
   return useQuery<FormListResponse>(FormPrivateQueryKeys.FORM, {
     method: HttpMethod.GET,
     url: '/admin/form',
   });
 };
 
-export const useForm = (id: FormId) => {
+export const useAdminForm = (id: FormId) => {
   return useQuery<FormResponse>(FormPrivateQueryKeys.FORM, {
     method: HttpMethod.GET,
     url: `/admin/form/${id}`,
   });
 };
 
-export const useFormResponseList = (id: FormId) => {
+export const useAdminFormResponseList = (id: FormId) => {
   return useQuery<FormDetailListResponse>(
     FormPrivateQueryKeys.FORM_RESPONSE(id),
     {
@@ -38,7 +38,7 @@ export const useFormResponseList = (id: FormId) => {
   );
 };
 
-export const useFormResponse = (responseId: FormId) => {
+export const useAdminFormApplication = (responseId: FormId) => {
   return useQuery<FormDetailResponse>(
     FormPrivateQueryKeys.FORM_RESPONSE_DETAIL(responseId),
     {
@@ -48,7 +48,7 @@ export const useFormResponse = (responseId: FormId) => {
   );
 };
 
-export const useCreateForm = () => {
+export const useAdminCreateForm = () => {
   const queryClient = useQueryClient();
 
   return useMutation<FormResponse, CreateForm>(
@@ -67,7 +67,7 @@ export const useCreateForm = () => {
   );
 };
 
-export const useActivateForm = (id: FormId) => {
+export const useAdminActivateForm = (id: FormId) => {
   const queryClient = useQueryClient();
 
   return useMutation<FormResponse>(
@@ -88,7 +88,7 @@ export const useActivateForm = (id: FormId) => {
   );
 };
 
-export const useDeactivateForm = (id: FormId) => {
+export const useAdminDeactivateForm = (id: FormId) => {
   const queryClient = useQueryClient();
 
   return useMutation<FormResponse>(
@@ -109,7 +109,7 @@ export const useDeactivateForm = (id: FormId) => {
   );
 };
 
-export const useUpdateForm = (id: FormId) => {
+export const useAdminUpdateForm = (id: FormId) => {
   const queryClient = useQueryClient();
 
   return useMutation<FormResponse, UpdateForm>(
@@ -130,7 +130,7 @@ export const useUpdateForm = (id: FormId) => {
   );
 };
 
-export const useDeleteForm = (id: FormId) => {
+export const useAdminDeleteForm = (id: FormId) => {
   const queryClient = useQueryClient();
 
   return useMutation<DeleteFormResponse>(
