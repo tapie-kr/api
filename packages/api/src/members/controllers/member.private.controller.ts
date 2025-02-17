@@ -121,11 +121,14 @@ export class MemberPrivateController {
   async removeLink(@Param('uuid') uuid: string, @Param('linkId') linkId: number) {
     return this.membersService.removeLink(uuid, linkId);
   }
-  @Post(':uuid/awards')
-  @ApiOperation({ summary: '멤버 수상 추가하기' })
-  @ApiCommonResponse(HttpStatus.OK, { $ref: getSchemaPath(MemberDto) })
-  async addAward(@Param('uuid') uuid: string, @Body() createMemberAward: CreateMemberAwardDto) {
-    return this.membersService.addAward(uuid, createMemberAward);
-  }
+
+  /*
+   * @Post(':uuid/awards')
+   * @ApiOperation({ summary: '멤버 수상 추가하기' })
+   * @ApiCommonResponse(HttpStatus.OK, { $ref: getSchemaPath(MemberDto) })
+   * async addAward(@Param('uuid') uuid: string, @Body() createMemberAward: CreateMemberAwardDto) {
+   *   return this.membersService.addAward(uuid, createMemberAward);
+   * }
+   */
 }
 
