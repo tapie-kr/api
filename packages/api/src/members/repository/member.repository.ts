@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@/common/prisma/prisma.service';
-import { CreateMemberDto } from '@/members/dto/create.dto';
+import { CreateMemberLinkDto, UpdateMemberLinkDto } from '@/members/dto/member-link.dto';
+import { CreateMemberPrismaDto } from '@/members/dto/member-transaction';
 
 @Injectable()
 export class MemberRepository {
@@ -26,13 +27,52 @@ export class MemberRepository {
   async getAllMembers() {
     return this.prisma.member.findMany({ include: { profile: true } });
   }
-  async createMember(data: CreateMemberDto) {
+  async createMember(data: CreateMemberPrismaDto) {
     return this.prisma.member.create({ data });
+  }
+  async updateMember(uuid: string, data: CreateMemberPrismaDto) {
+    return this.prisma.member.update({
+      where: { uuid }, data,
+    });
   }
   async updateMemberProfileImage(uuid: string, assetUUID: string) {
     return this.prisma.member.update({
       where: { uuid },
       data:  { profile: { connect: { uuid: assetUUID } } },
+    });
+  }
+  async deleteMemberProfileImage(uuid: string) {
+    return this.prisma.member.update({
+      where: { uuid },
+      data:  { profile: { disconnect: true } },
+    });
+  }
+  async addLink(uuid: string, data: CreateMemberLinkDto) {
+    return this.prisma.member.update({
+      where: { uuid },
+      data:  { links: { create: data } },
+    });
+  }
+  async hasLink(uuid: string, linkId: number): Promise<boolean> {
+    const linkEntity = await this.prisma.memberLink.findFirst({ where: {
+      memberUUID: uuid,
+      id:         linkId,
+    } });
+
+    return !!linkEntity;
+  }
+  async removeLink(uuid: string, linkId: number) {
+    return this.prisma.member.update({
+      where: { uuid },
+      data:  { links: { delete: { id: linkId } } },
+    });
+  }
+  async updateLink(uuid: string, linkId: number, data: UpdateMemberLinkDto) {
+    return this.prisma.member.update({
+      where: { uuid },
+      data:  { links: { update: {
+        where: { id: linkId }, data,
+      } } },
     });
   }
 }

@@ -4,6 +4,7 @@ import { AssetService } from '@/asset/asset.service';
 import { FileType } from '@/asset/types/fileType';
 import { decodeFileNameKorean } from '@/common/utils/string';
 import { CreateMemberDto, MemberDto } from '@/members/dto/member.dto';
+import { CreateMemberLinkDto, UpdateMemberLinkDto } from '@/members/dto/member-link.dto';
 import { GetMemberMethod } from '@/members/enums/member.enum';
 import { MemberRepository } from '@/members/repository/member.repository';
 
@@ -41,6 +42,9 @@ export class MembersService {
   async createMember(data: CreateMemberDto) {
     return this.memberRepository.createMember(data);
   }
+  async updateMember(uuid: string, data: CreateMemberDto) {
+    return this.memberRepository.updateMember(uuid, data);
+  }
   async updateMemberProfileImage(uuid: string, file: Express.Multer.File) {
     const originalFileName = decodeFileNameKorean(file.originalname);
     const filename = this.generateFilename(originalFileName);
@@ -53,6 +57,9 @@ export class MembersService {
     await this.memberRepository.updateMemberProfileImage(uuid, asset.uuid);
 
     return 'ok';
+  }
+  async deleteMemberProfileImage(uuid: string) {
+    return this.memberRepository.deleteMemberProfileImage(uuid);
   }
   async getAllMembers(options: {
     publicOnly: boolean;
@@ -72,6 +79,42 @@ export class MembersService {
           profileUri: this.minioService.buildPublicUrl(profileAssetPath),
         } as MemberDto;
       });
+    } else {
+      return members.map(member => {
+        const profileAssetPath = member.profile ? member.profile.path : 'profile/default.png';
+
+        return {
+          uuid:        member.uuid,
+          name:        member.name,
+          username:    member.username,
+          googleEmail: member.googleEmail,
+          role:        member.role,
+          unit:        member.unit,
+          profileUri:  this.minioService.buildPublicUrl(profileAssetPath),
+
+        } as MemberDto;
+      });
     }
+  }
+  async addLink(uuid: string, data: CreateMemberLinkDto) {
+    return this.memberRepository.addLink(uuid, data);
+  }
+  async removeLink(uuid: string, linkId: number) {
+    const deleteAvailable = await this.memberRepository.hasLink(uuid, linkId);
+
+    if (!deleteAvailable) {
+      throw new BadRequestException('링크를 찾을 수 없습니다');
+    }
+
+    return this.memberRepository.removeLink(uuid, linkId);
+  }
+  async updateLink(uuid: string, linkId: number, data: UpdateMemberLinkDto) {
+    const updateAvailable = await this.memberRepository.hasLink(uuid, linkId);
+
+    if (!updateAvailable) {
+      throw new BadRequestException('링크를 찾을 수 없습니다');
+    }
+
+    return this.memberRepository.updateLink(uuid, linkId, data);
   }
 }
