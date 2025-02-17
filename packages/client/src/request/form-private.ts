@@ -7,6 +7,8 @@ import { useQuery } from '../hooks/use-query';
 import {
   CreateForm,
   DeleteFormResponse,
+  FormDetailListResponse,
+  FormDetailResponse,
   FormListResponse,
   FormResponse,
   UpdateForm,
@@ -15,31 +17,34 @@ import {
 export const useFormList = () => {
   return useQuery<FormListResponse>(FormPrivateQueryKeys.FORM, {
     method: HttpMethod.GET,
-    url: '/admin/form',
+    url: '/form/admin',
   });
 };
 
 export const useForm = (id: FormId) => {
   return useQuery<FormResponse>(FormPrivateQueryKeys.FORM, {
     method: HttpMethod.GET,
-    url: `/admin/form/${id}`,
+    url: `/form/admin/${id}`,
   });
 };
 
 export const useFormResponseList = (id: FormId) => {
-  return useQuery<unknown>(FormPrivateQueryKeys.FORM_RESPONSE(id), {
-    method: HttpMethod.GET,
-    url: `/admin/form/${id}/responses`,
-  });
+  return useQuery<FormDetailListResponse>(
+    FormPrivateQueryKeys.FORM_RESPONSE(id),
+    {
+      method: HttpMethod.GET,
+      url: `/form/admin/${id}/application`,
+    }
+  );
 };
 
 export const useFormResponse = (responseId: FormId) => {
-  return useQuery<unknown>(
+  return useQuery<FormDetailResponse>(
     FormPrivateQueryKeys.FORM_RESPONSE_DETAIL(responseId),
     {
       method: HttpMethod.GET,
-      url: `/admin/form/responses/${responseId}`,
-    },
+      url: `/form/admin/application/${responseId}`,
+    }
   );
 };
 
@@ -49,7 +54,7 @@ export const useCreateForm = () => {
   return useMutation<FormResponse, CreateForm>(
     {
       method: HttpMethod.POST,
-      url: '/admin/form',
+      url: '/form/admin',
     },
     {
       onSuccess: () => {
@@ -58,17 +63,17 @@ export const useCreateForm = () => {
       onError: (error) => {
         console.error('Error creating form:', error);
       },
-    },
+    }
   );
 };
 
 export const useActivateForm = (id: FormId) => {
   const queryClient = useQueryClient();
 
-  return useMutation<unknown, unknown>(
+  return useMutation<FormResponse>(
     {
       method: HttpMethod.POST,
-      url: `/admin/form/${id}/activate`,
+      url: `/form/admin/${id}/activate`,
     },
     {
       onSuccess: () => {
@@ -79,17 +84,17 @@ export const useActivateForm = (id: FormId) => {
       onError: (error) => {
         console.error('Error activating form:', error);
       },
-    },
+    }
   );
 };
 
 export const useDeactivateForm = (id: FormId) => {
   const queryClient = useQueryClient();
 
-  return useMutation<unknown, unknown>(
+  return useMutation<FormResponse>(
     {
       method: HttpMethod.POST,
-      url: `/admin/form/${id}/deactivate`,
+      url: `/form/admin/${id}/deactivate`,
     },
     {
       onSuccess: () => {
@@ -100,7 +105,7 @@ export const useDeactivateForm = (id: FormId) => {
       onError: (error) => {
         console.error('Error deactivating form:', error);
       },
-    },
+    }
   );
 };
 
@@ -110,7 +115,7 @@ export const useUpdateForm = (id: FormId) => {
   return useMutation<FormResponse, UpdateForm>(
     {
       method: HttpMethod.PATCH,
-      url: `/admin/form/${id}`,
+      url: `/form/admin/${id}`,
     },
     {
       onSuccess: () => {
@@ -121,17 +126,17 @@ export const useUpdateForm = (id: FormId) => {
       onError: (error) => {
         console.error('Error updating form:', error);
       },
-    },
+    }
   );
 };
 
 export const useDeleteForm = (id: FormId) => {
   const queryClient = useQueryClient();
 
-  return useMutation<DeleteFormResponse, unknown>(
+  return useMutation<DeleteFormResponse>(
     {
       method: HttpMethod.DELETE,
-      url: `/admin/form/${id}`,
+      url: `/form/admin/${id}`,
     },
     {
       onSuccess: () => {
@@ -142,6 +147,6 @@ export const useDeleteForm = (id: FormId) => {
       onError: (error) => {
         console.error('Error deleting form:', error);
       },
-    },
+    }
   );
 };
