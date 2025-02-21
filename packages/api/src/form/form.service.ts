@@ -28,7 +28,6 @@ export class FormService {
     try {
       await this.formRepository.remove(id);
     } catch (_error) {
-
       throw new NotFoundException('지원 폼을 찾을 수 없습니다');
     }
 
