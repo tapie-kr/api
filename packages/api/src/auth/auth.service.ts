@@ -18,9 +18,6 @@ export class AuthService {
     private readonly membersService: MembersService,
     private readonly httpService: HttpService) {
   }
-  async getMember(method: GetMemberMethod, value: string) {
-    return this.membersService.getMember(method, value);
-  }
   async googleLogin(googleUser: GoogleAuthDto, service: string) {
     if (!googleUser) {
       throw new UnauthorizedException(AUTH_ERROR_MESSAGE.ACCOUNT.INVALID);
@@ -56,9 +53,9 @@ export class AuthService {
     } else {
       payload = {
         type:  TokenType.ACCESS_TOKEN,
-        id:    existsMember.uuid,
         email: existsMember.googleEmail,
         name:  existsMember.name,
+        id:    existsMember.uuid,
       } as MemberPayloadDto;
     }
 

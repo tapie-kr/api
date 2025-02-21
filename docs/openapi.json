@@ -1,6 +1,34 @@
 {
   "openapi": "3.0.0",
   "paths": {
+    "/members": {
+      "get": {
+        "operationId": "MemberPublicController_getAllMembers",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "MemberPublic"
+        ]
+      }
+    },
+    "/members/admin": {
+      "get": {
+        "operationId": "MemberPrivateController_getAllMembers",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "MemberPrivate"
+        ]
+      }
+    },
     "/auth/google": {
       "get": {
         "operationId": "AuthController_googleAuth",
@@ -18,6 +46,7 @@
     },
     "/auth/google/callback": {
       "get": {
+        "description": "accessToken과 refreshToken은 쿠키로 관리됩니다",
         "operationId": "AuthController_googleAuthRedirect",
         "parameters": [
           {
@@ -27,13 +56,51 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "code",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/APIResponseDto"
+                    },
+                    {
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "example": 200
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "responseAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "data": {
+                          "$ref": "#/components/schemas/MemberPayloadWithoutTypeDto"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
           }
         },
+        "summary": "Google Oauth Code로 서비스에 로그인",
         "tags": [
           "Auth"
         ]
@@ -41,18 +108,50 @@
     },
     "/auth/refresh": {
       "post": {
+        "description": "*쿠키에 refreshToken을 설정해야 합니다.",
         "operationId": "AuthController_refreshAccessToken",
         "parameters": [],
         "responses": {
-          "201": {
-            "description": ""
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/APIResponseDto"
+                    },
+                    {
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "example": 200
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "responseAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "data": {
+                          "type": "string",
+                          "example": "ok"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
           }
         },
         "security": [
           {
-            "RefreshToken": []
+            "refreshToken": []
           }
         ],
+        "summary": "Access Token을 Refresh하기",
         "tags": [
           "Auth"
         ]
@@ -64,14 +163,44 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/APIResponseDto"
+                    },
+                    {
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "example": 200
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "responseAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "data": {
+                          "$ref": "#/components/schemas/MemberPayloadWithoutTypeDto"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
           }
         },
         "security": [
           {
-            "AccessToken": []
+            "accessToken": []
           }
         ],
+        "summary": "내 정보 가져오기",
         "tags": [
           "Auth"
         ]
@@ -93,8 +222,40 @@
           }
         },
         "responses": {
-          "201": {
-            "description": ""
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/APIResponseDto"
+                    },
+                    {
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "example": 200
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "responseAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/FormDto"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
           }
         },
         "security": [
@@ -112,7 +273,39 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/APIResponseDto"
+                    },
+                    {
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "example": 200
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "responseAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/FormDto"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
           }
         },
         "security": [
@@ -151,7 +344,36 @@
         },
         "responses": {
           "200": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/APIResponseDto"
+                    },
+                    {
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "example": 200
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "responseAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "data": {
+                          "$ref": "#/components/schemas/FormDto"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
           }
         },
         "security": [
@@ -178,7 +400,37 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/APIResponseDto"
+                    },
+                    {
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "example": 200
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "responseAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "data": {
+                          "type": "string",
+                          "example": "ok"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
           }
         },
         "security": [
@@ -205,7 +457,36 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/APIResponseDto"
+                    },
+                    {
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "example": 200
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "responseAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "data": {
+                          "$ref": "#/components/schemas/FormDto"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
           }
         },
         "security": [
@@ -234,7 +515,39 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/APIResponseDto"
+                    },
+                    {
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "example": 200
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "responseAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/FormResponseDto"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
           }
         },
         "security": [
@@ -263,7 +576,36 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/APIResponseDto"
+                    },
+                    {
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "example": 200
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "responseAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "data": {
+                          "$ref": "#/components/schemas/FormResponseDto"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
           }
         },
         "security": [
@@ -291,8 +633,37 @@
           }
         ],
         "responses": {
-          "201": {
-            "description": ""
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/APIResponseDto"
+                    },
+                    {
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "example": 200
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "responseAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "data": {
+                          "$ref": "#/components/schemas/FormDto"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
           }
         },
         "security": [
@@ -320,8 +691,37 @@
           }
         ],
         "responses": {
-          "201": {
-            "description": ""
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/APIResponseDto"
+                    },
+                    {
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "example": 200
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "responseAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "data": {
+                          "$ref": "#/components/schemas/FormDto"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
           }
         },
         "security": [
@@ -341,7 +741,36 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/APIResponseDto"
+                    },
+                    {
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "example": 200
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "responseAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "data": {
+                          "$ref": "#/components/schemas/FormDto"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
           }
         },
         "security": [
@@ -379,8 +808,37 @@
           }
         },
         "responses": {
-          "201": {
-            "description": ""
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/APIResponseDto"
+                    },
+                    {
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "example": 200
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "responseAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "data": {
+                          "$ref": "#/components/schemas/FormResponseDto"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
           }
         },
         "security": [
@@ -407,7 +865,36 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/APIResponseDto"
+                    },
+                    {
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "example": 200
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "responseAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "data": {
+                          "$ref": "#/components/schemas/FormResponseDto"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
           }
         },
         "security": [
@@ -444,7 +931,36 @@
         },
         "responses": {
           "200": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/APIResponseDto"
+                    },
+                    {
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "example": 200
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "responseAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "data": {
+                          "$ref": "#/components/schemas/FormResponseDto"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
           }
         },
         "security": [
@@ -471,7 +987,36 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/APIResponseDto"
+                    },
+                    {
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "example": 200
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "responseAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "data": {
+                          "$ref": "#/components/schemas/FormResponseDto"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
           }
         },
         "security": [
@@ -517,7 +1062,34 @@
         },
         "responses": {
           "200": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/APIResponseDto"
+                    },
+                    {
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "example": 200
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "responseAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "data": {}
+                      }
+                    }
+                  ]
+                }
+              }
+            }
           }
         },
         "security": [
@@ -544,7 +1116,41 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/APIResponseDto"
+                    },
+                    {
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "example": 200
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "responseAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "data": {
+                          "properties": {
+                            "presignedUrl": {
+                              "type": "string",
+                              "example": "https://example.com"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
           }
         },
         "security": [
@@ -571,7 +1177,36 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/APIResponseDto"
+                    },
+                    {
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "example": 200
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "responseAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "data": {
+                          "$ref": "#/components/schemas/FormResponseDto"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
           }
         },
         "security": [
@@ -600,8 +1235,37 @@
           }
         ],
         "responses": {
-          "201": {
-            "description": ""
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/APIResponseDto"
+                    },
+                    {
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "example": 200
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "responseAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "data": {
+                          "$ref": "#/components/schemas/FormResponseDto"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
           }
         },
         "security": [
@@ -630,7 +1294,36 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/APIResponseDto"
+                    },
+                    {
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "example": 200
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "responseAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "data": {
+                          "type": "boolean"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
           }
         },
         "security": [
@@ -648,7 +1341,7 @@
   "info": {
     "title": "TAPIE API",
     "description": "TAPIE System API",
-    "version": "0.0.7",
+    "version": "0.0.8",
     "contact": {}
   },
   "tags": [],
@@ -675,36 +1368,38 @@
       }
     },
     "schemas": {
-      "CreateFormDto": {
+      "MemberPayloadWithoutTypeDto": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
           "name": {
-            "type": "string",
-            "description": "폼 이름"
-          },
-          "startsAt": {
-            "format": "date-time",
-            "type": "string",
-            "description": "시작 날짜"
-          },
-          "endsAt": {
-            "format": "date-time",
-            "type": "string",
-            "description": "종료 날짜"
+            "type": "string"
           }
         },
         "required": [
-          "name",
-          "startsAt",
-          "endsAt"
+          "email",
+          "name"
         ]
       },
-      "UpdateFormDto": {
+      "FormDto": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "number",
+            "description": "폼 ID",
+            "example": 1
+          },
           "name": {
             "type": "string",
-            "description": "폼 이름"
+            "description": "폼 이름",
+            "example": "Sample Form"
           },
           "startsAt": {
             "format": "date-time",
@@ -715,15 +1410,50 @@
             "format": "date-time",
             "type": "string",
             "description": "종료 날짜"
+          },
+          "active": {
+            "type": "boolean",
+            "description": "활성화 여부"
           }
-        }
+        },
+        "required": [
+          "id",
+          "name",
+          "startsAt",
+          "endsAt",
+          "active"
+        ]
       },
-      "CreateFormResponseDto": {
+      "FormResponseDto": {
         "type": "object",
         "properties": {
+          "uuid": {
+            "type": "string",
+            "description": "응답 UUID"
+          },
+          "formId": {
+            "type": "number",
+            "description": "폼 ID"
+          },
+          "memberUUID": {
+            "type": "string",
+            "description": "멤버 UUID"
+          },
+          "portfolioAssetUUID": {
+            "type": "string",
+            "description": "포트폴리오 UUID"
+          },
           "name": {
             "type": "string",
             "description": "이름"
+          },
+          "studentId": {
+            "type": "string",
+            "description": "학번"
+          },
+          "googleEmail": {
+            "type": "string",
+            "description": "구글 이메일"
           },
           "unit": {
             "type": "string",
@@ -740,23 +1470,142 @@
           },
           "introduction": {
             "type": "string",
-            "description": "자기소개"
+            "description": "소개"
           },
           "motivation": {
             "type": "string",
-            "description": "지원동기"
+            "description": "동기"
           },
           "expectedActivities": {
             "type": "string",
-            "description": "기대활동"
+            "description": "기대 활동"
           },
           "reasonToChoose": {
             "type": "string",
-            "description": "지원이유"
+            "description": "선택 이유"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "생성일"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "수정일"
+          },
+          "submitted": {
+            "type": "boolean",
+            "description": "제출 여부"
+          }
+        },
+        "required": [
+          "uuid",
+          "formId",
+          "memberUUID",
+          "portfolioAssetUUID",
+          "name",
+          "studentId",
+          "googleEmail",
+          "unit",
+          "phoneNumber",
+          "introduction",
+          "motivation",
+          "expectedActivities",
+          "reasonToChoose",
+          "createdAt",
+          "updatedAt",
+          "submitted"
+        ]
+      },
+      "CreateFormDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "폼 이름",
+            "example": "Sample Form"
+          },
+          "startsAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "시작 날짜"
+          },
+          "endsAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "종료 날짜"
+          },
+          "active": {
+            "type": "boolean",
+            "description": "활성화 여부"
           }
         },
         "required": [
           "name",
+          "startsAt",
+          "endsAt",
+          "active"
+        ]
+      },
+      "UpdateFormDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "폼 이름",
+            "example": "Sample Form"
+          },
+          "startsAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "시작 날짜"
+          },
+          "endsAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "종료 날짜"
+          },
+          "active": {
+            "type": "boolean",
+            "description": "활성화 여부"
+          }
+        }
+      },
+      "CreateFormResponseDto": {
+        "type": "object",
+        "properties": {
+          "unit": {
+            "type": "string",
+            "description": "유닛",
+            "enum": [
+              "DEVELOPER",
+              "DESIGNER",
+              "EXTERNAL"
+            ]
+          },
+          "phoneNumber": {
+            "type": "string",
+            "description": "전화번호"
+          },
+          "introduction": {
+            "type": "string",
+            "description": "소개"
+          },
+          "motivation": {
+            "type": "string",
+            "description": "동기"
+          },
+          "expectedActivities": {
+            "type": "string",
+            "description": "기대 활동"
+          },
+          "reasonToChoose": {
+            "type": "string",
+            "description": "선택 이유"
+          }
+        },
+        "required": [
           "unit",
           "phoneNumber",
           "introduction",
@@ -768,10 +1617,6 @@
       "UpdateFormResponseDto": {
         "type": "object",
         "properties": {
-          "name": {
-            "type": "string",
-            "description": "이름"
-          },
           "unit": {
             "type": "string",
             "description": "유닛",
@@ -787,19 +1632,19 @@
           },
           "introduction": {
             "type": "string",
-            "description": "자기소개"
+            "description": "소개"
           },
           "motivation": {
             "type": "string",
-            "description": "지원동기"
+            "description": "동기"
           },
           "expectedActivities": {
             "type": "string",
-            "description": "기대활동"
+            "description": "기대 활동"
           },
           "reasonToChoose": {
             "type": "string",
-            "description": "지원이유"
+            "description": "선택 이유"
           }
         }
       }

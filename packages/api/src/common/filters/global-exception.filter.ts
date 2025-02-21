@@ -22,12 +22,29 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     const status =
       exception instanceof HttpException ? exception.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR;
 
-    const message = exception.message || 'Internal Server Error';
+    let message = exception.message || 'Internal Server Error';
+    let errorDetailData: unknown = {};
+    let errorResponse: {
+      message?: unknown;
+    } = {};
+
+    if (exception instanceof HttpException) {
+      const exceptionResponse = exception.getResponse();
+
+      if (typeof exceptionResponse === 'object' && exceptionResponse !== null) {
+        errorResponse = exceptionResponse;
+
+        errorDetailData = errorResponse.message || message;
+      }
+    }
+
     const apiResponse = new APIResponseDto;
 
     apiResponse.status = status;
 
     apiResponse.message = message;
+
+    apiResponse.data = { reason: errorDetailData || undefined };
 
     response.status(status).send(apiResponse);
 

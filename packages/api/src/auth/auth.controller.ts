@@ -2,6 +2,7 @@ import {
   BadRequestException,
   Controller,
   Get,
+  HttpStatus,
   Post,
   Query,
   Req,
@@ -10,11 +11,16 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiExtraModels,
+  ApiOperation,
+  getSchemaPath,
+} from '@nestjs/swagger';
 import { Request, Response } from 'express';
 import { MemberPayloadDto, MemberPayloadWithoutTypeDto } from '@/auth/dto/member-payload.dto';
 import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
-import { ApiCommonResponse, ApiFixedResponse } from '@/common/utils/swagger';
+import { ApiCommonResponse } from '@/common/utils/swagger';
 import { AuthService } from './auth.service';
 import { GoogleAuthDto } from './dto/google-auth.dto';
 
@@ -33,7 +39,8 @@ export class AuthController {
   @ApiOperation({
     summary: 'Google Oauth Code로 서비스에 로그인', description: 'accessToken과 refreshToken은 쿠키로 관리됩니다',
   })
-  @ApiCommonResponse(MemberPayloadWithoutTypeDto)
+  @ApiCommonResponse(HttpStatus.OK, { $ref: getSchemaPath(MemberPayloadWithoutTypeDto) })
+  @ApiExtraModels(MemberPayloadWithoutTypeDto)
   async googleAuthRedirect(@Query('service') service: string,
     @Query('code') _code: string,
     @Req() req: Response & {
@@ -61,8 +68,10 @@ export class AuthController {
     };
   }
   @Post('refresh')
-  @ApiBearerAuth('RefreshToken')
-  @ApiFixedResponse('ok')
+  @ApiBearerAuth('refreshToken')
+  @ApiCommonResponse(HttpStatus.OK, {
+    type: 'string', example: 'ok',
+  })
   @ApiOperation({
     summary: 'Access Token을 Refresh하기', description: '*쿠키에 refreshToken을 설정해야 합니다.',
   })
@@ -85,8 +94,8 @@ export class AuthController {
   }
   @Get('me')
   @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth('AccessToken')
-  @ApiCommonResponse(MemberPayloadWithoutTypeDto)
+  @ApiBearerAuth('accessToken')
+  @ApiCommonResponse(HttpStatus.OK, { $ref: getSchemaPath(MemberPayloadWithoutTypeDto) })
   @ApiOperation({ summary: '내 정보 가져오기' })
   async me(@Req() req: Response & {
     user: MemberPayloadDto;

@@ -1,8 +1,15 @@
-import { ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  ExecutionContext,
+  Injectable,
+  Logger,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
 import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
 import { GetMemberMethod } from '@/members/enums/member.enum';
 import { MembersService } from '@/members/service/members.service';
+
+const logger = new Logger('UserAuthGuard');
 
 @Injectable()
 export class UserAuthGuard extends JwtAuthGuard {
@@ -24,14 +31,10 @@ export class UserAuthGuard extends JwtAuthGuard {
     const jwtPayload = request.user;
 
     try {
-      const member = await this.membersService.getMember(GetMemberMethod.UUID, jwtPayload.id);
+      request.user = await this.membersService.getMember(GetMemberMethod.UUID, jwtPayload.id);
+    } catch (error) {
+      logger.error(error);
 
-      if (!member) {
-        throw new UnauthorizedException('Unauthorized');
-      }
-
-      request.user = member;
-    } catch (_error) {
       throw new UnauthorizedException('Inaccessible scope');
     }
 

@@ -1,24 +1,39 @@
-import { applyDecorators, Type } from '@nestjs/common';
-import { ApiExtraModels, ApiResponse, getSchemaPath } from '@nestjs/swagger';
-import { APIResponseDto } from '@/common/dto/response.dto';
+import { applyDecorators, HttpStatus } from '@nestjs/common';
+import { ApiProperty, ApiResponse, getSchemaPath } from '@nestjs/swagger';
+import { ReferenceObject, SchemaObject } from '@nestjs/swagger/dist/interfaces/open-api-spec.interface';
 
-export const ApiCommonResponse = <TModel extends Type<unknown> | object>(
-  model?: TModel,
-) => {
+class APIResponseDto<T> {
+  @ApiProperty({ example: HttpStatus.OK })
+  public status: HttpStatus;
+
+  @ApiProperty({ example: 'OK' })
+  public message: string;
+
+  @ApiProperty({ nullable: true })
+  public data: T;
+
+  @ApiProperty({
+    example: '2024-02-16T16:44:42Z',
+    format:  'date-time',
+  })
+  public responseAt: string;
+}
+
+type SwaggerStatusCodeType = number | 'default' | '1XX' | '2XX' | '3XX' | '4XX' | '5XX';
+
+export const ApiCommonResponse = (status: SwaggerStatusCodeType = 200, obj: SchemaObject & Partial<ReferenceObject>) => {
   const baseProperties = {
-    status:     { type: 'number' },
+    status: {
+      type: 'number', example: status,
+    },
     message:    { type: 'string' },
     responseAt: {
       type: 'string', format: 'date-time',
     },
   };
 
-  const dataProperty = model
-    ? model instanceof Function
-      ? { $ref: getSchemaPath(model) }
-      : {
-        type: 'object', example: model,
-      }
+  const dataProperty = obj
+    ? { ...obj  }
     : {
       type: 'object', nullable: true, example: {},
     };
@@ -31,10 +46,9 @@ export const ApiCommonResponse = <TModel extends Type<unknown> | object>(
     } },
   ] };
 
-  return applyDecorators(model && model instanceof Function ? ApiExtraModels(model) : applyDecorators(),
-    ApiResponse({
-      status: 200, schema,
-    }));
+  return applyDecorators(ApiResponse({
+    status, schema,
+  }));
 };
 
 export const ApiFixedResponse = (fixedValue: unknown) => {
