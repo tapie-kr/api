@@ -68,18 +68,18 @@ export class PortfolioPrivateController {
   async getAllCompetitions() {
     return this.portfolioService.getAllCompetitions();
   }
-  @Get('competitions/:competitionUUUID')
+  @Get('competitions/:competitionUUID')
   @ApiOperation({ summary: '대회별 수상 가져오기' })
   @ApiCommonResponse(HttpStatus.OK, {
     type: 'array', items: { $ref: getSchemaPath(AwardDto) },
   })
-  async getAwardsByCompetition(@Param('competitionUUUID') competitionUUID: string) {
+  async getAwardsByCompetition(@Param('competitionUUID') competitionUUID: string) {
     return this.portfolioService.getAwardsByCompetition(competitionUUID);
   }
-  @Delete('competitions/:competitionUUUID')
+  @Delete('competitions/:competitionUUID')
   @ApiOperation({ summary: '대회 삭제' })
   @HttpCode(HttpStatus.NO_CONTENT)
-  async deleteCompetition(@Param('competitionUUUID') competitionUUID: string) {
+  async deleteCompetition(@Param('competitionUUID') competitionUUID: string) {
     await this.portfolioService.deleteCompetition(competitionUUID);
   }
 }
