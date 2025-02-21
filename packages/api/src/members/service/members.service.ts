@@ -5,12 +5,15 @@ import { FileType } from '@/asset/types/fileType';
 import { decodeFileNameKorean } from '@/common/utils/string';
 import { CreateMemberDto, MemberDto } from '@/members/dto/member.dto';
 import { CreateMemberLinkDto, UpdateMemberLinkDto } from '@/members/dto/member-link.dto';
+import { ConnectSkillDto, CreateMemberSkillDto, UpdateMemberSkillDto } from '@/members/dto/member-skill.dto';
 import { GetMemberMethod } from '@/members/enums/member.enum';
 import { MemberRepository } from '@/members/repository/member.repository';
+import { SkillRepository } from '@/members/repository/skill.repository';
 
 @Injectable()
 export class MembersService {
   constructor(private readonly memberRepository: MemberRepository,
+    private readonly skillRepository: SkillRepository,
     private readonly minioService: AssetService) {
   }
   private generateFilename(originalName: string): string {
@@ -116,5 +119,49 @@ export class MembersService {
     }
 
     return this.memberRepository.updateLink(uuid, linkId, data);
+  }
+  async skillConnector(data: ConnectSkillDto) {
+    if (data.uuid && data.name) {
+      throw new BadRequestException('스킬을 연결하거나 새로운 스킬을 만드는 것 중 하나만 선택해야 합니다.');
+    }
+
+    if (data.uuid) {
+      return this.skillRepository.getSkill(data.uuid);
+    }
+
+    if (data.name) {
+      return this.skillRepository.createSkill({
+        icon: data.icon,
+        name: data.name,
+        type: data.type,
+      });
+    }
+
+    throw new BadRequestException('유효한 스킬 정보를 제공해야 합니다.');
+  }
+  async addMemberSkill(uuid: string, data: CreateMemberSkillDto) {
+    const skill = await this.skillConnector(data.skill);
+
+    return this.skillRepository.addMemberSkill(uuid, {
+      ...data, skillUUID: skill.uuid,
+    });
+  }
+  async updateMemberSkill(uuid: string, skillId: string, data: UpdateMemberSkillDto) {
+    const updateAvailable = await this.skillRepository.hasSkill(uuid, skillId);
+
+    if (!updateAvailable) {
+      throw new BadRequestException('스킬을 찾을 수 없습니다');
+    }
+
+    return this.skillRepository.updateMemberSkill(skillId, data);
+  }
+  async removeMemberSkill(uuid: string, skillId: string) {
+    const deleteAvailable = await this.skillRepository.hasSkill(uuid, skillId);
+
+    if (!deleteAvailable) {
+      throw new BadRequestException('스킬을 찾을 수 없습니다');
+    }
+
+    return this.skillRepository.removeMemberSkill(uuid, skillId);
   }
 }
