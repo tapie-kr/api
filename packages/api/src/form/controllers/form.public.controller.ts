@@ -42,7 +42,7 @@ export class FormPublicController {
   async findActiveForm() {
     return this.formService.getActiveForm();
   }
-  @Post(':id/response')
+  @Post(':id/application')
   @ApiOperation({ summary: '새 응답 만들기' })
   @ApiCommonResponse(HttpStatus.OK, { $ref: getSchemaPath(FormResponseDto) })
   async createResponse(@Param('id') id: number, @Req() req: Response & {
@@ -50,7 +50,7 @@ export class FormPublicController {
   }, @Body() createResponseDto: CreateFormResponseDto) {
     return this.formService.createResponse(id, req.user, createResponseDto);
   }
-  @Get(':id/response')
+  @Get(':id/application')
   @ApiOperation({ summary: '내 응답 가져오기' })
   @ApiCommonResponse(HttpStatus.OK, { $ref: getSchemaPath(FormResponseDto) })
   async findResponse(@Param('id') id: number, @Req() req: Response & {
@@ -58,7 +58,7 @@ export class FormPublicController {
   }) {
     return this.formService.findResponse(id, req.user);
   }
-  @Patch(':id/response')
+  @Patch(':id/application')
   @ApiOperation({ summary: '내 응답 수정하기' })
   @ApiCommonResponse(HttpStatus.OK, { $ref: getSchemaPath(FormResponseDto) })
   async updateResponse(@Param('id') id: number, @Req() req: Response & {
@@ -66,7 +66,7 @@ export class FormPublicController {
   }, @Body() updateFormResponseDto: UpdateFormResponseDto) {
     return this.formService.updateResponse(id, req.user, updateFormResponseDto);
   }
-  @Patch(':id/response/file')
+  @Patch(':id/application/file')
   @ApiConsumes('multipart/form-data')
   @ApiBody({ schema: {
     type:       'object',
@@ -84,7 +84,7 @@ export class FormPublicController {
   }, @UploadedFile() file: Express.Multer.File) {
     return this.formService.attachFileToResponse(id, req.user, file);
   }
-  @Get(':id/response/file')
+  @Get(':id/application/file')
   @ApiOperation({ summary: '내 응답에 있는 파일 가져오기' })
   @ApiCommonResponse(HttpStatus.OK, { properties: { presignedUrl: {
     type: 'string', example: 'https://example.com',
@@ -94,7 +94,7 @@ export class FormPublicController {
   }) {
     return this.formService.getFileFromResponse(id, req.user);
   }
-  @Delete(':id/response/file')
+  @Delete(':id/application/file')
   @ApiOperation({ summary: '내 응답에 있는 파일 삭제하기' })
   @ApiCommonResponse(HttpStatus.OK, { $ref: getSchemaPath(FormResponseDto) })
   async removeResponseFile(@Param('id') id: number, @Req() req: Response & {
@@ -102,7 +102,7 @@ export class FormPublicController {
   }) {
     return this.formService.removeFileFromResponse(id, req.user);
   }
-  @Post(':id/response/apply')
+  @Post(':id/application/apply')
   @ApiOperation({
     summary: '내 응답 제출하기', description: '응답을 제출하면 수정할 수 없음 (GET 요청만 허용)',
   })
@@ -112,7 +112,7 @@ export class FormPublicController {
   }) {
     return this.formService.submitResponse(id, req.user);
   }
-  @Delete(':id/response')
+  @Delete(':id/application')
   @ApiOperation({ summary: '내 응답 삭제하기' })
   @ApiCommonResponse(HttpStatus.OK, { $ref: getSchemaPath(FormResponseDto) })
   async removeResponse(@Param('id') id: number, @Req() req: Response & {
