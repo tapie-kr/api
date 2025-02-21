@@ -3,9 +3,9 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AssetModule } from '@/asset/asset.module';
 import { AuthModule } from '@/auth/auth.module';
-import { AwardsModule } from '@/awards/awards.module';
 import { FormModule } from '@/form/form.module';
 import { MembersModule } from '@/members/members.module';
+import { PortfolioModule } from '@/portfolio/portfolio.module';
 
 @Module({ imports: [
   ConfigModule.forRoot({
@@ -27,7 +27,7 @@ import { MembersModule } from '@/members/members.module';
   AssetModule,
 
   // Awards, Competitions
-  AwardsModule,
+  PortfolioModule,
 ] })
 export class AppModule {
 }
