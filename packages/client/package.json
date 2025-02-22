@@ -24,6 +24,7 @@
     }
   },
   "scripts": {
+    "prepublish": "pnpm run build",
     "build": "rimraf dist && tsup"
   },
   "devDependencies": {
