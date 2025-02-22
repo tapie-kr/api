@@ -5,23 +5,29 @@ import { AssetModule } from '@/asset/asset.module';
 import { AuthModule } from '@/auth/auth.module';
 import { FormModule } from '@/form/form.module';
 import { MembersModule } from '@/members/members.module';
+import { PortfolioModule } from '@/portfolio/portfolio.module';
 
 @Module({ imports: [
   ConfigModule.forRoot({
     isGlobal:    true,
     envFilePath: ['.env', '.env.development'],
   }),
-  MembersModule,
-  CacheModule.register({ isGlobal: true }),
-  AuthModule,
 
   // Members
+  MembersModule,
+
+  // Core
+  CacheModule.register({ isGlobal: true }),
+  AuthModule,
 
   // Form
   FormModule,
 
   // Minio (S3)
   AssetModule,
+
+  // Awards, Competitions
+  PortfolioModule,
 ] })
 export class AppModule {
 }

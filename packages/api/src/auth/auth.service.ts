@@ -18,9 +18,6 @@ export class AuthService {
     private readonly membersService: MembersService,
     private readonly httpService: HttpService) {
   }
-  async getMember(method: GetMemberMethod, value: string) {
-    return this.membersService.getMember(method, value);
-  }
   async googleLogin(googleUser: GoogleAuthDto, service: string) {
     if (!googleUser) {
       throw new UnauthorizedException(AUTH_ERROR_MESSAGE.ACCOUNT.INVALID);
@@ -52,20 +49,20 @@ export class AuthService {
         type:  TokenType.ACCESS_TOKEN,
         email: googleProfileData.email,
         name:  googleProfileData.name,
-      } as MemberPayloadDto;
+      } satisfies MemberPayloadDto;
     } else {
       payload = {
         type:  TokenType.ACCESS_TOKEN,
-        id:    existsMember.uuid,
         email: existsMember.googleEmail,
         name:  existsMember.name,
-      } as MemberPayloadDto;
+        id:    existsMember.uuid,
+      } satisfies MemberPayloadDto;
     }
 
     refreshPayload = {
       ...payload,
       type: TokenType.REFRESH_TOKEN,
-    } as MemberPayloadDto;
+    } satisfies MemberPayloadDto;
 
     const jwtSecret = this.configService.get('JWT_SECRET');
     const refreshSecret = this.configService.get('JWT_REFRESH_SECRET');
