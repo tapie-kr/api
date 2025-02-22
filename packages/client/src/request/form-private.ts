@@ -17,136 +17,114 @@ import {
 export const useAdminFormList = () => {
   return useQuery<FormListResponse>(FormPrivateQueryKeys.FORM, {
     method: HttpMethod.GET,
-    url: '/admin/form',
+    url:    '/admin/form',
   });
 };
 
 export const useAdminForm = (id: FormId) => {
   return useQuery<FormResponse>(FormPrivateQueryKeys.FORM, {
     method: HttpMethod.GET,
-    url: `/admin/form/${id}`,
+    url:    `/admin/form/${id}`,
   });
 };
 
 export const useAdminFormResponseList = (id: FormId) => {
-  return useQuery<FormDetailListResponse>(
-    FormPrivateQueryKeys.FORM_RESPONSE(id),
+  return useQuery<FormDetailListResponse>(FormPrivateQueryKeys.FORM_RESPONSE(id),
     {
       method: HttpMethod.GET,
-      url: `/admin/form/${id}/application`,
-    }
-  );
+      url:    `/admin/form/${id}/application`,
+    });
 };
 
 export const useAdminFormApplication = (responseId: FormId) => {
-  return useQuery<FormDetailResponse>(
-    FormPrivateQueryKeys.FORM_RESPONSE_DETAIL(responseId),
+  return useQuery<FormDetailResponse>(FormPrivateQueryKeys.FORM_RESPONSE_DETAIL(responseId),
     {
       method: HttpMethod.GET,
-      url: `/admin/form/application/${responseId}`,
-    }
-  );
+      url:    `/admin/form/application/${responseId}`,
+    });
 };
 
 export const useAdminCreateForm = () => {
   const queryClient = useQueryClient();
 
-  return useMutation<FormResponse, CreateForm>(
-    {
-      method: HttpMethod.POST,
-      url: '/form/admin',
+  return useMutation<FormResponse, CreateForm>({
+    method: HttpMethod.POST,
+    url:    '/form/admin',
+  },
+  {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: FormPrivateQueryKeys.FORM });
     },
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: FormPrivateQueryKeys.FORM });
-      },
-      onError: (error) => {
-        console.error('Error creating form:', error);
-      },
-    }
-  );
+    onError: error => {
+      console.error('Error creating form:', error);
+    },
+  });
 };
 
 export const useAdminActivateForm = (id: FormId) => {
   const queryClient = useQueryClient();
 
-  return useMutation<FormResponse>(
-    {
-      method: HttpMethod.POST,
-      url: `/admin/form/${id}/activate`,
+  return useMutation<FormResponse>({
+    method: HttpMethod.POST,
+    url:    `/admin/form/${id}/activate`,
+  },
+  {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: FormPrivateQueryKeys.FORM_DETAIL(id) });
     },
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries({
-          queryKey: FormPrivateQueryKeys.FORM_DETAIL(id),
-        });
-      },
-      onError: (error) => {
-        console.error('Error activating form:', error);
-      },
-    }
-  );
+    onError: error => {
+      console.error('Error activating form:', error);
+    },
+  });
 };
 
 export const useAdminDeactivateForm = (id: FormId) => {
   const queryClient = useQueryClient();
 
-  return useMutation<FormResponse>(
-    {
-      method: HttpMethod.POST,
-      url: `/admin/form/${id}/deactivate`,
+  return useMutation<FormResponse>({
+    method: HttpMethod.POST,
+    url:    `/admin/form/${id}/deactivate`,
+  },
+  {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: FormPrivateQueryKeys.FORM_DETAIL(id) });
     },
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries({
-          queryKey: FormPrivateQueryKeys.FORM_DETAIL(id),
-        });
-      },
-      onError: (error) => {
-        console.error('Error deactivating form:', error);
-      },
-    }
-  );
+    onError: error => {
+      console.error('Error deactivating form:', error);
+    },
+  });
 };
 
 export const useAdminUpdateForm = (id: FormId) => {
   const queryClient = useQueryClient();
 
-  return useMutation<FormResponse, UpdateForm>(
-    {
-      method: HttpMethod.PATCH,
-      url: `/admin/form/${id}`,
+  return useMutation<FormResponse, UpdateForm>({
+    method: HttpMethod.PATCH,
+    url:    `/admin/form/${id}`,
+  },
+  {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: FormPrivateQueryKeys.FORM_DETAIL(id) });
     },
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries({
-          queryKey: FormPrivateQueryKeys.FORM_DETAIL(id),
-        });
-      },
-      onError: (error) => {
-        console.error('Error updating form:', error);
-      },
-    }
-  );
+    onError: error => {
+      console.error('Error updating form:', error);
+    },
+  });
 };
 
 export const useAdminDeleteForm = (id: FormId) => {
   const queryClient = useQueryClient();
 
-  return useMutation<DeleteFormResponse>(
-    {
-      method: HttpMethod.DELETE,
-      url: `/admin/form/${id}`,
+  return useMutation<DeleteFormResponse>({
+    method: HttpMethod.DELETE,
+    url:    `/admin/form/${id}`,
+  },
+  {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: FormPrivateQueryKeys.FORM_DETAIL(id) });
     },
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries({
-          queryKey: FormPrivateQueryKeys.FORM_DETAIL(id),
-        });
-      },
-      onError: (error) => {
-        console.error('Error deleting form:', error);
-      },
-    }
-  );
+    onError: error => {
+      console.error('Error deleting form:', error);
+    },
+  });
 };
