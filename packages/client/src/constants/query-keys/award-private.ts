@@ -1,18 +1,22 @@
-const PrivateAwardQueryKey = "award/private";
+const PrivateAwardQueryKey = 'award/private';
 
 export const PrivateAwardQueryKeys = {
-  AWARDS: [PrivateAwardQueryKey, "awards"],
-  AWARD_DETAIL: (uuid: string) => [PrivateAwardQueryKey, "awards", uuid],
+  AWARDS:       [PrivateAwardQueryKey, 'awards'],
+  AWARD_DETAIL: (uuid: string) => [
+    PrivateAwardQueryKey,
+    'awards',
+    uuid,
+  ],
   AWARD_MEMBERS: (uuid: string) => [
     PrivateAwardQueryKey,
-    "awards",
+    'awards',
     uuid,
-    "members",
+    'members',
   ],
-  COMPETITIONS: [PrivateAwardQueryKey, "competitions"],
+  COMPETITIONS:       [PrivateAwardQueryKey, 'competitions'],
   COMPETITION_AWARDS: (uuid: string) => [
     PrivateAwardQueryKey,
-    "competitions",
+    'competitions',
     uuid,
   ],
 };
