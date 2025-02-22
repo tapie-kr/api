@@ -18,6 +18,7 @@ export * from './request/auth';
 export * from './request/form';
 export * from './request/form-private';
 export * from './request/award';
+export * from './request/award-private';
 export * from './types/api';
 export * from './types/endpoints/auth';
 export * from './provider';
