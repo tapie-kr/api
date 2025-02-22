@@ -1,20 +1,24 @@
-const PrivateMemberQueryKey = "member/private";
+const PrivateMemberQueryKey = 'member/private';
 
 export type PrivateMemberQueryKey = typeof PrivateMemberQueryKey;
 
 export const PrivateMemberQueryKeys = {
-  all: [PrivateMemberQueryKey],
-  lists: () => [...PrivateMemberQueryKeys.all, "list"],
-  detail: (uuid: string) => [...PrivateMemberQueryKeys.all, "detail", uuid],
+  all:    [PrivateMemberQueryKey],
+  lists:  () => [...PrivateMemberQueryKeys.all, 'list'],
+  detail: (uuid: string) => [
+    ...PrivateMemberQueryKeys.all,
+    'detail',
+    uuid,
+  ],
   links: {
     all: (memberUUID: string) => [
       ...PrivateMemberQueryKeys.all,
-      "links",
+      'links',
       memberUUID,
     ],
     detail: (memberUUID: string, linkUUID: string) => [
       ...PrivateMemberQueryKeys.all,
-      "links",
+      'links',
       memberUUID,
       linkUUID,
     ],
@@ -22,19 +26,19 @@ export const PrivateMemberQueryKeys = {
   skills: {
     all: (memberUUID: string) => [
       ...PrivateMemberQueryKeys.all,
-      "skills",
+      'skills',
       memberUUID,
     ],
     detail: (memberUUID: string, skillUUID: string) => [
       ...PrivateMemberQueryKeys.all,
-      "skills",
+      'skills',
       memberUUID,
       skillUUID,
     ],
   },
   profile: (memberUUID: string) => [
     ...PrivateMemberQueryKeys.all,
-    "profile",
+    'profile',
     memberUUID,
   ],
 };

@@ -8,7 +8,7 @@ export const formDetailScheme = z.object({
   formId:             z.number(),
   memberUUID:         z.string().uuid(),
   portfolioAssetUUID: z.string().uuid(),
-  name:               z.string().min(1, '이름은 필수입니다.'), // 강성영후 대비
+  name:               z.string().min(1, '이름은 필수입니다.'),
   studentId:          z.string(),
   googleEmail:        z
     .string()

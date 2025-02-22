@@ -1,5 +1,5 @@
 export enum SkillType {
-    DEVELOPMENT = 'development',
-    MANAGEMENT = 'management',
-    OTHER = 'other',
+  DEVELOPMENT = 'development',
+  MANAGEMENT = 'management',
+  OTHER = 'other',
 }

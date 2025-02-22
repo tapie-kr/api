@@ -1,3 +1,1 @@
-export const PublicMemberQueryKeys = {
-    MEMBER_LIST: ['member/public', 'list'],
-}
+export const PublicMemberQueryKeys = { MEMBER_LIST: ['member/public', 'list'] };
