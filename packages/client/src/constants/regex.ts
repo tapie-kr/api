@@ -1,1 +1,1 @@
-const koreanPhoneNumberPattern = /^(01[016789])-?([0-9]{3,4})-?([0-9]{4})$/;
+export const koreanPhoneNumberPattern = /^(01[016789])-?([0-9]{3,4})-?([0-9]{4})$/;

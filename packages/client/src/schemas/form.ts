@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { UnitType } from '../constants/unit-type';
 import { BaseResponse } from './base';
+import { koreanPhoneNumberPattern } from '../constants/regex';
 
 export const formDetailScheme = z.object({
   uuid: z.string().uuid(),
