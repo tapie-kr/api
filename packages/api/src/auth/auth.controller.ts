@@ -104,6 +104,6 @@ export class AuthController {
       id:    req.user.id,
       email: req.user.email,
       name:  req.user.name,
-    } as MemberPayloadWithoutTypeDto;
+    } satisfies MemberPayloadWithoutTypeDto;
   }
 }

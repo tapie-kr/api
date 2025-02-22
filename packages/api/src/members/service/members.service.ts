@@ -74,13 +74,15 @@ export class MembersService {
         const profileAssetPath = member.profile ? member.profile.path : 'profile/default.png';
 
         return {
-          uuid:       member.uuid,
-          name:       member.name,
-          username:   member.username,
-          role:       member.role,
-          unit:       member.unit,
-          profileUri: this.minioService.buildPublicUrl(profileAssetPath),
-        } as MemberDto;
+          uuid:        member.uuid,
+          name:        member.name,
+          username:    member.username,
+          role:        member.role,
+          unit:        member.unit,
+          generation:  member.generation,
+          googleEmail: '',
+          profileUri:  this.minioService.buildPublicUrl(profileAssetPath),
+        } satisfies MemberDto;
       });
     } else {
       return members.map(member => {
@@ -93,9 +95,10 @@ export class MembersService {
           googleEmail: member.googleEmail,
           role:        member.role,
           unit:        member.unit,
+          generation:  member.generation,
           profileUri:  this.minioService.buildPublicUrl(profileAssetPath),
 
-        } as MemberDto;
+        } satisfies MemberDto;
       });
     }
   }

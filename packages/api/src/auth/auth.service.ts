@@ -49,20 +49,20 @@ export class AuthService {
         type:  TokenType.ACCESS_TOKEN,
         email: googleProfileData.email,
         name:  googleProfileData.name,
-      } as MemberPayloadDto;
+      } satisfies MemberPayloadDto;
     } else {
       payload = {
         type:  TokenType.ACCESS_TOKEN,
         email: existsMember.googleEmail,
         name:  existsMember.name,
         id:    existsMember.uuid,
-      } as MemberPayloadDto;
+      } satisfies MemberPayloadDto;
     }
 
     refreshPayload = {
       ...payload,
       type: TokenType.REFRESH_TOKEN,
-    } as MemberPayloadDto;
+    } satisfies MemberPayloadDto;
 
     const jwtSecret = this.configService.get('JWT_SECRET');
     const refreshSecret = this.configService.get('JWT_REFRESH_SECRET');
