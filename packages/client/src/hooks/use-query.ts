@@ -1,6 +1,6 @@
 import { useQuery as useTanstackQuery, UseQueryOptions } from '@tanstack/react-query';
 import { AxiosRequestConfig } from 'axios';
-import { apiRequest } from '../request';
+import { apiRequest } from '@/request';
 
 export function useQuery<T>(queryKey: any[],
   config: AxiosRequestConfig,

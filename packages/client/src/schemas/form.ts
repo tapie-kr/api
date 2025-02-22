@@ -1,7 +1,7 @@
 import { z } from 'zod';
-import { koreanPhoneNumberPattern } from '../constants/regex';
-import { UnitType } from '../constants/unit-type';
-import { BaseResponse } from './base';
+import { koreanPhoneNumberPattern } from '@/constants/regex';
+import { UnitType } from '@/constants/unit-type';
+import { BaseResponse } from '@/schemas/base';
 
 export const formDetailScheme = z.object({
   uuid:               z.string().uuid(),
@@ -67,7 +67,9 @@ export const createFormApplicationSchema = formDetailScheme.pick({
   reasonToChoose:     true,
 });
 
-export const updateFormApplicationScheme = createFormApplicationSchema.partial();
+export const updateFormApplicationScheme =
+  createFormApplicationSchema.partial();
+
 export const formApplicationFile = z.object({ presignedUrl: z.string() });
 export type CreateFormApplication = z.infer<typeof createFormApplicationSchema>;
 export type UpdateFormApplication = z.infer<typeof updateFormApplicationScheme>;

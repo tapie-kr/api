@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { BaseResponse } from './base';
+import { BaseResponse } from '@/schemas/base';
 
 export const publicAwardSchema = z.object({
   uuid:        z.string().uuid(),
@@ -64,12 +64,27 @@ export const competitionAwardSchema = z.object({
 });
 
 export const publicAwardListResponseSchema = z.array(publicAwardSchema);
-export type PublicAwardListResponse = BaseResponse<typeof publicAwardListResponseSchema>;
+
+export type PublicAwardListResponse = BaseResponse<
+  typeof publicAwardListResponseSchema
+>;
+
 export const awardListResponseSchema = z.array(awardSchema);
 export type AwardListResponse = BaseResponse<typeof awardListResponseSchema>;
 export type CreateAward = z.infer<typeof addAwardSchema>;
 export type CreateAwardWithoutUUID = Omit<CreateAward, 'uuid'>;
-export type CreateAwardMember = Pick<CreateAward, 'competition' | 'membersUUID'>;
+
+export type CreateAwardMember = Pick<
+  CreateAward,
+  'competition' | 'membersUUID'
+>;
+
 export const competitionListResponseSchema = z.array(competitionSchema);
-export type CompetitionListResponse = BaseResponse<typeof competitionListResponseSchema>;
-export type CompetitionAwardListResponseSchema = BaseResponse<typeof competitionAwardSchema>;
+
+export type CompetitionListResponse = BaseResponse<
+  typeof competitionListResponseSchema
+>;
+
+export type CompetitionAwardListResponseSchema = BaseResponse<
+  typeof competitionAwardSchema
+>;

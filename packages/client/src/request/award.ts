@@ -1,9 +1,9 @@
 import { useQueryClient } from '@tanstack/react-query';
-import { HttpMethod } from '../constants/http-method';
-import { AwardQueryKeys } from '../constants/query-keys/award';
-import { PrivateAwardQueryKeys } from '../constants/query-keys/award-private';
-import { useMutation } from '../hooks/use-mutation';
-import { useQuery } from '../hooks/use-query';
+import { HttpMethod } from '@/constants/http-method';
+import { AwardQueryKeys } from '@/constants/query-keys/award';
+import { PrivateAwardQueryKeys } from '@/constants/query-keys/award-private';
+import { useMutation } from '@/hooks/use-mutation';
+import { useQuery } from '@/hooks/use-query';
 import {
   AwardListResponse,
   CompetitionAwardListResponseSchema,
@@ -12,7 +12,7 @@ import {
   CreateAwardMember,
   CreateAwardWithoutUUID,
   PublicAwardListResponse,
-} from '../schemas/award';
+} from '@/schemas/award';
 
 type AwardUUID = string;
 

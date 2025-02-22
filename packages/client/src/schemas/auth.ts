@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { BaseResponse } from './base';
+import { BaseResponse } from '@/schemas/base';
 
 export const refreshTokenResponseSchema = z.string();
 

@@ -1,8 +1,8 @@
 import { useQueryClient } from '@tanstack/react-query';
-import { HttpMethod } from '../constants/http-method';
-import { FormQueryKeys } from '../constants/query-keys/form';
-import { useMutation } from '../hooks/use-mutation';
-import { useQuery } from '../hooks/use-query';
+import { HttpMethod } from '@/constants/http-method';
+import { FormQueryKeys } from '@/constants/query-keys/form';
+import { useMutation } from '@/hooks/use-mutation';
+import { useQuery } from '@/hooks/use-query';
 import {
   CreateFormApplication,
   FormApplicationFile,
@@ -10,7 +10,7 @@ import {
   FormListResponse,
   FormResponse,
   UpdateFormApplication,
-} from '../schemas/form';
+} from '@/schemas/form';
 
 export const useFormListPublic = () => {
   return useQuery<FormListResponse>(FormQueryKeys.FORM, {

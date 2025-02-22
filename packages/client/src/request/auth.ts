@@ -1,9 +1,9 @@
-import { HttpMethod } from '../constants/http-method';
-import { AuthQueryKeys } from '../constants/query-keys';
-import { useMutation } from '../hooks/use-mutation';
-import { useQuery } from '../hooks/use-query';
-import { apiRequest } from '../request';
-import { GoogleCallbackResponse, MeResponse, RefreshTokenResponse } from '../schemas/auth';
+import { HttpMethod } from '@/constants/http-method';
+import { AuthQueryKeys } from '@/constants/query-keys';
+import { useMutation } from '@/hooks/use-mutation';
+import { useQuery } from '@/hooks/use-query';
+import { apiRequest } from '@/request';
+import { GoogleCallbackResponse, MeResponse, RefreshTokenResponse } from '@/schemas/auth';
 
 type GoogleCallbackService = 'website' | 'form';
 
