@@ -25,7 +25,7 @@ export class PortfolioService {
           uuid:        award.uuid,
           fullTitle:   award.title + ' ' + award.gradeLabel,
           memberNames: award.members.map(member => member.name),
-        } as AwardPublicPreviewDto;
+        } satisfies AwardPublicPreviewDto;
       });
     }
 
