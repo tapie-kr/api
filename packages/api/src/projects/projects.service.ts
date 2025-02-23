@@ -12,6 +12,6 @@ export class ProjectService {
   async createProject(data: CreatePortfolioDto) {
     return this.projectRepository.createProject({
       ...data, membersUUID: data.members.map(member => member.uuid),
-    });.
+    });
   }
 }
