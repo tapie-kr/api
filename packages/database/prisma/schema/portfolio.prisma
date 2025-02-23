@@ -12,6 +12,7 @@ model Portfolio {
   uuid             String  @id @default(uuid())
   thumbnailUUID    String?
   presentationUUID String?
+  competitionUUID  String?
 
   name                 String
   catchPhrase          String
@@ -21,9 +22,9 @@ model Portfolio {
 
   links         PortfolioLink[]
   members       PortfolioMember[]
-  thumbnail     Asset?                  @relation(name: "PortfolioThumbnail", fields: [thumbnailUUID], references: [uuid], onDelete: Restrict)
+  thumbnails    Asset[]
   presentation  Asset?                  @relation(name: "PortfolioPresentation", fields: [presentationUUID], references: [uuid], onDelete: Restrict)
-  competition   Competition[]
+  competition   Competition?            @relation(fields: [competitionUUID], references: [uuid], onDelete: SetNull)
   visitStats    PortfolioVisitStat[]
   downloadStats PortfolioDownloadStat[]
 
@@ -57,7 +58,7 @@ model PortfolioMember {
   portfolioUUID String
   memberUUID    String?
 
-  name        String?
+  name        String
   role        String
   description String
 

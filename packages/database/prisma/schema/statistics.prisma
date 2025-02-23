@@ -8,7 +8,8 @@ enum SiteType {
 model SiteVisitStat {
   id Int @id @default(autoincrement())
 
-  type SiteType
+  type        SiteType
+  fingerprint String   @unique
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -18,7 +19,8 @@ model PortfolioVisitStat {
   id            Int     @id @default(autoincrement())
   portfolioUUID String?
 
-  portfolio Portfolio? @relation(fields: [portfolioUUID], references: [uuid], onDelete: SetNull)
+  fingerprint String     @unique
+  portfolio   Portfolio? @relation(fields: [portfolioUUID], references: [uuid], onDelete: SetNull)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -28,7 +30,8 @@ model PortfolioDownloadStat {
   id            Int     @id @default(autoincrement())
   portfolioUUID String?
 
-  portfolio Portfolio? @relation(fields: [portfolioUUID], references: [uuid], onDelete: SetNull)
+  fingerprint String     @unique
+  portfolio   Portfolio? @relation(fields: [portfolioUUID], references: [uuid], onDelete: SetNull)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -38,7 +41,8 @@ model ProfileVisitStat {
   id         Int     @id @default(autoincrement())
   memberUUID String?
 
-  member Member? @relation(fields: [memberUUID], references: [uuid], onDelete: SetNull)
+  fingerprint String  @unique
+  member      Member? @relation(fields: [memberUUID], references: [uuid], onDelete: SetNull)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
