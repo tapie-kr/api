@@ -1,2 +1,7 @@
-export { AuthQueryKeys } from './auth';
-export { FormPrivateQueryKeys } from './form-private';
+export {
+  AuthQueryKeys,
+} from './auth';
+
+export {
+  FormPrivateQueryKeys,
+} from './form-private';
