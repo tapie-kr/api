@@ -32,7 +32,7 @@ export class AuthController {
   @Get('google')
   @UseGuards(AuthGuard('google'))
   @ApiOperation({ summary: 'Google Oauth 로그인으로 Redirect' })
-  async googleAuth() {
+  async googleAuth(@Query('service') _service: string) {
   }
   @Get('google/callback')
   @UseGuards(AuthGuard('google'))
@@ -52,13 +52,15 @@ export class AuthController {
     res.cookie('accessToken', tokens.accessToken, {
       httpOnly: true,
       secure:   this.configService.get('NODE_ENV') === 'production',
-      sameSite: 'lax',
+      sameSite: 'strict',
+      domain:   this.configService.get('COOKIE_DOMAIN'),
     });
 
     res.cookie('refreshToken', tokens.refreshToken, {
       httpOnly: true,
       secure:   this.configService.get('NODE_ENV') === 'production',
-      sameSite: 'lax',
+      sameSite: 'strict',
+      domain:   this.configService.get('COOKIE_DOMAIN'),
     });
 
     return {
