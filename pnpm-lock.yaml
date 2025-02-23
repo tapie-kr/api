@@ -201,6 +201,9 @@ importers:
       '@tanstack/react-query-devtools':
         specifier: ^5.66.0
         version: 5.66.0(@tanstack/react-query@5.66.0(react@19.0.0))(react@19.0.0)
+      '@tapie-kr/code-guideline-base':
+        specifier: ^0.1.20
+        version: 0.1.20(eslint@9.19.0)(typescript@5.7.3)
       '@types/node':
         specifier: ^22.13.1
         version: 22.13.1
