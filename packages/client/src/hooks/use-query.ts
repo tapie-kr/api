@@ -1,10 +1,15 @@
-import { useQuery as useTanstackQuery, UseQueryOptions } from '@tanstack/react-query';
-import { AxiosRequestConfig } from 'axios';
 import { apiRequest } from '@/request';
+import {
+  UseQueryOptions,
+  useQuery as useTanstackQuery,
+} from '@tanstack/react-query';
+import { AxiosRequestConfig } from 'axios';
 
-export function useQuery<T>(queryKey: any[],
+export function useQuery<T>(
+  queryKey: any[],
   config: AxiosRequestConfig,
-  options?: Omit<UseQueryOptions<T>, 'enabled'>) {
+  options?: Omit<UseQueryOptions<T>, 'enabled' | 'queryKey' | 'queryFn'>,
+) {
   const { refetch: fetch, ...rest } = useTanstackQuery<T>({
     queryKey,
     queryFn: () => apiRequest<T>(config),
@@ -13,6 +18,7 @@ export function useQuery<T>(queryKey: any[],
   });
 
   return {
-    fetch, ...rest,
+    fetch,
+    ...rest,
   };
 }
