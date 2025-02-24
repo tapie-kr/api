@@ -35,5 +35,12 @@ export class PortfolioMemberDto {
   updatedAt: Date;
 }
 
+export class CreatePortfolioMemberDto extends OmitType(PortfolioMemberDto, [
+  'uuid',
+  'createdAt',
+  'updatedAt',
+] as const) {
+}
+
 export class ConnectPortfolioMemberDto extends PartialType(OmitType(PortfolioMemberDto, ['createdAt', 'updatedAt'] as const)) {
 }

@@ -21,8 +21,10 @@ export class PortfolioLinkDto {
   type: PortfolioLinkType;
 
   @IsUrl()
-  @ApiProperty({ description: '포트폴리오 링크 URL' })
-  url: string;
+  @ApiProperty({
+    description: '포트폴리오 링크 URL', example: 'https://example.com/',
+  })
+  href: string;
 
   @IsDate()
   @ApiProperty({ description: '포트폴리오 링크 생성일' })

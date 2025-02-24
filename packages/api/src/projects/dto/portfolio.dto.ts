@@ -1,10 +1,14 @@
 import { ApiProperty, OmitType } from '@nestjs/swagger';
 import { PortfolioTag } from '@tapie-kr/api-database';
+import { Type } from 'class-transformer';
 import {
+  IsArray,
   IsDate,
+  IsDateString,
   IsEnum,
   IsString,
   IsUUID,
+  ValidateNested,
 } from 'class-validator';
 import { CompetitionDto, ConnectCompetitionDto } from '@/portfolio/dto/competition.dto';
 import { ConnectPortfolioLinkDto, PortfolioLinkDto } from '@/projects/dto/portfolio-link.dto';
@@ -35,11 +39,15 @@ export class PortfolioDto {
   })
   description: string;
 
-  @IsEnum(PortfolioTag)
   @ApiProperty({
-    description: '포트폴리오 태그', enum: PortfolioTag, example: PortfolioTag.DESIGN,
+    enum:        PortfolioTag,
+    isArray:     true,
+    description: '포트폴리오에 연결된 태그',
+    example:     [PortfolioTag.DESIGN, PortfolioTag.WEB],
   })
-  tag: PortfolioTag;
+  @IsArray()
+  @IsEnum(PortfolioTag, { each: true })
+  tags: PortfolioTag[];
 
   @IsString()
   @ApiProperty({
@@ -67,7 +75,7 @@ export class PortfolioDto {
   })
   competition: CompetitionDto;
 
-  @IsDate()
+  @IsDateString()
   @ApiProperty({ description: '포트폴리오 프로젝트 생성일' })
   releasedAt: Date;
 
@@ -78,6 +86,22 @@ export class PortfolioDto {
   @IsDate()
   @ApiProperty({ description: '포트폴리오 수정일' })
   updatedAt: Date;
+}
+
+export class PreviewPortfolioDto extends PortfolioDto {
+  @ApiProperty({
+    description: '포트폴리오 대표 썸네일 이미지 URL', example: 'https://example.com/thumbnail.png',
+  })
+  representativeThumbnailUrl: string;
+
+  @ApiProperty({
+    description: '포트폴리오 대표 썸네일들',
+    type:        'array',
+    items:       { type: 'string' },
+    example:     ['https://example.com/thumbnail1.png', 'https://example.com/thumbnail2.png'],
+  })
+  @IsArray()
+  thumbnailUrls: string[];
 }
 
 export class CreatePortfolioDto extends OmitType(PortfolioDto, [
@@ -93,6 +117,9 @@ export class CreatePortfolioDto extends OmitType(PortfolioDto, [
     isArray:     true,
     description: '포트폴리오에 연결할 멤버',
   })
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => ConnectPortfolioMemberDto)
   members: ConnectPortfolioMemberDto[];
 
   @ApiProperty({
@@ -100,12 +127,17 @@ export class CreatePortfolioDto extends OmitType(PortfolioDto, [
     isArray:     true,
     description: '포트폴리오에 연결할 링크',
   })
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => ConnectPortfolioLinkDto)
   links: ConnectPortfolioLinkDto[];
 
   @ApiProperty({
     type:        () => ConnectCompetitionDto,
     description: '포트폴리오에 연결할 대회',
   })
+  @ValidateNested({})
+  @Type(() => ConnectCompetitionDto)
   competition: ConnectCompetitionDto;
 }
 
