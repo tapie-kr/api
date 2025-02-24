@@ -9,10 +9,11 @@ enum PortfolioTag {
 }
 
 model Portfolio {
-  uuid             String  @id @default(uuid())
-  thumbnailUUID    String?
-  presentationUUID String?
-  competitionUUID  String?
+  uuid                 String  @id @default(uuid())
+  thumbnailUUID        String?
+  presentationUUID     String?
+  competitionUUID      String?
+  previewThumbnailUUID String
 
   name                 String
   catchPhrase          String
@@ -20,19 +21,20 @@ model Portfolio {
   tags                 PortfolioTag[]
   thumbnailEffectColor String?
 
-  links         PortfolioLink[]
-  members       PortfolioMember[]
-  thumbnails    Asset[]
-  presentation  Asset?                  @relation(name: "PortfolioPresentation", fields: [presentationUUID], references: [uuid], onDelete: Restrict)
-  competition   Competition?            @relation(fields: [competitionUUID], references: [uuid], onDelete: SetNull)
-  visitStats    PortfolioVisitStat[]
-  downloadStats PortfolioDownloadStat[]
+  links                   PortfolioLink[]
+  members                 PortfolioMember[]
+  representativeThumbnail Int
+  thumbnails              Asset[]
+  presentation            Asset?                  @relation(name: "PortfolioPresentation", fields: [presentationUUID], references: [uuid], onDelete: Restrict)
+  competition             Competition?            @relation(fields: [competitionUUID], references: [uuid], onDelete: SetNull)
+  visitStats              PortfolioVisitStat[]
+  downloadStats           PortfolioDownloadStat[]
 
   releasedAt DateTime
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
-  @@unique([name, releasedAt])
+  @@unique([name])
 }
 
 enum PortfolioLinkType {
