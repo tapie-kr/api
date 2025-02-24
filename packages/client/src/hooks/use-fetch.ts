@@ -2,18 +2,22 @@ import { AxiosRequestConfig } from 'axios';
 import { useEffect, useState } from 'react';
 import { ApiClient } from '@/client';
 import { UseFetchResult } from '@/types/hooks/fetch';
+import { ApiUrl } from '@/url';
 
-const client = new ApiClient;
+const client = new ApiClient();
 
 export const useFetch = <TData>(
   url: string,
-  config?: AxiosRequestConfig,
+  config?: AxiosRequestConfig
 ): UseFetchResult<TData> => {
   const [data, setData] = useState<TData | null>(null);
   const [error, setError] = useState<Error | null>(null);
   const [isPending, setIsPending] = useState<boolean>(true);
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
+
+  // Url에 api version 자동 추가
+  const requestUrl = ApiUrl(url);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -22,7 +26,7 @@ export const useFetch = <TData>(
 
         const response = await client.request<TData>({
           method: 'GET',
-          url,
+          url: requestUrl,
           ...config,
         });
 
@@ -48,6 +52,10 @@ export const useFetch = <TData>(
   }, [url]);
 
   return {
-    data, error, isPending, isSuccess, isError,
+    data,
+    error,
+    isPending,
+    isSuccess,
+    isError,
   };
 };
