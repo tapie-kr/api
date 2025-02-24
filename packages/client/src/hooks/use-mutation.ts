@@ -30,6 +30,7 @@ export const useMutation = <TData, TBody = void>(
       setIsSuccess(true);
       setIsError(false);
     } catch (err) {
+      console.error('API Fetching hooks Error:', err);
       setError(err as Error);
       setIsError(true);
       setIsSuccess(false);
