@@ -13,9 +13,9 @@ export const awardSchema = z.object({
   title:           z.string(),
   grade:           z.number(),
   gradeLabel:      z.string(),
-  rewardedAt:      z.date(),
-  createdAt:       z.date(),
-  updatedAt:       z.date(),
+  rewardedAt:      z.string(),
+  createdAt:       z.string(),
+  updatedAt:       z.string(),
   members:         z.object({
     uuid:     z.string().uuid(),
     name:     z.string(),
@@ -38,8 +38,8 @@ export const addAwardSchema = z.object({
 export const competitionSchema = z.object({
   uuid:      z.string().uuid(),
   name:      z.string(),
-  createdAt: z.date(),
-  updatedAt: z.date(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
 });
 
 export const competitionAwardSchema = z.object({
@@ -48,18 +48,18 @@ export const competitionAwardSchema = z.object({
   title:           z.string(),
   grade:           z.number(),
   gradeLabel:      z.string(),
-  rewardedAt:      z.date(),
-  createdAt:       z.date(),
-  updatedAt:       z.date(),
+  rewardedAt:      z.string(),
+  createdAt:       z.string(),
+  updatedAt:       z.string(),
   awards:          z.array(z.object({
     uuid:            z.string().uuid(),
     competitionUUID: z.string().uuid(),
     title:           z.string(),
     grade:           z.number(),
     gradeLabel:      z.string(),
-    rewardedAt:      z.date(),
-    createdAt:       z.date(),
-    updatedAt:       z.date(),
+    rewardedAt:      z.string(),
+    createdAt:       z.string(),
+    updatedAt:       z.string(),
   })),
 });
 

@@ -1,6 +1,6 @@
 {
   "name": "@tapie-kr/api-client",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Type-safe API client for TAPIE API",
   "license": "MIT",
   "repository": {
@@ -16,6 +16,7 @@
   "publishConfig": {
     "access": "public"
   },
+  "type": "module",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -26,7 +27,9 @@
   "scripts": {
     "prepublish": "pnpm run build",
     "build": "rimraf dist && tsup",
-    "lint": "eslint . --fix"
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "generate:exports": "tsx src/scripts/generateGlobalExport.ts"
   },
   "devDependencies": {
     "@tanstack/react-query": "^5.66.0",
@@ -39,6 +42,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "tsup": "^8.3.6",
+    "tsx": "^4.19.2",
     "zod": "^3.24.2"
   },
   "peerDependencies": {

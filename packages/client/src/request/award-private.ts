@@ -1,8 +1,6 @@
-import { useQueryClient } from '@tanstack/react-query';
 import { HttpMethod } from '@/constants/http-method';
-import { PrivateAwardQueryKeys } from '@/constants/query-keys/award-private';
+import { useFetch } from '@/hooks/use-fetch';
 import { useMutation } from '@/hooks/use-mutation';
-import { useQuery } from '@/hooks/use-query';
 import {
   AwardListResponse,
   CompetitionAwardListResponseSchema,
@@ -16,135 +14,45 @@ type AwardUUID = string;
 
 type CompetitionUUID = string;
 
-export const useAwardList = () => {
-  return useQuery<AwardListResponse>(PrivateAwardQueryKeys.AWARDS, {
-    method: HttpMethod.GET,
-    url:    '/v1/admin/portfolio/awards',
-  });
+export const usePrivateAwardList = () => {
+  return useFetch<AwardListResponse>('/admin/portfolio/awards');
 };
 
-export const useCreateAward = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation<unknown, CreateAward>({
-    method: HttpMethod.POST,
-    url:    '/v1/admin/portfolio/awards',
-  },
-  {
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: PrivateAwardQueryKeys.AWARDS });
-    },
-    onError: error => {
-      console.error('Error creating award:', error);
-    },
-  });
+export const usePrivateCreateAward = () => {
+  return useMutation<unknown, CreateAward>(HttpMethod.POST,
+    '/admin/portfolio/awards');
 };
 
-export const useCreateAwardWithoutUUID = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation<unknown, CreateAwardWithoutUUID>({
-    method: HttpMethod.POST,
-    url:    '/v1/admin/portfolio/awards',
-  },
-  {
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: PrivateAwardQueryKeys.AWARDS });
-    },
-    onError: error => {
-      console.error('Error creating award:', error);
-    },
-  });
+export const usePrivateCreateAwardWithoutUUID = () => {
+  return useMutation<unknown, CreateAwardWithoutUUID>(HttpMethod.POST,
+    '/admin/portfolio/awards');
 };
 
-export const useDeleteAward = (awardUUID: AwardUUID) => {
-  const queryClient = useQueryClient();
-
-  return useMutation<unknown, unknown>({
-    method: HttpMethod.DELETE,
-    url:    `/v1/admin/portfolio/awards/${awardUUID}`,
-  },
-  {
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: PrivateAwardQueryKeys.AWARDS });
-
-      queryClient.invalidateQueries({ queryKey: PrivateAwardQueryKeys.AWARD_DETAIL(awardUUID) });
-    },
-    onError: error => {
-      console.error('Error deleting award:', error);
-    },
-  });
+export const usePrivateDeleteAward = (awardUUID: AwardUUID) => {
+  return useMutation<unknown, unknown>(HttpMethod.DELETE,
+    `/admin/portfolio/awards/${awardUUID}`);
 };
 
-export const useCreateAwardMember = (awardUUID: AwardUUID) => {
-  const queryClient = useQueryClient();
-
-  return useMutation<unknown, CreateAwardMember>({
-    method: HttpMethod.POST,
-    url:    `/v1/admin/portfolio/awards/${awardUUID}/members`,
-  },
-  {
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: PrivateAwardQueryKeys.AWARD_MEMBERS(awardUUID) });
-
-      queryClient.invalidateQueries({ queryKey: PrivateAwardQueryKeys.AWARD_DETAIL(awardUUID) });
-    },
-    onError: error => {
-      console.error('Error creating award member:', error);
-    },
-  });
+export const usePrivateCreateAwardMember = (awardUUID: AwardUUID) => {
+  return useMutation<unknown, CreateAwardMember>(HttpMethod.POST,
+    `/admin/portfolio/awards/${awardUUID}/members`);
 };
 
-export const useDeleteAwardMember = (awardUUID: AwardUUID,
+export const usePrivateDeleteAwardMember = (awardUUID: AwardUUID,
   memberId: string) => {
-  const queryClient = useQueryClient();
-
-  return useMutation<unknown, unknown>({
-    method: HttpMethod.DELETE,
-    url:    `/v1/admin/portfolio/awards/${awardUUID}/members/${memberId}`,
-  },
-  {
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: PrivateAwardQueryKeys.AWARD_MEMBERS(awardUUID) });
-
-      queryClient.invalidateQueries({ queryKey: PrivateAwardQueryKeys.AWARD_DETAIL(awardUUID) });
-    },
-    onError: error => {
-      console.error('Error deleting award member:', error);
-    },
-  });
+  return useMutation<unknown, unknown>(HttpMethod.DELETE,
+    `/admin/portfolio/awards/${awardUUID}/members/${memberId}`);
 };
 
-export const useCompetitionList = () => {
-  return useQuery<CompetitionListResponse>(PrivateAwardQueryKeys.COMPETITIONS, {
-    method: HttpMethod.GET,
-    url:    '/v1/admin/portfolio/competitions',
-  });
+export const usePrivateCompetitionList = () => {
+  return useFetch<CompetitionListResponse>('/admin/portfolio/competitions');
 };
 
-export const useCompetitionAwardList = (competitionUUID: CompetitionUUID) => {
-  return useQuery<CompetitionAwardListResponseSchema>(PrivateAwardQueryKeys.COMPETITION_AWARDS(competitionUUID),
-    {
-      method: HttpMethod.GET,
-      url:    `/v1/admin/portfolio/competitions/${competitionUUID}`,
-    });
+export const usePrivateCompetitionAwardList = (competitionUUID: CompetitionUUID) => {
+  return useFetch<CompetitionAwardListResponseSchema>(`/admin/portfolio/competitions/${competitionUUID}`);
 };
 
-export const useDeleteCompetition = (competitionUUID: CompetitionUUID) => {
-  const queryClient = useQueryClient();
-
-  return useMutation<unknown, unknown>({
-    method: HttpMethod.DELETE,
-    url:    `/v1/admin/portfolio/competitions/${competitionUUID}`,
-  },
-  {
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: PrivateAwardQueryKeys.COMPETITIONS });
-
-      queryClient.invalidateQueries({ queryKey: PrivateAwardQueryKeys.COMPETITION_AWARDS(competitionUUID) });
-    },
-    onError: error => {
-      console.error('Error deleting competition:', error);
-    },
-  });
+export const usePrivateDeleteCompetition = (competitionUUID: CompetitionUUID) => {
+  return useMutation<unknown, unknown>(HttpMethod.DELETE,
+    `/admin/portfolio/competitions/${competitionUUID}`);
 };

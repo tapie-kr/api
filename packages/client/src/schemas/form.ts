@@ -1,7 +1,7 @@
-import { koreanPhoneNumberPattern } from '@/constants/regex';
-import { UnitType } from '@/constants/unit-type';
-import { BaseResponse } from '@/schemas/base';
 import { z } from 'zod';
+import { MemberUnitType } from '@/constants/enum/unit-type';
+import { Regex } from '@/constants/regex';
+import { BaseResponse } from '@/schemas/base';
 
 export const formDetailScheme = z.object({
   uuid: z.string().uuid(),
@@ -14,26 +14,26 @@ export const formDetailScheme = z.object({
     .string()
     .email('올바른 이메일 형식이 아닙니다.')
     .endsWith('@gmail.com', '구글 이메일(@gmail.com)만 사용 가능합니다.'),
-  unit: z.nativeEnum(UnitType),
+  unit:        z.nativeEnum(MemberUnitType),
   phoneNumber: z
     .string()
-    .regex(koreanPhoneNumberPattern)
+    .regex(Regex.koreanPhoneNumberPattern)
     .min(1, '전화번호는 필수입니다.'),
   introduction: z.string().min(1, '자기소개는 필수입니다.'),
   motivation: z.string().min(1, '지원동기는 필수입니다.'),
   expectedActivities: z.string().min(1, '기대하는 활동은 필수입니다.'),
-  reasonToChoose: z.string().min(1, '선택이유는 필수입니다.'),
-  createdAt: z.date(),
-  updatedAt: z.date(),
-  submitted: z.boolean(),
+  reasonToChoose:     z.string().min(1, '선택이유는 필수입니다.'),
+  createdAt:          z.string(),
+  updatedAt:          z.string(),
+  submitted:          z.boolean(),
 });
 
 export const formResponseSchema = z.object({
-  id: z.number(),
-  name: z.string(),
+  id:       z.number(),
+  name:     z.string(),
   startsAt: z.string(),
-  endsAt: z.string(),
-  active: z.boolean(),
+  endsAt:   z.string(),
+  active:   z.boolean(),
 });
 
 export const formListResponseSchema = z.array(formResponseSchema);
