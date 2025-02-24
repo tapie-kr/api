@@ -29,13 +29,13 @@ export class MemberDto {
 
   @IsEnum(MemberRole)
   @ApiProperty({
-    description: '회원 역할', example: 'user', enum: MemberRole,
+    description: '회원 역할', example: MemberRole.MEMBER, enum: MemberRole,
   })
   role: MemberRole;
 
   @IsEnum(MemberUnit)
   @ApiProperty({
-    description: '회원 유닛', example: 'user', enum: MemberUnit,
+    description: '회원 유닛', example: MemberUnit.DEVELOPER, enum: MemberUnit,
   })
   unit: MemberUnit;
 
