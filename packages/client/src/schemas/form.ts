@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { koreanPhoneNumberPattern } from '@/constants/regex';
-import { UnitType } from '@/constants/unit-type';
 import { BaseResponse } from '@/schemas/base';
+import { MemberUnitType } from '@/constants/unit-type'
 
 export const formDetailScheme = z.object({
   uuid:               z.string().uuid(),
@@ -14,7 +14,7 @@ export const formDetailScheme = z.object({
     .string()
     .email('올바른 이메일 형식이 아닙니다.')
     .endsWith('@gmail.com', '구글 이메일(@gmail.com)만 사용 가능합니다.'),
-  unit:        z.nativeEnum(UnitType),
+  unit:        z.nativeEnum(MemberUnitType),
   phoneNumber: z
     .string()
     .regex(koreanPhoneNumberPattern)

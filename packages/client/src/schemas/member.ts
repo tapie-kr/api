@@ -1,15 +1,14 @@
 import { z } from 'zod';
 import { MemberRole } from '@/constants/member-role';
-import { SkillType } from '@/constants/skill-type';
-import { UnitType } from '@/constants/unit-type';
 import { BaseResponse } from '@/schemas/base';
+import { MemberUnitType } from '@/constants/unit-type'
 
 export const memberSchema = z.object({
   uuid:        z.string(),
   name:        z.string(),
   username:    z.string(),
   role:        z.nativeEnum(MemberRole),
-  unit:        z.nativeEnum(UnitType),
+  unit:        z.nativeEnum(MemberUnitType),
   generation:  z.number(),
   googleEmail: z.string(),
   profileUrl:  z.string(),
@@ -20,7 +19,7 @@ export const createMemberScheme = z.object({
   username:    z.string(),
   googleEmail: z.string(),
   role:        z.nativeEnum(MemberRole),
-  unit:        z.nativeEnum(UnitType),
+  unit:        z.nativeEnum(MemberUnitType),
   generation:  z.number(),
 });
 
@@ -37,7 +36,7 @@ export const memberSkillSchema = z.object({
     uuid: z.string(),
     icon: z.string(),
     name: z.string(),
-    type: z.nativeEnum(SkillType),
+    type: z.nativeEnum(MemberUnitType),
   }),
 });
 
@@ -48,7 +47,7 @@ export const memberSkillResponseSchema = z.object({
     uuid:      z.string(),
     icon:      z.string(),
     name:      z.string(),
-    type:      z.nativeEnum(SkillType),
+    type:      z.nativeEnum(MemberUnitType),
     createdAt: z.string(),
     updatedAt: z.string(),
   }),
