@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { axiosInstance } from '@/lib/axios';
 import { AxiosRequestConfig } from 'axios';
-import { HttpMethod } from '@/constants/http-method'
-import { UseMutationResult, MutateFunction } from '@/types/mutation'
+import { HttpMethod } from '@/constants/http-method';
+import { UseMutationResult, MutateFunction } from '@/types/hooks/mutation';
 
 export const useMutation = <TData, TBody = void>(
   method: HttpMethod,

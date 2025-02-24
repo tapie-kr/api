@@ -1,13 +1,6 @@
 import { useState, useEffect } from 'react';
 import { axiosInstance } from '@/lib/axios';
-
-interface UseFetchResult<T> {
-  data: T | null;
-  error: Error | null;
-  isPending: boolean;
-  isSuccess: boolean;
-  isError: boolean;
-}
+import { UseFetchResult } from '@/types/hooks/fetch';
 
 export const useFetch = <T>(url: string): UseFetchResult<T> => {
   const [data, setData] = useState<T | null>(null);
