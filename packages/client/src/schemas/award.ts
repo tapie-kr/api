@@ -2,32 +2,32 @@ import { z } from 'zod';
 import { BaseResponse } from '@/schemas/base';
 
 export const publicAwardSchema = z.object({
-  uuid:        z.string().uuid(),
-  fullTitle:   z.string(),
+  uuid: z.string().uuid(),
+  fullTitle: z.string(),
   memberNames: z.array(z.string()),
 });
 
 export const awardSchema = z.object({
-  uuid:            z.string().uuid(),
+  uuid: z.string().uuid(),
   competitionUUID: z.string().uuid(),
-  title:           z.string(),
-  grade:           z.number(),
-  gradeLabel:      z.string(),
-  rewardedAt:      z.date(),
-  createdAt:       z.date(),
-  updatedAt:       z.date(),
-  members:         z.object({
-    uuid:     z.string().uuid(),
-    name:     z.string(),
+  title: z.string(),
+  grade: z.number(),
+  gradeLabel: z.string(),
+  rewardedAt: z.string(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
+  members: z.object({
+    uuid: z.string().uuid(),
+    name: z.string(),
     username: z.string(),
   }),
 });
 
 export const addAwardSchema = z.object({
-  title:       z.string(),
-  grade:       z.number(),
-  gradeLabel:  z.string(),
-  rewardedAt:  z.string().datetime(),
+  title: z.string(),
+  grade: z.number(),
+  gradeLabel: z.string(),
+  rewardedAt: z.string().datetime(),
   competition: z.object({
     uuid: z.string().uuid(),
     name: z.string(),
@@ -36,31 +36,33 @@ export const addAwardSchema = z.object({
 });
 
 export const competitionSchema = z.object({
-  uuid:      z.string().uuid(),
-  name:      z.string(),
-  createdAt: z.date(),
-  updatedAt: z.date(),
+  uuid: z.string().uuid(),
+  name: z.string(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
 });
 
 export const competitionAwardSchema = z.object({
-  uuid:            z.string().uuid(),
+  uuid: z.string().uuid(),
   competitionUUID: z.string().uuid(),
-  title:           z.string(),
-  grade:           z.number(),
-  gradeLabel:      z.string(),
-  rewardedAt:      z.date(),
-  createdAt:       z.date(),
-  updatedAt:       z.date(),
-  awards:          z.array(z.object({
-    uuid:            z.string().uuid(),
-    competitionUUID: z.string().uuid(),
-    title:           z.string(),
-    grade:           z.number(),
-    gradeLabel:      z.string(),
-    rewardedAt:      z.date(),
-    createdAt:       z.date(),
-    updatedAt:       z.date(),
-  })),
+  title: z.string(),
+  grade: z.number(),
+  gradeLabel: z.string(),
+  rewardedAt: z.string(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
+  awards: z.array(
+    z.object({
+      uuid: z.string().uuid(),
+      competitionUUID: z.string().uuid(),
+      title: z.string(),
+      grade: z.number(),
+      gradeLabel: z.string(),
+      rewardedAt: z.string(),
+      createdAt: z.string(),
+      updatedAt: z.string(),
+    })
+  ),
 });
 
 export const publicAwardListResponseSchema = z.array(publicAwardSchema);
