@@ -14,45 +14,45 @@ type AwardUUID = string;
 
 type CompetitionUUID = string;
 
-export const useAwardList = () => {
+export const usePrivateAwardList = () => {
   return useFetch<AwardListResponse>('/admin/portfolio/awards');
 };
 
-export const useCreateAward = () => {
+export const usePrivateCreateAward = () => {
   return useMutation<unknown, CreateAward>(HttpMethod.POST,
     '/admin/portfolio/awards');
 };
 
-export const useCreateAwardWithoutUUID = () => {
+export const usePrivateCreateAwardWithoutUUID = () => {
   return useMutation<unknown, CreateAwardWithoutUUID>(HttpMethod.POST,
     '/admin/portfolio/awards');
 };
 
-export const useDeleteAward = (awardUUID: AwardUUID) => {
+export const usePrivateDeleteAward = (awardUUID: AwardUUID) => {
   return useMutation<unknown, unknown>(HttpMethod.DELETE,
     `/admin/portfolio/awards/${awardUUID}`);
 };
 
-export const useCreateAwardMember = (awardUUID: AwardUUID) => {
+export const usePrivateCreateAwardMember = (awardUUID: AwardUUID) => {
   return useMutation<unknown, CreateAwardMember>(HttpMethod.POST,
     `/admin/portfolio/awards/${awardUUID}/members`);
 };
 
-export const useDeleteAwardMember = (awardUUID: AwardUUID,
+export const usePrivateDeleteAwardMember = (awardUUID: AwardUUID,
   memberId: string) => {
   return useMutation<unknown, unknown>(HttpMethod.DELETE,
     `/admin/portfolio/awards/${awardUUID}/members/${memberId}`);
 };
 
-export const useCompetitionList = () => {
+export const usePrivateCompetitionList = () => {
   return useFetch<CompetitionListResponse>('/admin/portfolio/competitions');
 };
 
-export const useCompetitionAwardList = (competitionUUID: CompetitionUUID) => {
+export const usePrivateCompetitionAwardList = (competitionUUID: CompetitionUUID) => {
   return useFetch<CompetitionAwardListResponseSchema>(`/admin/portfolio/competitions/${competitionUUID}`);
 };
 
-export const useDeleteCompetition = (competitionUUID: CompetitionUUID) => {
+export const usePrivateDeleteCompetition = (competitionUUID: CompetitionUUID) => {
   return useMutation<unknown, unknown>(HttpMethod.DELETE,
     `/admin/portfolio/competitions/${competitionUUID}`);
 };

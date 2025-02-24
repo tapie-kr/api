@@ -1,6 +1,6 @@
 import { useFetch } from '@/hooks/use-fetch';
 import { PublicAwardListResponse } from '@/schemas/award';
 
-export const usePublicAwardList = () => {
+export const useAwardList = () => {
   return useFetch<PublicAwardListResponse>('/portfolio/awards');
 };

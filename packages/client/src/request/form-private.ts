@@ -12,38 +12,38 @@ import {
 } from '@/schemas/form';
 import { FormId } from './form';
 
-export const useAdminFormList = () => {
+export const usePrivateFormList = () => {
   return useFetch<FormListResponse>('/admin/form');
 };
 
-export const useAdminForm = (id: FormId) => {
+export const usePrivateForm = (id: FormId) => {
   return useFetch<FormResponse>(`/admin/form/${id}`);
 };
 
-export const useAdminFormResponseList = (id: FormId) => {
+export const usePrivateFormResponseList = (id: FormId) => {
   return useFetch<FormDetailListResponse>(`/admin/form/${id}/application`);
 };
 
-export const useAdminFormApplication = (responseId: FormId) => {
+export const usePrivateFormApplication = (responseId: FormId) => {
   return useFetch<FormDetailResponse>(`/admin/form/application/${responseId}`);
 };
 
-export const useAdminCreateForm = () => {
-  return useMutation<FormResponse, CreateForm>(HttpMethod.POST, '/form/admin');
+export const usePrivateCreateForm = () => {
+  return useMutation<FormResponse, CreateForm>(HttpMethod.POST, '/admin/form');
 };
 
-export const useAdminActivateForm = (id: FormId) => {
+export const usePrivateActivateForm = (id: FormId) => {
   return useMutation<FormResponse>(HttpMethod.POST, `/admin/form/${id}/activate`);
 };
 
-export const useAdminDeactivateForm = (id: FormId) => {
+export const usePrivateDeactivateForm = (id: FormId) => {
   return useMutation<FormResponse>(HttpMethod.POST, `/admin/form/${id}/deactivate`);
 };
 
-export const useAdminUpdateForm = (id: FormId) => {
+export const usePrivateUpdateForm = (id: FormId) => {
   return useMutation<FormResponse, UpdateForm>(HttpMethod.PATCH, `/admin/form/${id}`);
 };
 
-export const useAdminDeleteForm = (id: FormId) => {
+export const usePrivateDeleteForm = (id: FormId) => {
   return useMutation<DeleteFormResponse>(HttpMethod.DELETE, `/admin/form/${id}`);
 };
