@@ -49,7 +49,6 @@ function main() {
   const indexPath = join(SRC_DIR, 'index.ts');
 
   writeFileSync(indexPath, exportStatements + '\n');
-
 }
 
 main();
