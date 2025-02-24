@@ -25,7 +25,7 @@ export const usePrivateFormResponseList = (id: FormId) => {
 };
 
 export const usePrivateFormApplication = (responseId: FormId) => {
-  return useFetch<FormDetailResponse>(`/admin/form/application/${responseId}`);
+  return useFetch<FormDetailResponse>(`/admin/form/applications/${responseId}`);
 };
 
 export const usePrivateCreateForm = () => {
