@@ -1,8 +1,6 @@
-import { useQueryClient } from '@tanstack/react-query';
 import { HttpMethod } from '@/constants/http-method';
-import { FormQueryKeys } from '@/constants/query-keys/form';
+import { useFetch } from '@/hooks/use-fetch';
 import { useMutation } from '@/hooks/use-mutation';
-import { useQuery } from '@/hooks/use-query';
 import {
   CreateFormApplication,
   FormApplicationFile,
@@ -13,126 +11,41 @@ import {
 } from '@/schemas/form';
 
 export const useFormListPublic = () => {
-  return useQuery<FormListResponse>(FormQueryKeys.FORM, {
-    method: HttpMethod.GET,
-    url:    '/form',
-  });
+  return useFetch<FormListResponse>('/form');
 };
 
 export const useCreateFormApplication = (id: string) => {
-  const queryClient = useQueryClient();
-
-  return useMutation<FormResponse, CreateFormApplication>({
-    method: HttpMethod.POST,
-    url:    `/form/${id}/application`,
-  },
-  { onSuccess: () => {
-    queryClient.invalidateQueries({ queryKey: FormQueryKeys.FORM });
-  } });
+  return useMutation<FormResponse, CreateFormApplication>(HttpMethod.POST, `/form/${id}/application`);
 };
 
 export const useFormApplication = (id: string) => {
-  useQuery<FormResponse>(FormQueryKeys.FORM_APPLICATION(id), {
-    method: HttpMethod.GET,
-    url:    `/form/${id}/application`,
-  });
+  return useFetch<FormResponse>(`/form/${id}/application`);
 };
 
 export const useUpdateFormApplication = (id: string) => {
-  const queryClient = useQueryClient();
-
-  return useMutation<FormResponse, UpdateFormApplication>({
-    method: HttpMethod.PATCH,
-    url:    `/form/${id}/application`,
-  },
-  {
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: FormQueryKeys.FORM_APPLICATION(id) });
-    },
-    onError: error => {
-      console.error('Error updating form application:', error);
-    },
-  });
+  return useMutation<FormResponse, UpdateFormApplication>(HttpMethod.PATCH, `/form/${id}/application`);
 };
 
 export const useDeleteFormApplication = (id: string) => {
-  const queryClient = useQueryClient();
-
-  return useMutation<FormResponse>({
-    method: HttpMethod.DELETE,
-    url:    `/form/${id}/application`,
-  },
-  {
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: FormQueryKeys.FORM_APPLICATION(id) });
-    },
-    onError: error => {
-      console.error('Error deleting form application:', error);
-    },
-  });
+  return useMutation<FormResponse>(HttpMethod.DELETE, `/form/${id}/application`);
 };
 
 export const useUploadFormApplicationFile = (id: string) => {
-  const queryClient = useQueryClient();
-
-  return useMutation<unknown, unknown>({
-    method: HttpMethod.PATCH,
-    url:    `/form/${id}/application/file`,
-  },
-  {
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: FormQueryKeys.FORM_APPLICATION_FILE(id) });
-    },
-    onError: error => {
-      console.error('Error uploading form application file:', error);
-    },
-  });
+  return useMutation<unknown, unknown>(HttpMethod.PATCH, `/form/${id}/application/file`);
 };
 
 export const useFormApplicationFile = (id: string) => {
-  useQuery<FormApplicationFile>(FormQueryKeys.FORM_APPLICATION_FILE(id), {
-    method: HttpMethod.GET,
-    url:    `/form/${id}/application/file`,
-  });
+  return useFetch<FormApplicationFile>(`/form/${id}/application/file`);
 };
 
 export const useDeleteFormApplicationFile = (id: string) => {
-  const queryClient = useQueryClient();
-
-  return useMutation<FormDetailResponse, unknown>({
-    method: HttpMethod.DELETE,
-    url:    `/form/${id}/application/file`,
-  },
-  {
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: FormQueryKeys.FORM_APPLICATION_FILE(id) });
-    },
-    onError: error => {
-      console.error('Error deleting form application file:', error);
-    },
-  });
+  return useMutation<FormDetailResponse, unknown>(HttpMethod.DELETE, `/form/${id}/application/file`);
 };
 
 export const useFormSubmit = (id: string) => {
-  const queryClient = useQueryClient();
-
-  return useMutation<FormResponse, unknown>({
-    method: HttpMethod.POST,
-    url:    `/form/${id}/application/apply`,
-  },
-  {
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: FormQueryKeys.FORM });
-    },
-    onError: error => {
-      console.error('Error submitting form:', error);
-    },
-  });
+  return useMutation<FormResponse, unknown>(HttpMethod.POST, `/form/${id}/application/submit`);
 };
 
 export const useFormAccessibility = (id: string) => {
-  useQuery(FormQueryKeys.FORM_APPLICATION_ACCESSIBILITY(id), {
-    method: HttpMethod.GET,
-    url:    `/form/${id}/application/accessibility`,
-  });
+  return useFetch<FormResponse>(`/form/${id}/application/accessibility`);
 };

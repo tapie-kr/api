@@ -1,13 +1,13 @@
-import { useState, useEffect } from 'react';
-import { ApiClient } from '@/client';
 import { AxiosRequestConfig } from 'axios';
-import { UseFetchResult } from '@/types/hooks/fetch'
+import { useEffect, useState } from 'react';
+import { ApiClient } from '@/client';
+import { UseFetchResult } from '@/types/hooks/fetch';
 
-const client = new ApiClient();
+const client = new ApiClient;
 
 export const useFetch = <TData>(
   url: string,
-  config?: AxiosRequestConfig
+  config?: AxiosRequestConfig,
 ): UseFetchResult<TData> => {
   const [data, setData] = useState<TData | null>(null);
   const [error, setError] = useState<Error | null>(null);
@@ -19,17 +19,23 @@ export const useFetch = <TData>(
     const fetchData = async () => {
       try {
         setIsPending(true);
+
         const response = await client.request<TData>({
           method: 'GET',
           url,
           ...config,
         });
+
         setData(response);
+
         setIsSuccess(true);
+
         setIsError(false);
       } catch (err) {
         setError(err as Error);
+
         setIsError(true);
+
         setIsSuccess(false);
       } finally {
         setIsPending(false);
@@ -39,5 +45,7 @@ export const useFetch = <TData>(
     fetchData();
   }, [url]);
 
-  return { data, error, isPending, isSuccess, isError };
+  return {
+    data, error, isPending, isSuccess, isError,
+  };
 };

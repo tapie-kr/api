@@ -1,9 +1,7 @@
-import { useQueryClient } from '@tanstack/react-query';
 import { HttpMethod } from '@/constants/http-method';
-import { FormPrivateQueryKeys } from '@/constants/query-keys';
 import { FormId } from '@/constants/query-keys/form-private';
+import { useFetch } from '@/hooks/use-fetch';
 import { useMutation } from '@/hooks/use-mutation';
-import { useQuery } from '@/hooks/use-query';
 import {
   CreateForm,
   DeleteFormResponse,
@@ -15,116 +13,37 @@ import {
 } from '@/schemas/form';
 
 export const useAdminFormList = () => {
-  return useQuery<FormListResponse>(FormPrivateQueryKeys.FORM, {
-    method: HttpMethod.GET,
-    url:    '/admin/form',
-  });
+  return useFetch<FormListResponse>('/admin/form');
 };
 
 export const useAdminForm = (id: FormId) => {
-  return useQuery<FormResponse>(FormPrivateQueryKeys.FORM, {
-    method: HttpMethod.GET,
-    url:    `/admin/form/${id}`,
-  });
+  return useFetch<FormResponse>(`/admin/form/${id}`);
 };
 
 export const useAdminFormResponseList = (id: FormId) => {
-  return useQuery<FormDetailListResponse>(FormPrivateQueryKeys.FORM_RESPONSE(id),
-    {
-      method: HttpMethod.GET,
-      url:    `/admin/form/${id}/application`,
-    });
+  return useFetch<FormDetailListResponse>(`/admin/form/${id}/application`);
 };
 
 export const useAdminFormApplication = (responseId: FormId) => {
-  return useQuery<FormDetailResponse>(FormPrivateQueryKeys.FORM_RESPONSE_DETAIL(responseId),
-    {
-      method: HttpMethod.GET,
-      url:    `/admin/form/application/${responseId}`,
-    });
+  return useFetch<FormDetailResponse>(`/admin/form/application/${responseId}`);
 };
 
 export const useAdminCreateForm = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation<FormResponse, CreateForm>({
-    method: HttpMethod.POST,
-    url:    '/form/admin',
-  },
-  {
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: FormPrivateQueryKeys.FORM });
-    },
-    onError: error => {
-      console.error('Error creating form:', error);
-    },
-  });
+  return useMutation<FormResponse, CreateForm>(HttpMethod.POST, '/form/admin');
 };
 
 export const useAdminActivateForm = (id: FormId) => {
-  const queryClient = useQueryClient();
-
-  return useMutation<FormResponse>({
-    method: HttpMethod.POST,
-    url:    `/admin/form/${id}/activate`,
-  },
-  {
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: FormPrivateQueryKeys.FORM_DETAIL(id) });
-    },
-    onError: error => {
-      console.error('Error activating form:', error);
-    },
-  });
+  return useMutation<FormResponse>(HttpMethod.POST, `/admin/form/${id}/activate`);
 };
 
 export const useAdminDeactivateForm = (id: FormId) => {
-  const queryClient = useQueryClient();
-
-  return useMutation<FormResponse>({
-    method: HttpMethod.POST,
-    url:    `/admin/form/${id}/deactivate`,
-  },
-  {
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: FormPrivateQueryKeys.FORM_DETAIL(id) });
-    },
-    onError: error => {
-      console.error('Error deactivating form:', error);
-    },
-  });
+  return useMutation<FormResponse>(HttpMethod.POST, `/admin/form/${id}/deactivate`);
 };
 
 export const useAdminUpdateForm = (id: FormId) => {
-  const queryClient = useQueryClient();
-
-  return useMutation<FormResponse, UpdateForm>({
-    method: HttpMethod.PATCH,
-    url:    `/admin/form/${id}`,
-  },
-  {
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: FormPrivateQueryKeys.FORM_DETAIL(id) });
-    },
-    onError: error => {
-      console.error('Error updating form:', error);
-    },
-  });
+  return useMutation<FormResponse, UpdateForm>(HttpMethod.PATCH, `/admin/form/${id}`);
 };
 
 export const useAdminDeleteForm = (id: FormId) => {
-  const queryClient = useQueryClient();
-
-  return useMutation<DeleteFormResponse>({
-    method: HttpMethod.DELETE,
-    url:    `/admin/form/${id}`,
-  },
-  {
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: FormPrivateQueryKeys.FORM_DETAIL(id) });
-    },
-    onError: error => {
-      console.error('Error deleting form:', error);
-    },
-  });
+  return useMutation<DeleteFormResponse>(HttpMethod.DELETE, `/admin/form/${id}`);
 };

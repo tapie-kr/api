@@ -1,12 +1,7 @@
 import { HttpMethod } from '@/constants/http-method';
 import { useFetch } from '@/hooks/use-fetch';
 import { useMutation } from '@/hooks/use-mutation';
-import { apiRequest } from '@/request';
-import {
-  GoogleCallbackResponse,
-  MeResponse,
-  RefreshTokenResponse,
-} from '@/schemas/auth';
+import { GoogleCallbackResponse, MeResponse, RefreshTokenResponse } from '@/schemas/auth';
 
 type GoogleCallbackService = 'website' | 'form';
 
@@ -28,11 +23,7 @@ export const useMe = () => {
   return useFetch<MeResponse>('/auth/me');
 };
 
-export const googleCallback = (
-  service: GoogleCallbackService,
-  code: string
-) => {
-  return useFetch<GoogleCallbackResponse>(
-    `/auth/google/callback?service=${service}&code=${code}`
-  );
+export const googleCallback = (service: GoogleCallbackService,
+  code: string) => {
+  return useFetch<GoogleCallbackResponse>(`/auth/google/callback?service=${service}&code=${code}`);
 };

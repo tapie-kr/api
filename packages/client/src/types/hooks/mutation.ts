@@ -1,12 +1,12 @@
-export type MutateFunction<TData, TBody> = TBody extends void 
+export type MutateFunction<_, TBody> = TBody extends void
   ? () => Promise<void>
   : (body: TBody) => Promise<void>;
 
 export interface UseMutationResult<TData, TBody> {
-  data: TData | null;
-  error: Error | null;
+  data:      TData | null;
+  error:     Error | null;
   isPending: boolean;
   isSuccess: boolean;
-  isError: boolean;
-  mutate: MutateFunction<TData, TBody>;
+  isError:   boolean;
+  mutate:    MutateFunction<TData, TBody>;
 }
