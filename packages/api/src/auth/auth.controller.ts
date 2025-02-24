@@ -53,14 +53,12 @@ export class AuthController {
       httpOnly: true,
       secure:   this.configService.get('NODE_ENV') === 'production',
       sameSite: 'lax',
-      domain:   this.configService.get('COOKIE_DOMAIN'),
     });
 
     res.cookie('refreshToken', tokens.refreshToken, {
       httpOnly: true,
       secure:   this.configService.get('NODE_ENV') === 'production',
       sameSite: 'lax',
-      domain:   this.configService.get('COOKIE_DOMAIN'),
     });
 
     return {
