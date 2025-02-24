@@ -32,6 +32,8 @@ export const useFetch = <TData>(
 
         setIsError(false);
       } catch (err) {
+        console.error(`[fetch](${url}) API Fetching hooks Error:`, err);
+
         setError(err as Error);
 
         setIsError(true);
