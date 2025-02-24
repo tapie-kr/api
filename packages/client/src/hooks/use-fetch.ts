@@ -1,14 +1,14 @@
-import { AxiosRequestConfig } from 'axios';
-import { useEffect, useState } from 'react';
-import { ApiClient } from '@/client';
-import { UseFetchResult } from '@/types/hooks/fetch';
-import { ApiUrl } from '@/url';
+import { AxiosRequestConfig } from "axios";
+import { useEffect, useState } from "react";
+import { ApiClient } from "@/client";
+import { UseFetchResult } from "@/types/hooks/fetch";
+import { ApiUrl } from "@/url";
 
-const client = new ApiClient;
+const client = new ApiClient();
 
 export const useFetch = <TData>(
   url: string,
-  config?: AxiosRequestConfig,
+  config?: AxiosRequestConfig
 ): UseFetchResult<TData> => {
   const [data, setData] = useState<TData | null>(null);
   const [error, setError] = useState<Error | null>(null);
@@ -17,39 +17,36 @@ export const useFetch = <TData>(
   const [isError, setIsError] = useState<boolean>(false);
   const requestUrl = ApiUrl(url);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setIsPending(true);
+  const fetch = async () => {
+    try {
+      setIsPending(true);
 
-        const response = await client.request<TData>({
-          method: 'GET',
-          url:    requestUrl,
-          ...config,
-        });
+      const response = await client.request<TData>({
+        method: "GET",
+        url: requestUrl,
+        ...config,
+      });
 
-        setData(response);
+      setData(response);
 
-        setIsSuccess(true);
+      setIsSuccess(true);
 
-        setIsError(false);
-      } catch (err) {
-        console.error(`[fetch](${url}) API Fetching hooks Error:`, err);
+      setIsError(false);
+    } catch (err) {
+      console.error(`[fetch](${url}) API Fetching hooks Error:`, err);
 
-        setError(err as Error);
+      setError(err as Error);
 
-        setIsError(true);
+      setIsError(true);
 
-        setIsSuccess(false);
-      } finally {
-        setIsPending(false);
-      }
-    };
-
-    fetchData();
-  }, [url]);
+      setIsSuccess(false);
+    } finally {
+      setIsPending(false);
+    }
+  };
 
   return {
+    fetch,
     data,
     error,
     isPending,
