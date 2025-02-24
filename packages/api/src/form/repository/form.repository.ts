@@ -47,13 +47,8 @@ export class FormRepository {
   async findAll(): Promise<ApplyForm[]> {
     return this.prisma.applyForm.findMany();
   }
-  async findAllResponses(id: number): Promise<{
-    responses: FormResponse[];
-  }> {
-    return this.prisma.applyForm.findUnique({
-      where:   { id },
-      include: { responses: true },
-    });
+  async findAllResponses(id: number): Promise<FormResponse[]> {
+    return this.prisma.formResponse.findMany({ where: { formId: id } });
   }
   async findOneResponse(responseId: string): Promise<FormResponse> {
     return this.prisma.formResponse.findUnique({
