@@ -19,64 +19,92 @@ type MemberUUID = string;
 type SkillUUID = string;
 
 export const useCreateMember = () => {
-  return useMutation<MemberResponse, CreateMember>(HttpMethod.POST,
-    '/v1/admin/members');
+  return useMutation<MemberResponse, CreateMember>(
+    HttpMethod.POST,
+    '/admin/members'
+  );
 };
 
 export const useMemberList = () => {
-  return useFetch<MemberListResponse>('/v1/admin/members');
+  return useFetch<MemberListResponse>('/admin/members');
 };
 
 export const useMember = (uuid: MemberUUID) => {
-  return useFetch<MemberResponse>(`/v1/admin/members/${uuid}`);
+  return useFetch<MemberResponse>(`/admin/members/${uuid}`);
 };
 
 export const useUpdateMember = (uuid: MemberUUID) => {
-  return useMutation<MemberResponse, UpdateMember>(HttpMethod.PATCH,
-    `/v1/admin/members/${uuid}`);
+  return useMutation<MemberResponse, UpdateMember>(
+    HttpMethod.PATCH,
+    `/admin/members/${uuid}`
+  );
 };
 
 export const useUpdateMemberProfileImage = (memberUUID: MemberUUID) => {
-  return useMutation<unknown, FormData>(HttpMethod.PATCH,
-    `/v1/admin/members/${memberUUID}/profile`,
-    { headers: { 'Content-Type': 'multipart/form-data' } });
+  return useMutation<unknown, FormData>(
+    HttpMethod.PATCH,
+    `/admin/members/${memberUUID}/profile`,
+    { headers: { 'Content-Type': 'multipart/form-data' } }
+  );
 };
 
 export const useDeleteMemberProfileImage = (memberUUID: MemberUUID) => {
-  return useMutation<unknown>(HttpMethod.DELETE,
-    `/v1/admin/members/${memberUUID}/profile`);
+  return useMutation<unknown>(
+    HttpMethod.DELETE,
+    `/admin/members/${memberUUID}/profile`
+  );
 };
 
 export const useCreateMemberLink = (memberUUID: MemberUUID) => {
-  return useMutation<MemberLinkResponse, MemberLink>(HttpMethod.POST,
-    `/v1/admin/members/${memberUUID}/links`);
+  return useMutation<MemberLinkResponse, MemberLink>(
+    HttpMethod.POST,
+    `/admin/members/${memberUUID}/links`
+  );
 };
 
-export const useUpdateMemberLink = (memberUUID: MemberUUID,
-  linkUUID: string) => {
-  return useMutation<MemberLinkResponse, UpdateMemberLink>(HttpMethod.PATCH,
-    `/v1/admin/members/${memberUUID}/links/${linkUUID}`);
+export const useUpdateMemberLink = (
+  memberUUID: MemberUUID,
+  linkUUID: string
+) => {
+  return useMutation<MemberLinkResponse, UpdateMemberLink>(
+    HttpMethod.PATCH,
+    `/admin/members/${memberUUID}/links/${linkUUID}`
+  );
 };
 
-export const useDeleteMemberLink = (memberUUID: MemberUUID,
-  linkUUID: string) => {
-  return useMutation<MemberLinkResponse>(HttpMethod.DELETE,
-    `/v1/admin/members/${memberUUID}/links/${linkUUID}`);
+export const useDeleteMemberLink = (
+  memberUUID: MemberUUID,
+  linkUUID: string
+) => {
+  return useMutation<MemberLinkResponse>(
+    HttpMethod.DELETE,
+    `/admin/members/${memberUUID}/links/${linkUUID}`
+  );
 };
 
 export const useCreateMemberSkill = (memberUUID: MemberUUID) => {
-  return useMutation<MemberSkillResponse, MemberSkillRequest>(HttpMethod.POST,
-    `/v1/admin/members/${memberUUID}/skills`);
+  return useMutation<MemberSkillResponse, MemberSkillRequest>(
+    HttpMethod.POST,
+    `/admin/members/${memberUUID}/skills`
+  );
 };
 
-export const useUpdateMemberSkill = (memberUUID: MemberUUID,
-  skillUUID: SkillUUID) => {
-  return useMutation<MemberSkillResponse, UpdateMemberSkill>(HttpMethod.PATCH,
-    `/v1/admin/members/${memberUUID}/skills/${skillUUID}`);
+export const useUpdateMemberSkill = (
+  memberUUID: MemberUUID,
+  skillUUID: SkillUUID
+) => {
+  return useMutation<MemberSkillResponse, UpdateMemberSkill>(
+    HttpMethod.PATCH,
+    `/admin/members/${memberUUID}/skills/${skillUUID}`
+  );
 };
 
-export const useDeleteMemberSkill = (memberUUID: MemberUUID,
-  skillUUID: SkillUUID) => {
-  return useMutation<MemberResponse>(HttpMethod.DELETE,
-    `/v1/admin/members/${memberUUID}/skills/${skillUUID}`);
+export const useDeleteMemberSkill = (
+  memberUUID: MemberUUID,
+  skillUUID: SkillUUID
+) => {
+  return useMutation<MemberResponse>(
+    HttpMethod.DELETE,
+    `/admin/members/${memberUUID}/skills/${skillUUID}`
+  );
 };
