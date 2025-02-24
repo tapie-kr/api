@@ -1,4 +1,5 @@
 export interface UseFetchResult<TData> {
+  fetch:     () => Promise<void>;
   data:      TData | null;
   error:     Error | null;
   isPending: boolean;
