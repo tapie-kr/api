@@ -1,6 +1,6 @@
-import { readFileSync, readdirSync, statSync, writeFileSync } from 'fs';
+import { readdirSync, statSync, writeFileSync } from 'fs';
+import { join, relative, resolve } from 'path';
 import { fileURLToPath } from 'url';
-import { resolve, join, relative } from 'path';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
@@ -11,12 +11,13 @@ const validExtensions = ['.ts', '.tsx'];
 function getAllFiles(dir: string): string[] {
   const files: string[] = [];
 
-  readdirSync(dir).forEach((file) => {
+  readdirSync(dir).forEach(file => {
     const fullPath = join(dir, file);
+
     if (statSync(fullPath).isDirectory()) {
       files.push(...getAllFiles(fullPath));
     } else if (
-      validExtensions.some((ext) => file.endsWith(ext)) &&
+      validExtensions.some(ext => file.endsWith(ext)) &&
       !excludeFiles.includes(file) &&
       !file.endsWith('.test.ts') &&
       !file.endsWith('.test.tsx') &&
@@ -32,10 +33,11 @@ function getAllFiles(dir: string): string[] {
 
 function generateExports(files: string[]): string {
   return files
-    .map((file) => {
+    .map(file => {
       const relativePath = relative(SRC_DIR, file)
         .replace(/\.(ts|tsx)$/, '')
         .replace(/\\/g, '/');
+
       return `export * from './${relativePath}';`;
     })
     .join('\n');
@@ -47,7 +49,6 @@ function main() {
   const indexPath = join(SRC_DIR, 'index.ts');
 
   writeFileSync(indexPath, exportStatements + '\n');
-  console.log(`Generated ${indexPath} with ${files.length} exports`);
 }
 
 main();

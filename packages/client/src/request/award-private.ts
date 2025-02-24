@@ -19,41 +19,29 @@ export const useAwardList = () => {
 };
 
 export const useCreateAward = () => {
-  return useMutation<unknown, CreateAward>(
-    HttpMethod.POST,
-    '/admin/portfolio/awards'
-  );
+  return useMutation<unknown, CreateAward>(HttpMethod.POST,
+    '/admin/portfolio/awards');
 };
 
 export const useCreateAwardWithoutUUID = () => {
-  return useMutation<unknown, CreateAwardWithoutUUID>(
-    HttpMethod.POST,
-    '/admin/portfolio/awards'
-  );
+  return useMutation<unknown, CreateAwardWithoutUUID>(HttpMethod.POST,
+    '/admin/portfolio/awards');
 };
 
 export const useDeleteAward = (awardUUID: AwardUUID) => {
-  return useMutation<unknown, unknown>(
-    HttpMethod.DELETE,
-    `/admin/portfolio/awards/${awardUUID}`
-  );
+  return useMutation<unknown, unknown>(HttpMethod.DELETE,
+    `/admin/portfolio/awards/${awardUUID}`);
 };
 
 export const useCreateAwardMember = (awardUUID: AwardUUID) => {
-  return useMutation<unknown, CreateAwardMember>(
-    HttpMethod.POST,
-    `/admin/portfolio/awards/${awardUUID}/members`
-  );
+  return useMutation<unknown, CreateAwardMember>(HttpMethod.POST,
+    `/admin/portfolio/awards/${awardUUID}/members`);
 };
 
-export const useDeleteAwardMember = (
-  awardUUID: AwardUUID,
-  memberId: string
-) => {
-  return useMutation<unknown, unknown>(
-    HttpMethod.DELETE,
-    `/admin/portfolio/awards/${awardUUID}/members/${memberId}`
-  );
+export const useDeleteAwardMember = (awardUUID: AwardUUID,
+  memberId: string) => {
+  return useMutation<unknown, unknown>(HttpMethod.DELETE,
+    `/admin/portfolio/awards/${awardUUID}/members/${memberId}`);
 };
 
 export const useCompetitionList = () => {
@@ -61,14 +49,10 @@ export const useCompetitionList = () => {
 };
 
 export const useCompetitionAwardList = (competitionUUID: CompetitionUUID) => {
-  return useFetch<CompetitionAwardListResponseSchema>(
-    `/admin/portfolio/competitions/${competitionUUID}`
-  );
+  return useFetch<CompetitionAwardListResponseSchema>(`/admin/portfolio/competitions/${competitionUUID}`);
 };
 
 export const useDeleteCompetition = (competitionUUID: CompetitionUUID) => {
-  return useMutation<unknown, unknown>(
-    HttpMethod.DELETE,
-    `/admin/portfolio/competitions/${competitionUUID}`
-  );
+  return useMutation<unknown, unknown>(HttpMethod.DELETE,
+    `/admin/portfolio/competitions/${competitionUUID}`);
 };

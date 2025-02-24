@@ -10,7 +10,7 @@ import {
   FormResponse,
   UpdateForm,
 } from '@/schemas/form';
-import { FormId } from './form'
+import { FormId } from './form';
 
 export const useAdminFormList = () => {
   return useFetch<FormListResponse>('/admin/form');

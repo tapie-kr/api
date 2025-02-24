@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { ApiClient } from '@/client';
 import { HttpMethod } from '@/constants/http-method';
 import { MutateFunction, UseMutationResult } from '@/types/hooks/mutation';
-import { ApiUrl } from '@/url'
+import { ApiUrl } from '@/url';
 
 const client = new ApiClient;
 
@@ -17,8 +17,6 @@ export const useMutation = <TData, TBody = void>(
   const [isPending, setIsPending] = useState<boolean>(false);
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
-
-  // Url에 api version 자동 추가
   const requestUrl = ApiUrl(url);
 
   const mutateFunction = async (body: TBody extends void ? void : TBody) => {
@@ -27,7 +25,7 @@ export const useMutation = <TData, TBody = void>(
 
       const response = await client.request<TData>({
         method,
-        url: requestUrl,
+        url:  requestUrl,
         data: body,
         ...config,
       });
