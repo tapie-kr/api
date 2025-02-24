@@ -31,8 +31,8 @@ export const formDetailScheme = z.object({
 export const formResponseSchema = z.object({
   id: z.number(),
   name: z.string(),
-  startsAt: z.date(),
-  endsAt: z.date(),
+  startsAt: z.string(),
+  endsAt: z.string(),
   active: z.boolean(),
 });
 
