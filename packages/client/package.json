@@ -27,7 +27,8 @@
   "scripts": {
     "prepublish": "pnpm run build",
     "build": "rimraf dist && tsup",
-    "lint": "eslint . --fix",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "generate:exports": "tsx src/scripts/generateGlobalExport.ts"
   },
   "devDependencies": {
