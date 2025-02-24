@@ -1,38 +1,38 @@
 import { z } from 'zod';
-import { MemberRole } from '@/constants/member-role';
+import { MemberRole } from '@/constants/enum/member-role';
 import { BaseResponse } from '@/schemas/base';
-import { MemberUnitType } from '@/constants/unit-type'
+import { MemberUnitType } from '@/constants/enum/unit-type';
 
 export const memberSchema = z.object({
-  uuid:        z.string(),
-  name:        z.string(),
-  username:    z.string(),
-  role:        z.nativeEnum(MemberRole),
-  unit:        z.nativeEnum(MemberUnitType),
-  generation:  z.number(),
+  uuid: z.string(),
+  name: z.string(),
+  username: z.string(),
+  role: z.nativeEnum(MemberRole),
+  unit: z.nativeEnum(MemberUnitType),
+  generation: z.number(),
   googleEmail: z.string(),
-  profileUrl:  z.string(),
+  profileUrl: z.string(),
 });
 
 export const createMemberScheme = z.object({
-  name:        z.string(),
-  username:    z.string(),
+  name: z.string(),
+  username: z.string(),
   googleEmail: z.string(),
-  role:        z.nativeEnum(MemberRole),
-  unit:        z.nativeEnum(MemberUnitType),
-  generation:  z.number(),
+  role: z.nativeEnum(MemberRole),
+  unit: z.nativeEnum(MemberUnitType),
+  generation: z.number(),
 });
 
 export const memberLinkSchema = z.object({
-  icon:  z.string(),
+  icon: z.string(),
   label: z.string(),
-  href:  z.string(),
+  href: z.string(),
 });
 
 export const memberSkillSchema = z.object({
   isVerified: z.boolean(),
   isLearning: z.boolean(),
-  skill:      z.object({
+  skill: z.object({
     uuid: z.string(),
     icon: z.string(),
     name: z.string(),
@@ -43,11 +43,11 @@ export const memberSkillSchema = z.object({
 export const memberSkillResponseSchema = z.object({
   isVerified: z.boolean(),
   isLearning: z.boolean(),
-  skill:      z.object({
-    uuid:      z.string(),
-    icon:      z.string(),
-    name:      z.string(),
-    type:      z.nativeEnum(MemberUnitType),
+  skill: z.object({
+    uuid: z.string(),
+    icon: z.string(),
+    name: z.string(),
+    type: z.nativeEnum(MemberUnitType),
     createdAt: z.string(),
     updatedAt: z.string(),
   }),
@@ -68,7 +68,7 @@ export type MemberLink = z.infer<typeof memberLinkSchema>;
 
 export type MemberLinkResponse = BaseResponse<
   typeof memberLinkSchema & {
-    uuid:       string;
+    uuid: string;
     profileUrl: string;
   }
 >;

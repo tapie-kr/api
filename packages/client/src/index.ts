@@ -8,9 +8,9 @@ export * from './constants/query-keys/award';
 export * from './constants/query-keys/award-private';
 export * from './constants/query-keys/member';
 export * from './constants/query-keys/member-private';
-export * from './constants/member-role';
-export * from './constants/skill-type';
-export * from './constants/unit-type';
+export * from './constants/enum/member-role';
+export * from './constants/enum/skill-type';
+export * from './constants/enum/unit-type';
 export * from './constants/regex';
 export * from './hooks/use-mutation';
 export * from './hooks/use-query';
@@ -27,4 +27,3 @@ export * from './request/award-private';
 export * from './types/api';
 export * from './types/endpoints/auth';
 export * from './provider';
-
