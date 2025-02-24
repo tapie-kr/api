@@ -1,5 +1,4 @@
 import { HttpMethod } from '@/constants/http-method';
-import { FormId } from '@/constants/query-keys/form-private';
 import { useFetch } from '@/hooks/use-fetch';
 import { useMutation } from '@/hooks/use-mutation';
 import {
@@ -11,6 +10,7 @@ import {
   FormResponse,
   UpdateForm,
 } from '@/schemas/form';
+import { FormId } from './form'
 
 export const useAdminFormList = () => {
   return useFetch<FormListResponse>('/admin/form');
