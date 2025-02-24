@@ -1,9 +1,12 @@
 import { HttpMethod } from '@/constants/http-method';
-import { AuthQueryKeys } from '@/constants/query-keys';
+import { useFetch } from '@/hooks/use-fetch';
 import { useMutation } from '@/hooks/use-mutation';
-import { useQuery } from '@/hooks/use-query';
 import { apiRequest } from '@/request';
-import { GoogleCallbackResponse, MeResponse, RefreshTokenResponse } from '@/schemas/auth';
+import {
+  GoogleCallbackResponse,
+  MeResponse,
+  RefreshTokenResponse,
+} from '@/schemas/auth';
 
 type GoogleCallbackService = 'website' | 'form';
 
@@ -18,26 +21,18 @@ export function useGoogleLogin() {
 }
 
 export const useRefreshToken = () => {
-  return useMutation<unknown, RefreshTokenResponse>({
-    method: HttpMethod.POST,
-    url:    '/auth/refresh',
-  },
-  { onError: error => {
-    console.error('Error refreshing token:', error);
-  } });
+  return useMutation<RefreshTokenResponse>(HttpMethod.POST, '/auth/refresh');
 };
 
 export const useMe = () => {
-  return useQuery<MeResponse>(AuthQueryKeys.ME, {
-    method: HttpMethod.GET,
-    url:    '/auth/me',
-  });
+  return useFetch<MeResponse>('/auth/me');
 };
 
-export const googleCallback = (service: GoogleCallbackService,
-  code: string) => {
-  return apiRequest<GoogleCallbackResponse>({
-    method: HttpMethod.GET,
-    url:    `/auth/google/callback?service=${service}&code=${code}`,
-  });
+export const googleCallback = (
+  service: GoogleCallbackService,
+  code: string
+) => {
+  return useFetch<GoogleCallbackResponse>(
+    `/auth/google/callback?service=${service}&code=${code}`
+  );
 };
