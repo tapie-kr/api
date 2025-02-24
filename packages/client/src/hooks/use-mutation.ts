@@ -1,8 +1,10 @@
 import { useState } from 'react';
-import { axiosInstance } from '@/lib/axios';
+import { ApiClient } from '@/client';
 import { AxiosRequestConfig } from 'axios';
 import { HttpMethod } from '@/constants/http-method';
 import { UseMutationResult, MutateFunction } from '@/types/hooks/mutation';
+
+const client = new ApiClient();
 
 export const useMutation = <TData, TBody = void>(
   method: HttpMethod,
@@ -18,13 +20,13 @@ export const useMutation = <TData, TBody = void>(
   const mutateFunction = async (body: TBody extends void ? void : TBody) => {
     try {
       setIsPending(true);
-      const response = await axiosInstance({
+      const response = await client.request<TData>({
         method,
         url,
         data: body,
         ...config,
       });
-      setData(response as TData);
+      setData(response);
       setIsSuccess(true);
       setIsError(false);
     } catch (err) {
