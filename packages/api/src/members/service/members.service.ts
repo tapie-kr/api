@@ -76,11 +76,12 @@ export class MembersService {
         return {
           uuid:        member.uuid,
           name:        member.name,
+          studentID:   member.studentID,
           username:    member.username,
           role:        member.role,
           unit:        member.unit,
           generation:  member.generation,
-          googleEmail: '',
+          googleEmail: member.googleEmail,
           profileUri:  this.minioService.buildPublicUrl(profileAssetPath),
         } satisfies MemberDto;
       });
@@ -92,6 +93,7 @@ export class MembersService {
           uuid:        member.uuid,
           name:        member.name,
           username:    member.username,
+          studentID:   member.studentID,
           googleEmail: member.googleEmail,
           role:        member.role,
           unit:        member.unit,

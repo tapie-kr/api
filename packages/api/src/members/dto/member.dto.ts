@@ -17,6 +17,12 @@ export class MemberDto {
 
   @IsString()
   @ApiProperty({
+    description: '학번', example: '10912',
+  })
+  studentID: number;
+
+  @IsString()
+  @ApiProperty({
     description: '회원 아이디', example: 'jeewonkwon',
   })
   username: string;
