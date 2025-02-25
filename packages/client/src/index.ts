@@ -1,3 +1,5 @@
+'use client';
+
 export * from './client';
 export * from './constants/regex';
 export * from './hooks/use-fetch';

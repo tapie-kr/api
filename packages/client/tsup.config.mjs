@@ -7,7 +7,7 @@ export default defineConfig({
   format: ['esm', 'cjs'],
   target: 'node20',
   minify: false,
-  banner: { js: '"use client"' },
+  // banner: { js: '"use client"' },
   outExtension: ({ format }) =>
     format === 'esm' ? { js: '.mjs' } : { js: '.cjs' },
   dts: true,
