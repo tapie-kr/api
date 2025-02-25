@@ -63,6 +63,14 @@ export class AwardDto {
   updatedAt: Date;
 }
 
+export class PreviewAwardDto extends OmitType(AwardDto, [
+  'competition',
+  'members',
+  'createdAt',
+  'updatedAt',
+] as const) {
+}
+
 export class CreateAwardAdditionalDto {
   @ApiProperty({ type: () => ConnectCompetitionDto })
   @IsNotEmpty()
