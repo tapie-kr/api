@@ -21,11 +21,13 @@ export class ApiClient {
     const response = await this.instance.request<T>(config);
 
     if (response.status == 401) {
+      console.log('Refreshing Token');
       const refreshResponse = await this.instance.post('/auth/refresh');
 
-      if (refreshResponse.status == 404) {
+      if (refreshResponse.status == 401) {
         location.href = this.authURL;
       } else {
+        console.log('Token Refreshed');
         await this.request(config);
       }
     }
