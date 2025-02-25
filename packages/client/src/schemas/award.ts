@@ -16,11 +16,11 @@ export const awardSchema = z.object({
   rewardedAt:      z.string(),
   createdAt:       z.string(),
   updatedAt:       z.string(),
-  members:         z.object({
+  members:         z.array(z.object({
     uuid:     z.string().uuid(),
     name:     z.string(),
     username: z.string(),
-  }),
+  })),
 });
 
 export const addAwardSchema = z.object({
