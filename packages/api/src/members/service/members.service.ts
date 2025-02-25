@@ -36,6 +36,17 @@ export class MembersService {
         return this.memberRepository.getMemberByGoogleEmail(value);
     }
   }
+  async searchMembers(options: {
+    username: string;
+  }) {
+    const member = await this.getMember(GetMemberMethod.USERNAME, options.username);
+
+    if (!member) {
+      throw new BadRequestException('멤버를 찾을 수 없습니다.');
+    }
+
+    return member;
+  }
   async getMemberWithData(uuid: string) {
     const member = await this.memberRepository.getMemberWithData(uuid);
 

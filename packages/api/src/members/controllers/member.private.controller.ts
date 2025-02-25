@@ -8,6 +8,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   Req,
   UploadedFile,
   UseGuards,
@@ -55,6 +56,14 @@ export class MemberPrivateController {
   })
   async getAllMembers() {
     return this.membersService.getAllMembers({ publicOnly: false });
+  }
+  @Get('/search')
+  @ApiOperation({
+    summary: '멤버 검색하기', description: '(이 버전은 username 검색만 가능)',
+  })
+  @ApiCommonResponse(HttpStatus.OK, { $ref: getSchemaPath(MemberDto) })
+  async searchMembers(@Query('username') username: string) {
+    return this.membersService.searchMembers({ username });
   }
   @Get(':memberUUID')
   @ApiOperation({
