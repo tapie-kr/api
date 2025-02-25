@@ -1,14 +1,13 @@
-import { AxiosRequestConfig } from "axios";
-import { useEffect, useState } from "react";
-import { ApiClient } from "@/client";
-import { UseFetchResult } from "@/types/hooks/fetch";
-import { ApiUrl } from "@/url";
-
-const client = new ApiClient();
+import { HttpMethod } from '@/constants/http-method';
+import { apiRequest } from '@/request';
+import { UseFetchResult } from '@/types/hooks/fetch';
+import { ApiUrl } from '@/url';
+import { AxiosRequestConfig } from 'axios';
+import { useState } from 'react';
 
 export const useFetch = <TData>(
   url: string,
-  config?: AxiosRequestConfig
+  config?: AxiosRequestConfig,
 ): UseFetchResult<TData> => {
   const [data, setData] = useState<TData | null>(null);
   const [error, setError] = useState<Error | null>(null);
@@ -21,8 +20,8 @@ export const useFetch = <TData>(
     try {
       setIsPending(true);
 
-      const response = await client.request<TData>({
-        method: "GET",
+      const response = await apiRequest<TData>({
+        method: HttpMethod.GET,
         url: requestUrl,
         ...config,
       });

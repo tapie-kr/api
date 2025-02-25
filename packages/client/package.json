@@ -1,6 +1,6 @@
 {
   "name": "@tapie-kr/api-client",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "description": "Type-safe API client for TAPIE API",
   "license": "MIT",
   "repository": {
@@ -37,8 +37,6 @@
     "generate:exports": "tsx src/scripts/generateGlobalExport.ts"
   },
   "devDependencies": {
-    "@tanstack/react-query": "^5.66.0",
-    "@tanstack/react-query-devtools": "^5.66.0",
     "@tapie-kr/code-guideline-base": "^0.1.20",
     "@types/node": "^22.13.1",
     "@types/react": "^19.0.8",
@@ -51,8 +49,6 @@
     "zod": "^3.24.2"
   },
   "peerDependencies": {
-    "@tanstack/react-query": "^5.66.0",
-    "@tanstack/react-query-devtools": "^5.66.0",
     "axios": "^1.7.9",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

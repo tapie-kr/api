@@ -1,11 +1,9 @@
-import { AxiosRequestConfig } from 'axios';
-import { useState } from 'react';
-import { ApiClient } from '@/client';
 import { HttpMethod } from '@/constants/http-method';
+import { apiRequest } from '@/request';
 import { MutateFunction, UseMutationResult } from '@/types/hooks/mutation';
 import { ApiUrl } from '@/url';
-
-const client = new ApiClient;
+import { AxiosRequestConfig } from 'axios';
+import { useState } from 'react';
 
 export const useMutation = <TData, TBody = void>(
   method: HttpMethod,
@@ -23,9 +21,9 @@ export const useMutation = <TData, TBody = void>(
     try {
       setIsPending(true);
 
-      const response = await client.request<TData>({
+      const response = await apiRequest<TData>({
         method,
-        url:  requestUrl,
+        url: requestUrl,
         data: body,
         ...config,
       });
@@ -51,6 +49,11 @@ export const useMutation = <TData, TBody = void>(
   const mutate = mutateFunction as MutateFunction<TData, TBody>;
 
   return {
-    data, error, isPending, isSuccess, isError, mutate,
+    data,
+    error,
+    isPending,
+    isSuccess,
+    isError,
+    mutate,
   };
 };
