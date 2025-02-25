@@ -47,7 +47,9 @@ export class MemberPrivateController {
     return this.membersService.createMember(createMemberDto);
   }
   @Get()
-  @ApiOperation({ summary: '모든 멤버 가져오기' })
+  @ApiOperation({
+    summary: '모든 멤버 가져오기', description: 'username이 unknown으로 시작하는 멤버는 DB에서 username이 null입니다.',
+  })
   @ApiCommonResponse(HttpStatus.OK, {
     type: 'array', items: { $ref: getSchemaPath(MemberDto) },
   })
@@ -55,7 +57,9 @@ export class MemberPrivateController {
     return this.membersService.getAllMembers({ publicOnly: false });
   }
   @Get(':memberUUID')
-  @ApiOperation({ summary: '특정 멤버 가져오기' })
+  @ApiOperation({
+    summary: '특정 멤버 가져오기', description: 'username이 unknown으로 시작하는 멤버는 DB에서 username이 null입니다.',
+  })
   @ApiCommonResponse(HttpStatus.OK, { $ref: getSchemaPath(SpecificDetailMemberDto) })
   async getMember(@Param('memberUUID') uuid: string) {
     return this.membersService.getMemberWithData(uuid);

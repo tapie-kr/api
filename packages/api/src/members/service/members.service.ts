@@ -21,6 +21,9 @@ export class MembersService {
 
     return `${uuidv4()}.${extension}`;
   }
+  private getDefaultUsername(uuid: string): string {
+    return `unknown-${uuid.slice(0, 8)}`;
+  }
   async getMember(method: GetMemberMethod, value: string) {
     switch (method) {
       case GetMemberMethod.UUID:
@@ -48,7 +51,7 @@ export class MembersService {
     return {
       uuid:        member.uuid,
       name:        member.name,
-      username:    member.username,
+      username:    member.username  || this.getDefaultUsername(member.uuid),
       permissions: member.permissions,
       isGraduated: isGraduated,
       studentID:   member.studentID,
@@ -98,7 +101,7 @@ export class MembersService {
           uuid:        member.uuid,
           name:        member.name,
           studentID:   member.studentID,
-          username:    member.username,
+          username:    member.username || this.getDefaultUsername(member.uuid),
           role:        member.role,
           unit:        member.unit,
           generation:  member.generation,
@@ -113,7 +116,7 @@ export class MembersService {
         return {
           uuid:        member.uuid,
           name:        member.name,
-          username:    member.username,
+          username:    member.username  || this.getDefaultUsername(member.uuid),
           studentID:   member.studentID,
           googleEmail: member.googleEmail,
           role:        member.role,
