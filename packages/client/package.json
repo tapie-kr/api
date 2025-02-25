@@ -1,6 +1,6 @@
 {
   "name": "@tapie-kr/api-client",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "Type-safe API client for TAPIE API",
   "license": "MIT",
   "repository": {
@@ -22,6 +22,11 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
       "require": "./dist/index.cjs"
+    },
+    "./enum": {
+      "types": "./dist/enum.d.ts",
+      "import": "./dist/enum.mjs",
+      "require": "./dist/enum.cjs"
     }
   },
   "scripts": {
