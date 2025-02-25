@@ -11,7 +11,7 @@ export const memberSchema = z.object({
   unit: z.nativeEnum(MemberUnit),
   generation: z.number(),
   googleEmail: z.string(),
-  profileUrl: z.string(),
+  profileUri: z.string(),
 });
 
 export const createMemberScheme = z.object({
@@ -69,7 +69,7 @@ export type MemberLink = z.infer<typeof memberLinkSchema>;
 export type MemberLinkResponse = BaseResponse<
   typeof memberLinkSchema & {
     uuid: string;
-    profileUrl: string;
+    profileUri: string;
   }
 >;
 
