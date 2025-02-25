@@ -3,6 +3,7 @@ import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 export class ApiClient {
   private instance: AxiosInstance;
   private authURL: string;
+  private isRefreshing = false;
 
   constructor() {
     const version = process.env.API_VERSION || 'v1';
@@ -20,8 +21,15 @@ export class ApiClient {
     this.instance.interceptors.response.use(
       (response) => response,
       async (error) => {
-        if (error.response && error.response.status === 401) {
+        const originalRequest = error.config;
+
+        if (error.response?.status === 401 && !originalRequest._retry) {
           console.log('Refreshing Token');
+
+          if (this.isRefreshing) {
+            return Promise.reject(error);
+          }
+          this.isRefreshing = true;
 
           try {
             const refreshResponse = await this.instance.post('/auth/refresh');
@@ -31,13 +39,19 @@ export class ApiClient {
               window.location.href = this.authURL;
             } else {
               console.log('Token Refreshed. Retrying request...');
-              return this.instance.request(error.config);
+              this.isRefreshing = false;
+
+              originalRequest._retry = true;
+              return this.instance.request(originalRequest);
             }
           } catch (refreshError) {
             console.error('Refresh token request failed:', refreshError);
             window.location.href = this.authURL;
           }
+
+          this.isRefreshing = false;
         }
+
         return Promise.reject(error);
       },
     );
