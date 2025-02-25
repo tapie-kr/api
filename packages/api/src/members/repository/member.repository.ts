@@ -14,7 +14,7 @@ export class MemberRepository {
     return this.prisma.member.findUnique({
       where:   { uuid },
       include: {
-        profile: true, links: true, portfolio: true, awards: true, skills: true, history: true, visitStats: true,
+        profile: true, links: true, portfolio: true, awards: true, skills: true, history: true,
       },
     });
   }

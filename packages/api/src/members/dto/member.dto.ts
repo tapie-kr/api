@@ -1,6 +1,11 @@
 import { ApiProperty, OmitType } from '@nestjs/swagger';
 import { MemberRole, MemberUnit } from '@tapie-kr/api-database';
-import { IsEnum, IsNumber, IsString } from 'class-validator';
+import {
+  IsBoolean,
+  IsEnum,
+  IsNumber,
+  IsString,
+} from 'class-validator';
 
 export class MemberDto {
   @IsNumber()
@@ -71,4 +76,12 @@ export class CreateMemberDto extends OmitType(MemberDto, ['uuid', 'profileUri'] 
 }
 
 export class PublicOnlyMemberDto extends OmitType(MemberDto, ['googleEmail'] as const) {
+}
+
+export class SpecificMemberDto extends MemberDto {
+  @IsBoolean()
+  @ApiProperty({
+    description: '특정 멤버의 졸업 여부', example: false,
+  })
+  isGraduated: boolean;
 }
