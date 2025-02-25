@@ -88,3 +88,7 @@ export type CompetitionListResponse = BaseResponse<
 export type CompetitionAwardListResponseSchema = BaseResponse<
   typeof competitionAwardSchema
 >;
+
+export type AwardType = z.infer<typeof awardSchema>;
+export type CompetitionType = z.infer<typeof competitionSchema>;
+export type CompetitionAwardType = z.infer<typeof competitionAwardSchema>;

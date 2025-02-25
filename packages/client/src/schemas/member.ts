@@ -83,3 +83,7 @@ export type MemberSkillResponse = BaseResponse<
 
 export const updateMemberSkillSchema = memberSkillSchema.partial();
 export type UpdateMemberSkill = z.infer<typeof updateMemberSkillSchema>;
+
+export type MemberType = z.infer<typeof memberSchema>;
+export type MemberLinkType = z.infer<typeof memberLinkSchema>;
+export type MemberSkillType = z.infer<typeof memberSkillSchema>;

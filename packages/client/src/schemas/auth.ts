@@ -26,3 +26,5 @@ export type MeResponse = BaseResponse<typeof meResponseSchema>;
 export type GoogleCallbackResponse = BaseResponse<
   typeof googleCallbackResponseSchema
 >;
+
+export type AuthMeType = z.infer<typeof meResponseSchema>;
