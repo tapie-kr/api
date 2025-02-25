@@ -28,7 +28,7 @@ import { PermissionGuard } from '@/auth/guards/permission.guard';
 import { UserAuthGuard } from '@/auth/guards/user-auth.guard';
 import { Permissions as P } from '@/common/utils/permissions';
 import { ApiCommonResponse } from '@/common/utils/swagger';
-import { CreateMemberDto, MemberDto, SpecificMemberDto } from '@/members/dto/member.dto';
+import { CreateMemberDto, MemberDto, SpecificDetailMemberDto } from '@/members/dto/member.dto';
 import { CreateMemberLinkDto, UpdateMemberLinkDto } from '@/members/dto/member-link.dto';
 import { CreateMemberSkillDto, MemberSkillDto, UpdateMemberSkillDto } from '@/members/dto/member-skill.dto';
 import { MembersService } from '@/members/service/members.service';
@@ -36,7 +36,7 @@ import { MembersService } from '@/members/service/members.service';
 @Controller('admin/members')
 @RequirePermissions(P.MEMBER_MANAGE)
 @UseGuards(UserAuthGuard, PermissionGuard)
-@ApiExtraModels(MemberDto,  MemberSkillDto)
+@ApiExtraModels(MemberDto,  MemberSkillDto, SpecificDetailMemberDto)
 export class MemberPrivateController {
   constructor(private readonly membersService: MembersService) {
   }
@@ -56,7 +56,7 @@ export class MemberPrivateController {
   }
   @Get(':memberUUID')
   @ApiOperation({ summary: '특정 멤버 가져오기' })
-  @ApiCommonResponse(HttpStatus.OK, { $ref: getSchemaPath(SpecificMemberDto) })
+  @ApiCommonResponse(HttpStatus.OK, { $ref: getSchemaPath(SpecificDetailMemberDto) })
   async getMember(@Param('memberUUID') uuid: string) {
     return this.membersService.getMemberWithData(uuid);
   }
