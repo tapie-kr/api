@@ -6,6 +6,10 @@ import {
   IsNumber,
   IsString,
 } from 'class-validator';
+import { MemberHistoryDto } from '@/members/dto/member-history.dto';
+import { MemberLinkDto } from '@/members/dto/member-link.dto';
+import { MemberSkillDto } from '@/members/dto/member-skill.dto';
+import { PreviewAwardDto } from '@/portfolio/dto/award.dto';
 
 export class MemberDto {
   @IsNumber()
@@ -78,10 +82,44 @@ export class CreateMemberDto extends OmitType(MemberDto, ['uuid', 'profileUri'] 
 export class PublicOnlyMemberDto extends OmitType(MemberDto, ['googleEmail'] as const) {
 }
 
-export class SpecificMemberDto extends MemberDto {
+export class SpecificDetailMemberDto extends MemberDto {
   @IsBoolean()
   @ApiProperty({
     description: '특정 멤버의 졸업 여부', example: false,
   })
   isGraduated: boolean;
+
+  @IsNumber()
+  @ApiProperty({
+    description: '특정 멤버의 권한', example: 0,
+  })
+  permissions: number;
+
+  @ApiProperty({
+    type:        () => MemberLinkDto,
+    isArray:     true,
+    description: '멤버의 링크 목록',
+  })
+  links: MemberLinkDto[];
+
+  @ApiProperty({
+    type:        () => PreviewAwardDto,
+    isArray:     true,
+    description: '멤버의 수상 목록',
+  })
+  awards: PreviewAwardDto[];
+
+  @ApiProperty({
+    type:        () => MemberSkillDto,
+    isArray:     true,
+    description: '멤버의 기술 목록',
+  })
+  skills: MemberSkillDto[];
+
+  @ApiProperty({
+    type:        () => MemberHistoryDto,
+    isArray:     true,
+    description: '멤버의 기록 목록',
+  })
+  history: MemberHistoryDto[];
 }
