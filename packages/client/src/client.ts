@@ -20,6 +20,8 @@ export class ApiClient {
   public async request<T>(config: AxiosRequestConfig): Promise<T> {
     const response = await this.instance.request<T>(config);
 
+    console.log('Response:', response);
+
     if (response.status == 401) {
       console.log('Refreshing Token');
       const refreshResponse = await this.instance.post('/auth/refresh');
