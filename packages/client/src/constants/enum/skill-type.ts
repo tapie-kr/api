@@ -1,5 +1,5 @@
 export enum MemberSkill {
-  DEVELOPMENT = 'development',
-  MANAGEMENT = 'management',
-  OTHER = 'other',
+  DEVELOPMENT = 'DEVELOPMENT',
+  MANAGEMENT = 'MANAGEMENT',
+  OTHER = 'OTHER',
 }
