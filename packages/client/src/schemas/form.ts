@@ -69,3 +69,6 @@ export const formApplicationFile = z.object({ presignedUrl: z.string() });
 export type CreateFormApplication = z.infer<typeof createFormApplicationSchema>;
 export type UpdateFormApplication = z.infer<typeof updateFormApplicationScheme>;
 export type FormApplicationFile = BaseResponse<typeof formApplicationFile>;
+
+export type FormDetailType = z.infer<typeof formDetailScheme>;
+export type FormResponseType = z.infer<typeof formResponseSchema>;
