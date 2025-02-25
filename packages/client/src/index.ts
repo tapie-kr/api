@@ -4,7 +4,6 @@ export * from './client';
 export * from './constants/regex';
 export * from './hooks/use-fetch';
 export * from './hooks/use-mutation';
-export * from './provider';
 export * from './request';
 export * from './request/auth';
 export * from './request/award';
