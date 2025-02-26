@@ -44,10 +44,8 @@ export class AwardDto {
   @ApiProperty({ description: '수상일' })
   rewardedAt: Date;
 
-  @ApiProperty({
-    type: () => CompetitionPreviewDto, isArray: true,
-  })
-  competition?: CompetitionPreviewDto[];
+  @ApiProperty({ type: () => CompetitionPreviewDto })
+  competition?: CompetitionPreviewDto;
 
   @ApiProperty({
     type: () => MemberPreviewDto, isArray: true,
@@ -130,3 +128,4 @@ export class AwardPublicPreviewDto {
   })
   memberNames: string[];
 }
+
