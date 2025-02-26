@@ -25,7 +25,7 @@ export class FormRepository {
     try {
       return await this.prisma.applyForm.create({ data });
     } catch (error) {
-      throw new InternalServerErrorException('Failed to create form', error?.message);
+      throw new InternalServerErrorException('폼을 생성하는데 문제가 발생했습니다.', error?.message);
     }
   }
   async update(id: number, data: UpdateFormDto): Promise<ApplyForm> {
@@ -35,7 +35,7 @@ export class FormRepository {
         data,
       });
     } catch (error) {
-      throw new InternalServerErrorException('Failed to update form', error?.message);
+      throw new InternalServerErrorException('폼 데이터를 업데이트하는데 문제가 발생했습니다.', error?.message);
     }
   }
   async remove(id: number): Promise<ApplyForm> {
@@ -100,7 +100,7 @@ export class FormRepository {
         throw new BadRequestException('이미 사용된 전화번호입니다.');
       }
 
-      throw new InternalServerErrorException('Failed to create response', error?.message);
+      throw new InternalServerErrorException('응답을 삭제하는데 문제가 발생했습니다.', error?.message);
     }
   }
   async findResponse(formId: number, email: string): Promise<FormResponseWithPortfolio | null> {
@@ -127,7 +127,7 @@ export class FormRepository {
         throw new BadRequestException('이미 사용된 전화번호입니다.');
       }
 
-      throw new InternalServerErrorException('Failed to update response', error?.message);
+      throw new InternalServerErrorException('응답을 수정하는데 문제가 발생했습니다', error?.message);
     }
   }
   async attachFileToResponse(formId: number, user: MemberGuestPayload, assetId: string): Promise<FormResponse> {
@@ -172,7 +172,7 @@ export class FormRepository {
     const now = new Date;
 
     if (!form) {
-      throw new BadRequestException('Form not found');
+      throw new BadRequestException('폼을 찾을 수 없습니다.');
     }
 
     return now >= form.startsAt && now <= form.endsAt && form.active;
