@@ -14,7 +14,7 @@ function useDynamicFetch<TData, TParam>(
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
 
-  const fetchData = useCallback(
+  const fetch = useCallback(
     async (opts: { param: TParam }) => {
       setIsPending(true);
       try {
@@ -44,7 +44,7 @@ function useDynamicFetch<TData, TParam>(
     [client, urlGenerator, config]
   );
 
-  return { fetchData, data, error, isPending, isSuccess, isError };
+  return { fetch, data, error, isPending, isSuccess, isError };
 }
 
 export default useDynamicFetch;
