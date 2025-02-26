@@ -72,7 +72,7 @@ export class FormService {
     const isAvailable = await this.formRepository.isAvailableToAccessForm(formId);
 
     if (!isAvailable) {
-      throw new BadRequestException('지원 가능한 시간이 아닙니다');
+      throw new BadRequestException('지원 가능한 상태가 아닙니다.');
     }
 
     const response =  await this.findResponse(formId, user);
@@ -103,7 +103,7 @@ export class FormService {
     const isAvailable = await this.formRepository.isAvailableToAccessForm(formId);
 
     if (!isAvailable) {
-      throw new BadRequestException('지원 가능한 시간이 아닙니다');
+      throw new BadRequestException('지원 가능한 상태가 아닙니다');
     }
 
     const isSubmitted = await this.formRepository.isResponseSubmitted(formId, user);
@@ -118,7 +118,7 @@ export class FormService {
     const isAvailable = await this.formRepository.isAvailableToAccessForm(formId);
 
     if (!isAvailable) {
-      throw new BadRequestException('지원 가능한 시간이 아닙니다');
+      throw new BadRequestException('지원 가능한 상태가 아닙니다');
     }
 
     const isSubmitted = await this.formRepository.isResponseSubmitted(formId, user);
@@ -152,7 +152,7 @@ export class FormService {
     const isAvailable = await this.formRepository.isAvailableToAccessForm(formId);
 
     if (!isAvailable) {
-      throw new BadRequestException('지원 가능한 시간이 아닙니다');
+      throw new BadRequestException('지원 가능한 상태가 아닙니다');
     }
 
     const isSubmitted = await this.formRepository.isResponseSubmitted(formId, user);
@@ -173,7 +173,7 @@ export class FormService {
     const isAvailable = await this.formRepository.isAvailableToAccessForm(formId);
 
     if (!isAvailable) {
-      throw new BadRequestException('지원 가능한 시간이 아닙니다');
+      throw new BadRequestException('지원 가능한 상태가 아닙니다');
     }
 
     const isSubmitted = await this.formRepository.isResponseSubmitted(formId, user);
@@ -188,7 +188,7 @@ export class FormService {
     const isAvailable = await this.formRepository.isAvailableToAccessForm(formId);
 
     if (!isAvailable) {
-      throw new BadRequestException('지원 가능한 시간이 아닙니다');
+      throw new BadRequestException('지원 가능한 상태가 아닙니다');
     }
 
     const isSubmitted = await this.formRepository.isResponseSubmitted(formId, user);
