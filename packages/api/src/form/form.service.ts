@@ -86,6 +86,19 @@ export class FormService {
   async findResponse(formId: number, user: MemberGuestPayload) {
     return this.formRepository.findResponse(formId, user.email);
   }
+  async deleteResponse(responseId: string) {
+    try {
+      await this.formRepository.deleteResponseByID(responseId);
+    } catch (error) {
+      const prismaException = toTypedPrismaError(error);
+
+      if (prismaException instanceof PrismaOperationFailedError) {
+        throw new BadRequestException('응답을 찾을 수 없습니다');
+      }
+
+      throw error;
+    }
+  }
   async updateResponse(formId: number, user: MemberGuestPayload, data: UpdateFormResponseDto) {
     const isAvailable = await this.formRepository.isAvailableToAccessForm(formId);
 

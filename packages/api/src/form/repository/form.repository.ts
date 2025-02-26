@@ -142,6 +142,9 @@ export class FormRepository {
 
     return this.prisma.formResponse.delete({ where: { uuid } });
   }
+  async deleteResponseByID(responseId: string): Promise<FormResponse> {
+    return this.prisma.formResponse.delete({ where: { uuid: responseId } });
+  }
   async isResponseSubmitted(formId: number, user: MemberGuestPayload): Promise<boolean> {
     const data = await this.findResponse(formId, user.email);
 

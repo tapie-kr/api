@@ -87,6 +87,15 @@ export class FormPrivateController {
     // 특정 지원 폼의 특정 응답 조회하기
     return this.applyFormService.findOneResponse(responseId);
   }
+  @Delete('applications/:responseId')
+  @ApiOperation({ summary: '특정 지원 폼의 특정 응답 삭제' })
+  @ApiCommonResponse(HttpStatus.OK, {
+    type: 'string', example: 'ok',
+  })
+  deleteResponse(@Param('responseId') responseId: string) {
+    // 특정 지원 폼의 특정 응답 삭제하기
+    return this.applyFormService.deleteResponse(responseId);
+  }
   @Post(':id/activate')
   @ApiOperation({ summary: '지원 폼 활성화' })
   @ApiCommonResponse(HttpStatus.OK, { $ref: getSchemaPath(FormDto) })
