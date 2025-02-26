@@ -10,14 +10,17 @@ export class AwardRepository {
   constructor(private readonly prisma: PrismaService) {
   }
   async getAllAwards() {
-    return this.prisma.award.findMany({ include: {
-      members: { select: {
-        uuid:     true,
-        username: true,
-        name:     true,
-      } },
-      competition: true,
-    } });
+    return this.prisma.award.findMany({
+      include: {
+        members: { select: {
+          uuid:     true,
+          username: true,
+          name:     true,
+        } },
+        competition: true,
+      },
+      orderBy: { createdAt: 'desc' },
+    });
   }
   async createAward(data: CreateAwardDto & {
     competitionUUID: string;

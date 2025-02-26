@@ -30,7 +30,9 @@ export class MemberRepository {
     return this.prisma.member.findUnique({ where: { googleEmail: email } });
   }
   async getAllMembers() {
-    return this.prisma.member.findMany({ include: { profile: true } });
+    return this.prisma.member.findMany({
+      include: { profile: true }, orderBy: { createdAt: 'desc' },
+    });
   }
   async createMember(data: CreateMemberPrismaDto) {
     return this.prisma.member.create({ data });
