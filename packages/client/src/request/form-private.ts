@@ -18,12 +18,12 @@ export const usePrivateFormList = () =>
 
 export const usePrivateForm = () =>
   useDynamicFetch<FormResponse, FormUUIDParam>(
-    ({ formUUID }) => `/admin/form/${formUUID}`
+    ({ formId }) => `/admin/form/${formId}`
   );
 
 export const usePrivateFormResponseList = () =>
   useDynamicFetch<FormDetailListResponse, FormUUIDParam>(
-    ({ formUUID }) => `/admin/form/${formUUID}/applications`
+    ({ formId }) => `/admin/form/${formId}/applications`
   );
 
 export const usePrivateFormApplication = () =>
@@ -34,31 +34,30 @@ export const usePrivateFormApplication = () =>
 export const usePrivateCreateForm = () =>
   useMutation<FormResponse, CreateFormRequest>(HttpMethod.POST, "/admin/form");
 
-// Updated dynamic hooks (no parameter on hook call; mutate receives parameter)
 export const usePrivateActivateForm = () => {
   return useDynamicMutation<FormResponse, FormUUIDParam>(
-    ({ formUUID }) => `/admin/form/${formUUID}/activate`,
+    ({ formId }) => `/admin/form/${formId}/activate`,
     HttpMethod.POST
   );
 };
 
 export const usePrivateDeactivateForm = () => {
   return useDynamicMutation<FormResponse, FormUUIDParam>(
-    ({ formUUID }) => `/admin/form/${formUUID}/deactivate`,
+    ({ formId }) => `/admin/form/${formId}/deactivate`,
     HttpMethod.POST
   );
 };
 
 export const usePrivateUpdateForm = () => {
   return useDynamicMutation<FormResponse, FormUUIDParam>(
-    ({ formUUID }) => `/admin/form/${formUUID}`,
+    ({ formId }) => `/admin/form/${formId}`,
     HttpMethod.PATCH
   );
 };
 
 export const usePrivateDeleteForm = () => {
   return useDynamicMutation<DeleteFormResponseType, FormUUIDParam>(
-    ({ formUUID }) => `/admin/form/${formUUID}`,
+    ({ formId }) => `/admin/form/${formId}`,
     HttpMethod.DELETE
   );
 };

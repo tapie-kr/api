@@ -11,7 +11,7 @@ import {
 import useDynamicFetch from "@/hooks/use-dynamic-fetch";
 
 export type FormUUID = number;
-export type FormUUIDParam = { formUUID: FormUUID };
+export type FormUUIDParam = { formId: FormUUID };
 export type FormApplicationParam = { applicationUUID: number };
 
 // Read-only endpoints remain unchanged:
@@ -19,45 +19,45 @@ export const useFormListPublic = () => useFetch<FormListResponse>("/form");
 
 export const useFormApplication = () =>
   useDynamicFetch<FormResponse, FormUUIDParam>(
-    ({ formUUID }) => `/form/${formUUID}/application`
+    ({ formId }) => `/form/${formId}/application`
   );
 
 export const useFormApplicationFile = () =>
   useDynamicFetch<FormApplicationFileResponse, FormUUIDParam>(
-    ({ formUUID }) => `/form/${formUUID}/application/file`
+    ({ formId }) => `/form/${formId}/application/file`
   );
 
 export const useFormAccessibility = () =>
   useDynamicFetch<FormResponse, FormUUIDParam>(
-    ({ formUUID }) => `/form/${formUUID}/application/accessibility`
+    ({ formId }) => `/form/${formId}/application/accessibility`
   );
 
 export const useCreateFormApplication = () =>
   useDynamicMutation<FormResponse, FormUUIDParam, CreateFormApplicationRequest>(
-    ({ formUUID }) => `/form/${formUUID}/application`,
+    ({ formId }) => `/form/${formId}/application`,
     HttpMethod.POST
   );
 
 export const useUpdateFormApplication = () =>
   useDynamicMutation<FormResponse, FormUUIDParam, UpdateFormApplicationRequest>(
-    ({ formUUID }) => `/form/${formUUID}/application`,
+    ({ formId }) => `/form/${formId}/application`,
     HttpMethod.PATCH
   );
 
 export const useDeleteFormApplication = () =>
   useDynamicMutation<FormResponse, FormUUIDParam, unknown>(
-    ({ formUUID }) => `/form/${formUUID}/application`,
+    ({ formId }) => `/form/${formId}/application`,
     HttpMethod.DELETE
   );
 
 export const useUploadFormApplicationFile = () =>
   useDynamicMutation<unknown, FormUUIDParam, unknown>(
-    ({ formUUID }) => `/form/${formUUID}/application/file`,
+    ({ formId }) => `/form/${formId}/application/file`,
     HttpMethod.PATCH
   );
 
 export const useFormSubmit = () =>
   useDynamicMutation<FormResponse, FormUUIDParam, unknown>(
-    ({ formUUID }) => `/form/${formUUID}/application/submit`,
+    ({ formId }) => `/form/${formId}/application/submit`,
     HttpMethod.POST
   );
