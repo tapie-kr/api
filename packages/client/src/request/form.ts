@@ -4,7 +4,7 @@ import { useMutation } from '@/hooks/use-mutation';
 import {
   CreateFormApplication,
   FormApplicationFile,
-  FormDetailResponse,
+  FormApplicationResponse,
   FormListResponse,
   FormResponse,
   UpdateFormApplication,
@@ -17,7 +17,10 @@ export const useFormListPublic = () => {
 };
 
 export const useCreateFormApplication = (id: FormId) => {
-  return useMutation<FormResponse, CreateFormApplication>(HttpMethod.POST, `/form/${id}/application`);
+  return useMutation<FormResponse, CreateFormApplication>(
+    HttpMethod.POST,
+    `/form/${id}/application`,
+  );
 };
 
 export const useFormApplication = (id: FormId) => {
@@ -25,15 +28,24 @@ export const useFormApplication = (id: FormId) => {
 };
 
 export const useUpdateFormApplication = (id: FormId) => {
-  return useMutation<FormResponse, UpdateFormApplication>(HttpMethod.PATCH, `/form/${id}/application`);
+  return useMutation<FormResponse, UpdateFormApplication>(
+    HttpMethod.PATCH,
+    `/form/${id}/application`,
+  );
 };
 
 export const useDeleteFormApplication = (id: FormId) => {
-  return useMutation<FormResponse>(HttpMethod.DELETE, `/form/${id}/application`);
+  return useMutation<FormResponse>(
+    HttpMethod.DELETE,
+    `/form/${id}/application`,
+  );
 };
 
 export const useUploadFormApplicationFile = (id: FormId) => {
-  return useMutation<unknown, unknown>(HttpMethod.PATCH, `/form/${id}/application/file`);
+  return useMutation<unknown, unknown>(
+    HttpMethod.PATCH,
+    `/form/${id}/application/file`,
+  );
 };
 
 export const useFormApplicationFile = (id: FormId) => {
@@ -41,11 +53,17 @@ export const useFormApplicationFile = (id: FormId) => {
 };
 
 export const useDeleteFormApplicationFile = (id: FormId) => {
-  return useMutation<FormDetailResponse, unknown>(HttpMethod.DELETE, `/form/${id}/application/file`);
+  return useMutation<FormApplicationResponse, unknown>(
+    HttpMethod.DELETE,
+    `/form/${id}/application/file`,
+  );
 };
 
 export const useFormSubmit = (id: FormId) => {
-  return useMutation<FormResponse, unknown>(HttpMethod.POST, `/form/${id}/application/submit`);
+  return useMutation<FormResponse, unknown>(
+    HttpMethod.POST,
+    `/form/${id}/application/submit`,
+  );
 };
 
 export const useFormAccessibility = (id: FormId) => {

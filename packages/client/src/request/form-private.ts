@@ -4,8 +4,8 @@ import { useMutation } from '@/hooks/use-mutation';
 import {
   CreateForm,
   DeleteFormResponse,
-  FormDetailListResponse,
-  FormDetailResponse,
+  FormApplicationListResponse,
+  FormApplicationResponse,
   FormListResponse,
   FormResponse,
   UpdateForm,
@@ -21,29 +21,47 @@ export const usePrivateForm = (id: FormId) => {
 };
 
 export const usePrivateFormResponseList = (id: FormId) => {
-  return useFetch<FormDetailListResponse>(`/admin/form/${id}/applications`);
+  return useFetch<FormApplicationListResponse>(
+    `/admin/form/${id}/applications`,
+  );
 };
 
 export const usePrivateFormApplication = (responseId: FormId) => {
-  return useFetch<FormDetailResponse>(`/admin/form/applications/${responseId}`);
+  return useFetch<FormApplicationResponse>(
+    `/admin/form/applications/${responseId}`,
+  );
 };
+
+export const usePrivateDeleteFormApplication = (responseId: FormId) => {};
 
 export const usePrivateCreateForm = () => {
   return useMutation<FormResponse, CreateForm>(HttpMethod.POST, '/admin/form');
 };
 
 export const usePrivateActivateForm = (id: FormId) => {
-  return useMutation<FormResponse>(HttpMethod.POST, `/admin/form/${id}/activate`);
+  return useMutation<FormResponse>(
+    HttpMethod.POST,
+    `/admin/form/${id}/activate`,
+  );
 };
 
 export const usePrivateDeactivateForm = (id: FormId) => {
-  return useMutation<FormResponse>(HttpMethod.POST, `/admin/form/${id}/deactivate`);
+  return useMutation<FormResponse>(
+    HttpMethod.POST,
+    `/admin/form/${id}/deactivate`,
+  );
 };
 
 export const usePrivateUpdateForm = (id: FormId) => {
-  return useMutation<FormResponse, UpdateForm>(HttpMethod.PATCH, `/admin/form/${id}`);
+  return useMutation<FormResponse, UpdateForm>(
+    HttpMethod.PATCH,
+    `/admin/form/${id}`,
+  );
 };
 
 export const usePrivateDeleteForm = (id: FormId) => {
-  return useMutation<DeleteFormResponse>(HttpMethod.DELETE, `/admin/form/${id}`);
+  return useMutation<DeleteFormResponse>(
+    HttpMethod.DELETE,
+    `/admin/form/${id}`,
+  );
 };
