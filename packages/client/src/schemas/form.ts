@@ -80,8 +80,8 @@ export type FormApplicationFileResponse = BaseResponse<
 >;
 
 // New exports for frontend types (using "Data" suffix)
-export type FormDetailData = z.infer<typeof formDetailScheme>;
-export type FormResponseData = z.infer<typeof formResponseSchema>;
+export type FormApplicationResponseType = z.infer<typeof formDetailScheme>;
+export type FormResponseType = z.infer<typeof formResponseSchema>;
 export type FormListResponseData = z.infer<typeof formListResponseSchema>;
 export type FormDetailListResponseData = z.infer<
   typeof formDetailListResponseSchema
