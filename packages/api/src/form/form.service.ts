@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { AssetService } from '@/asset/asset.service';
 import { FileType } from '@/asset/types/fileType';
 import { MemberGuestPayload } from '@/auth/dto/member-payload.dto';
+import { PrismaForeignKeyConstraintError, PrismaOperationFailedError, toTypedPrismaError } from '@/common/prisma/prisma.exception';
 import { decodeFileNameKorean } from '@/common/utils/string';
 import { CreateFormDto, UpdateFormDto } from '@/form/dto/form.dto';
 import { CreateFormResponseDto, UpdateFormResponseDto } from '@/form/dto/response.dto';
@@ -27,11 +28,17 @@ export class FormService {
   async remove(id: number) {
     try {
       await this.formRepository.remove(id);
-    } catch (_error) {
-      throw new NotFoundException('지원 폼을 찾을 수 없습니다');
-    }
+    } catch (error) {
+      const prismaException = toTypedPrismaError(error);
 
-    return 'ok';
+      if (prismaException instanceof PrismaForeignKeyConstraintError) {
+        throw new BadRequestException('지원 폼을 삭제할 수 없습니다. 응답이 존재합니다');
+      } else if (prismaException instanceof PrismaOperationFailedError) {
+        throw new BadRequestException('지원 폼을 찾을 수 없습니다.');
+      }
+
+      throw error;
+    }
   }
   async findAll() {
     return this.formRepository.findAll();

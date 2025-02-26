@@ -38,8 +38,8 @@ export class FormRepository {
       throw new InternalServerErrorException('Failed to update form', error?.message);
     }
   }
-  async remove(id: number): Promise<void> {
-    await this.prisma.applyForm.delete({ where: { id } });
+  async remove(id: number): Promise<ApplyForm> {
+    return this.prisma.applyForm.delete({ where: { id } });
   }
   async findOne(id: number): Promise<ApplyForm | null> {
     return this.prisma.applyForm.findUnique({ where: { id } });
