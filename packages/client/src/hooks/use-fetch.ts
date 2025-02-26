@@ -3,13 +3,16 @@ import { apiRequest } from "@/request";
 import { UseFetchResult } from "@/types/hooks/fetch";
 import { ApiUrl } from "@/url";
 import { AxiosRequestConfig } from "axios";
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 
 export const useFetch = <TData>(
   url: string,
   config?: AxiosRequestConfig
 ): UseFetchResult<TData> => {
+  // Display data - what the UI sees
   const [data, setData] = useState<TData | null>(null);
+  // Internal data - used for fresh fetches
+  const [internalData, setInternalData] = useState<TData | null>(null);
   const [error, setError] = useState<Error | null>(null);
   const [isPending, setIsPending] = useState<boolean>(false);
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
@@ -17,7 +20,13 @@ export const useFetch = <TData>(
   const cacheKey = useRef<string | null>(null);
   const requestUrl = ApiUrl(url);
 
-  // Alternative solution (if you can't change the interface)
+  // Update the display data whenever internal data changes
+  useEffect(() => {
+    if (internalData !== null) {
+      setData(internalData);
+    }
+  }, [internalData]);
+
   const fetch = useCallback(
     async (options?: { skipCache?: boolean }) => {
       setIsPending(true);
@@ -26,6 +35,7 @@ export const useFetch = <TData>(
       // Skip cache가 true이거나 cacheKey가 변경된 경우에만 데이터를 요청
       if (options?.skipCache || cacheKey.current !== newCacheKey) {
         cacheKey.current = newCacheKey;
+        // We'll update internalData but not data yet
       }
 
       try {
@@ -41,10 +51,10 @@ export const useFetch = <TData>(
           }),
         });
 
-        setData(response);
+        // Update internal data first
+        setInternalData(response);
         setIsSuccess(true);
         setIsError(false);
-        // Don't return the response
       } catch (err) {
         console.error(`[fetch](${url}) API Fetching hooks Error:`, err);
         setError(err as Error);
@@ -58,13 +68,13 @@ export const useFetch = <TData>(
     [requestUrl, config]
   );
 
-  const refresh = useCallback(async () => {
+  const refetch = useCallback(async () => {
     return fetch({ skipCache: true });
   }, [fetch]);
 
   return {
     fetch,
-    refresh,
+    refetch,
     data,
     error,
     isPending,
