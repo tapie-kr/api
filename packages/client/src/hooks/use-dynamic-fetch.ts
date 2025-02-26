@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef } from "react";
 import { AxiosRequestConfig } from "axios";
 import { ApiClient } from "@/client";
 import { HttpMethod } from "@/constants/http-method";
@@ -13,16 +13,32 @@ function useDynamicFetch<TData, TParam>(
   const [isPending, setIsPending] = useState<boolean>(false);
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
+  const cacheKey = useRef<string | null>(null);
 
   const fetch = useCallback(
-    async (opts: { param: TParam }) => {
+    async (opts: { param: TParam; skipCache?: boolean }) => {
       setIsPending(true);
+      const url = urlGenerator(opts.param);
+      const newCacheKey = JSON.stringify({ url, config });
+      
+      // Skip cache가 true이거나 cacheKey가 변경된 경우에만 데이터를 요청
+      if (opts.skipCache || cacheKey.current !== newCacheKey) {
+        setData(null);
+        cacheKey.current = newCacheKey;
+      }
+      
       try {
-        const url = urlGenerator(opts.param);
         const response = await client.request<TData>({
           method: HttpMethod.GET,
           url,
           ...config,
+          // Skip cache가 true일 경우에만 캐시를 사용하지 않음
+          ...(opts.skipCache && { 
+            params: { 
+              ...config?.params, 
+              _t: new Date().getTime() 
+            } 
+          }),
         });
         setData(response);
         setIsSuccess(true);
@@ -30,7 +46,7 @@ function useDynamicFetch<TData, TParam>(
         return response;
       } catch (err) {
         console.error(
-          `[dynamic fetch](${urlGenerator(opts.param)}) Error:`,
+          `[dynamic fetch](${url}) Error:`,
           err
         );
         setError(err as Error);
@@ -43,8 +59,15 @@ function useDynamicFetch<TData, TParam>(
     },
     [client, urlGenerator, config]
   );
+  
+  const refresh = useCallback(
+    async (param: TParam) => {
+      return fetch({ param, skipCache: true });
+    },
+    [fetch]
+  );
 
-  return { fetch, data, error, isPending, isSuccess, isError };
+  return { fetch, refresh, data, error, isPending, isSuccess, isError };
 }
 
 export default useDynamicFetch;
