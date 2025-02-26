@@ -110,8 +110,41 @@ export type MemberResponse = BaseResponse<typeof memberResponseSchema>;
 export type MemberType = z.infer<typeof memberResponseSchema>;
 
 // Member List
-export const memberListResponseSchema = z.array(memberResponseSchema);
+export const memberListResponseSchema = z.array(
+  memberResponseSchema.omit({
+    isGraduated: true,
+    permissions: true,
+    links: true,
+    awards: true,
+    skills: true,
+    history: true,
+  }),
+);
 export type MemberListResponse = BaseResponse<typeof memberListResponseSchema>;
+
+// Search Member
+export const searchMemberResponseSchema = z.object({
+  uuid: z.string(),
+  profileAssetUUID: z.string().optional(),
+  representativePortfolioMemberUUID: z.string().optional(),
+  representativeAwardUUID: z.string().optional(),
+  formResponseUUID: z.string().optional(),
+  username: z.string(),
+  googleEmail: z.string(),
+  role: z.nativeEnum(MemberRole),
+  name: z.string(),
+  studentID: z.number(),
+  unit: z.nativeEnum(MemberUnit),
+  generation: z.number(),
+  permissions: z.number(),
+  visitStats: z.number(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
+});
+export type SearchMemberResponse = BaseResponse<
+  typeof searchMemberResponseSchema
+>;
+export type SearchMemberType = z.infer<typeof searchMemberResponseSchema>;
 
 // Update Member
 export const updateMemberSchema = memberResponseSchema.partial();
