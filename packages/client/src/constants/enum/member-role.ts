@@ -1,6 +1,6 @@
 export enum MemberRole {
-  CO_MANAGER = 'co-manager',
-  MANAGER = 'manager',
-  MEMBER = 'member',
-  GUEST = 'guest',
+  MANAGER = 'MANAGER',
+  CO_MANAGER = 'CO_MANAGER',
+  MEMBER = 'MEMBER',
+  GUEST = 'GUEST',
 }

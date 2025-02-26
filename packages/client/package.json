@@ -22,6 +22,11 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
       "require": "./dist/index.cjs"
+    },
+    "./enum": {
+      "types": "./dist/enum.d.ts",
+      "import": "./dist/enum.mjs",
+      "require": "./dist/enum.cjs"
     }
   },
   "scripts": {
@@ -32,8 +37,6 @@
     "generate:exports": "tsx src/scripts/generateGlobalExport.ts"
   },
   "devDependencies": {
-    "@tanstack/react-query": "^5.66.0",
-    "@tanstack/react-query-devtools": "^5.66.0",
     "@tapie-kr/code-guideline-base": "^0.1.20",
     "@types/node": "^22.13.1",
     "@types/react": "^19.0.8",
@@ -46,8 +49,6 @@
     "zod": "^3.24.2"
   },
   "peerDependencies": {
-    "@tanstack/react-query": "^5.66.0",
-    "@tanstack/react-query-devtools": "^5.66.0",
     "axios": "^1.7.9",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
