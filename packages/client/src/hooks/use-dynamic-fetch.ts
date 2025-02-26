@@ -1,14 +1,13 @@
-import { HttpMethod } from "@/constants/http-method";
-import { apiRequest } from "@/request";
-import { UseFetchResult } from "@/types/hooks/fetch";
-import { ApiUrl } from "@/url";
+import { useState, useCallback, useRef, useEffect } from "react";
 import { AxiosRequestConfig } from "axios";
-import { useState, useRef, useCallback, useEffect } from "react";
+import { ApiClient } from "@/client";
+import { HttpMethod } from "@/constants/http-method";
 
-export const useFetch = <TData>(
-  url: string,
+function useDynamicFetch<TData, TParam>(
+  urlGenerator: (params: TParam) => string,
   config?: AxiosRequestConfig
-): UseFetchResult<TData> => {
+) {
+  const client = new ApiClient();
   // Display data - what the UI sees
   const [data, setData] = useState<TData | null>(null);
   // Internal data - used for fresh fetches
@@ -18,7 +17,6 @@ export const useFetch = <TData>(
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
   const cacheKey = useRef<string | null>(null);
-  const requestUrl = ApiUrl(url);
 
   // Update the display data whenever internal data changes
   useEffect(() => {
@@ -28,22 +26,23 @@ export const useFetch = <TData>(
   }, [internalData]);
 
   const fetch = useCallback(
-    async (options?: { skipCache?: boolean }) => {
+    async (opts: { param: TParam; skipCache?: boolean }) => {
       setIsPending(true);
-      const newCacheKey = JSON.stringify({ url: requestUrl, config });
+      const url = urlGenerator(opts.param);
+      const newCacheKey = JSON.stringify({ url, config });
 
-      // Skip cache가 true이거나 cacheKey가 변경된 경우에만 데이터를 요청
-      if (options?.skipCache || cacheKey.current !== newCacheKey) {
+      // Only update cache key when needed
+      if (opts.skipCache || cacheKey.current !== newCacheKey) {
         cacheKey.current = newCacheKey;
-        // We'll update internalData but not data yet
       }
 
       try {
-        const response = await apiRequest<TData>({
+        const response = await client.request<TData>({
           method: HttpMethod.GET,
-          url: requestUrl,
+          url,
           ...config,
-          ...(options?.skipCache && {
+          // Add cache-busting parameter when skipCache is true
+          ...(opts.skipCache && {
             params: {
               ...config?.params,
               _t: new Date().getTime(),
@@ -55,8 +54,9 @@ export const useFetch = <TData>(
         setInternalData(response);
         setIsSuccess(true);
         setIsError(false);
+        return response;
       } catch (err) {
-        console.error(`[fetch](${url}) API Fetching hooks Error:`, err);
+        console.error(`[dynamic fetch](${url}) Error:`, err);
         setError(err as Error);
         setIsError(true);
         setIsSuccess(false);
@@ -65,20 +65,17 @@ export const useFetch = <TData>(
         setIsPending(false);
       }
     },
-    [requestUrl, config]
+    [client, urlGenerator, config]
   );
 
-  const refetch = useCallback(async () => {
-    return fetch({ skipCache: true });
-  }, [fetch]);
+  const refetch = useCallback(
+    async (param: TParam) => {
+      return fetch({ param, skipCache: true });
+    },
+    [fetch]
+  );
 
-  return {
-    fetch,
-    refetch,
-    data,
-    error,
-    isPending,
-    isSuccess,
-    isError,
-  };
-};
+  return { fetch, refetch, data, error, isPending, isSuccess, isError };
+}
+
+export default useDynamicFetch;

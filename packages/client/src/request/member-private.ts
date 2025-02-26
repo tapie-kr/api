@@ -1,6 +1,8 @@
-import { HttpMethod } from '@/constants/http-method';
-import { useFetch } from '@/hooks/use-fetch';
-import { useMutation } from '@/hooks/use-mutation';
+import { HttpMethod } from "@/constants/http-method";
+import { useFetch } from "@/hooks/use-fetch";
+import useDynamicFetch from "@/hooks/use-dynamic-fetch";
+import { useMutation } from "@/hooks/use-mutation";
+import useDynamicMutation from "@/hooks/use-dynamic-mutation";
 import {
   CreateMember,
   MemberLink,
@@ -12,99 +14,111 @@ import {
   UpdateMember,
   UpdateMemberLink,
   UpdateMemberSkill,
-} from '@/schemas/member';
+} from "@/schemas/member";
 
 type MemberUUID = string;
+type MemberUUIDParam = { memberUUID: MemberUUID };
 
 type SkillUUID = string;
 
 export const usePrivateCreateMember = () => {
   return useMutation<MemberResponse, CreateMember>(
     HttpMethod.POST,
-    '/admin/members',
+    "/admin/members"
   );
 };
 
 export const usePrivateMemberList = () => {
-  return useFetch<MemberListResponse>('/admin/members');
+  return useFetch<MemberListResponse>("/admin/members");
 };
 
-export const usePrivateMember = (uuid: MemberUUID) => {
-  return useFetch<MemberResponse>(`/admin/members/${uuid}`);
+export const usePrivateMember = () => {
+  return useDynamicFetch<MemberResponse, MemberUUIDParam>(
+    ({ memberUUID }) => `/admin/members/${memberUUID}`
+  );
 };
 
-export const usePrivateUpdateMember = (uuid: MemberUUID) => {
-  return useMutation<MemberResponse, UpdateMember>(
+export const usePrivateUpdateMember = () => {
+  return useDynamicMutation<MemberResponse, MemberUUIDParam, UpdateMember>(
+    ({ memberUUID }) => `/admin/members/${memberUUID}`,
+    HttpMethod.PATCH
+  );
+};
+
+export const usePrivateUpdateMemberProfileImage = () => {
+  return useDynamicMutation<unknown, MemberUUIDParam, FormData>(
+    ({ memberUUID }) => `/admin/members/${memberUUID}/profile`,
     HttpMethod.PATCH,
-    `/admin/members/${uuid}`,
+    { headers: { "Content-Type": "multipart/form-data" } }
   );
 };
 
-export const usePrivateUpdateMemberProfileImage = (memberUUID: MemberUUID) => {
-  return useMutation<unknown, FormData>(
-    HttpMethod.PATCH,
-    `/admin/members/${memberUUID}/profile`,
-    { headers: { 'Content-Type': 'multipart/form-data' } },
+export const usePrivateDeleteMemberProfileImage = () => {
+  return useDynamicMutation<unknown, MemberUUIDParam, unknown>(
+    ({ memberUUID }) => `/admin/members/${memberUUID}/profile`,
+    HttpMethod.DELETE
   );
 };
 
-export const usePrivateDeleteMemberProfileImage = (memberUUID: MemberUUID) => {
-  return useMutation<unknown>(
-    HttpMethod.DELETE,
-    `/admin/members/${memberUUID}/profile`,
+export const usePrivateCreateMemberLink = () => {
+  return useDynamicMutation<MemberLinkResponse, MemberUUIDParam, MemberLink>(
+    ({ memberUUID }) => `/admin/members/${memberUUID}/links`,
+    HttpMethod.POST
   );
 };
 
-export const usePrivateCreateMemberLink = (memberUUID: MemberUUID) => {
-  return useMutation<MemberLinkResponse, MemberLink>(
-    HttpMethod.POST,
-    `/admin/members/${memberUUID}/links`,
+export const usePrivateUpdateMemberLink = () => {
+  return useDynamicMutation<
+    MemberLinkResponse,
+    { memberUUID: MemberUUID; linkUUID: string },
+    UpdateMemberLink
+  >(
+    ({ memberUUID, linkUUID }) =>
+      `/admin/members/${memberUUID}/links/${linkUUID}`,
+    HttpMethod.PATCH
   );
 };
 
-export const usePrivateUpdateMemberLink = (
-  memberUUID: MemberUUID,
-  linkUUID: string,
-) => {
-  return useMutation<MemberLinkResponse, UpdateMemberLink>(
-    HttpMethod.PATCH,
-    `/admin/members/${memberUUID}/links/${linkUUID}`,
+export const usePrivateDeleteMemberLink = () => {
+  return useDynamicMutation<
+    MemberLinkResponse,
+    { memberUUID: MemberUUID; linkUUID: string },
+    unknown
+  >(
+    ({ memberUUID, linkUUID }) =>
+      `/admin/members/${memberUUID}/links/${linkUUID}`,
+    HttpMethod.DELETE
   );
 };
 
-export const usePrivateDeleteMemberLink = (
-  memberUUID: MemberUUID,
-  linkUUID: string,
-) => {
-  return useMutation<MemberLinkResponse>(
-    HttpMethod.DELETE,
-    `/admin/members/${memberUUID}/links/${linkUUID}`,
+export const usePrivateCreateMemberSkill = () => {
+  return useDynamicMutation<
+    MemberSkillResponse,
+    MemberUUIDParam,
+    MemberSkillRequest
+  >(({ memberUUID }) => `/admin/members/${memberUUID}/skills`, HttpMethod.POST);
+};
+
+export const usePrivateUpdateMemberSkill = () => {
+  return useDynamicMutation<
+    MemberSkillResponse,
+    { memberUUID: MemberUUID; skillUUID: SkillUUID },
+    UpdateMemberSkill
+  >(
+    ({ memberUUID, skillUUID }) =>
+      `/admin/members/${memberUUID}/skills/${skillUUID}`,
+    HttpMethod.PATCH
   );
 };
 
-export const usePrivateCreateMemberSkill = (memberUUID: MemberUUID) => {
-  return useMutation<MemberSkillResponse, MemberSkillRequest>(
-    HttpMethod.POST,
-    `/admin/members/${memberUUID}/skills`,
-  );
-};
-
-export const usePrivateUpdateMemberSkill = (
-  memberUUID: MemberUUID,
-  skillUUID: SkillUUID,
-) => {
-  return useMutation<MemberSkillResponse, UpdateMemberSkill>(
-    HttpMethod.PATCH,
-    `/admin/members/${memberUUID}/skills/${skillUUID}`,
-  );
-};
-
-export const usePrivateDeleteMemberSkill = (
-  memberUUID: MemberUUID,
-  skillUUID: SkillUUID,
-) => {
-  return useMutation<MemberResponse>(
-    HttpMethod.DELETE,
-    `/admin/members/${memberUUID}/skills/${skillUUID}`,
+export const usePrivateDeleteMemberSkill = () => {
+  return useDynamicMutation<
+    MemberResponse,
+    { memberUUID: MemberUUID; skillUUID: SkillUUID },
+    unknown
+  >(
+    ({ memberUUID, skillUUID }) =>
+      `/admin/members/${memberUUID}/skills/${skillUUID}`,
+    HttpMethod.DELETE
   );
 };
