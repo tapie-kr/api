@@ -1,13 +1,25 @@
 import { BaseResponse } from '@/schemas/base';
 import { z } from 'zod';
 
-export const publicAwardSchema = z.object({
+// Competition
+export const competitionSchema = z.object({
   uuid: z.string().uuid(),
-  fullTitle: z.string(),
-  memberNames: z.array(z.string()),
+  name: z.string(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
 });
+export type CompetitionResponse = BaseResponse<typeof competitionSchema>;
+export type CompetitionType = z.infer<typeof competitionSchema>;
 
-export const awardSchema = z.object({
+// Competition List
+export const competitionListResponseSchema = z.array(competitionSchema);
+export type CompetitionListResponse = BaseResponse<
+  typeof competitionListResponseSchema
+>;
+export type CompetitionListType = z.infer<typeof competitionListResponseSchema>;
+
+// Portfolio Award
+export const awardResponseSchema = z.object({
   uuid: z.string().uuid(),
   competitionUUID: z.string().uuid(),
   title: z.string(),
@@ -23,27 +35,52 @@ export const awardSchema = z.object({
       username: z.string(),
     }),
   ),
+  competition: competitionSchema,
 });
+export type AwardType = z.infer<typeof awardResponseSchema>;
 
-export const addAwardSchema = z.object({
+// Portfolio Award List
+export const awardListResponseSchema = z.array(awardResponseSchema);
+export type AwardListResponse = BaseResponse<typeof awardListResponseSchema>;
+export type AwardListType = z.infer<typeof awardListResponseSchema>;
+
+// Create Portfolio Award
+export const createAwardSchema = z.object({
   title: z.string(),
   grade: z.number(),
   gradeLabel: z.string(),
-  rewardedAt: z.string().datetime(),
+  rewardedAt: z.string(),
   competition: z.object({
-    uuid: z.string().uuid(),
-    name: z.string(),
+    uuid: z.string().optional(),
+    name: z.string().optional(),
   }),
-  membersUUID: z.array(z.string().uuid()),
+  membersUUID: z.array(z.string()),
 });
-
-export const competitionSchema = z.object({
-  uuid: z.string().uuid(),
-  name: z.string(),
+export type CreateAwardRequest = z.infer<typeof createAwardSchema>;
+export type CreateAwardRequestWithoutUUID = Omit<CreateAwardRequest, 'uuid'>;
+export const createAwardResponseSchema = z.object({
+  uuid: z.string(),
+  competitionUUID: z.string(),
+  title: z.string(),
+  grade: z.number(),
+  gradeLabel: z.string(),
+  rewardedAt: z.string(),
   createdAt: z.string(),
   updatedAt: z.string(),
 });
+export type CreateAwardResponse = BaseResponse<
+  typeof createAwardResponseSchema
+>;
+export type CreateAwardType = z.infer<typeof createAwardResponseSchema>;
 
+// Add Award Member
+export const addAwardMemberSchema = createAwardSchema.pick({
+  competition: true,
+  membersUUID: true,
+});
+export type AddAwardMemberRequest = z.infer<typeof addAwardMemberSchema>;
+
+// Competition Award List
 export const competitionAwardSchema = z.object({
   uuid: z.string().uuid(),
   competitionUUID: z.string().uuid(),
@@ -53,54 +90,40 @@ export const competitionAwardSchema = z.object({
   rewardedAt: z.string(),
   createdAt: z.string(),
   updatedAt: z.string(),
-  awards: z.array(
-    z.object({
-      uuid: z.string().uuid(),
-      competitionUUID: z.string().uuid(),
-      title: z.string(),
-      grade: z.number(),
-      gradeLabel: z.string(),
-      rewardedAt: z.string(),
-      createdAt: z.string(),
-      updatedAt: z.string(),
-    }),
-  ),
+  awards: z.array(createAwardResponseSchema),
 });
+export type CompetitionAwardResponse = BaseResponse<
+  typeof competitionAwardSchema
+>;
+export type CompetitionAwardType = z.infer<typeof competitionAwardSchema>;
+export const competitionAwardListResponseSchema = z.array(
+  competitionAwardSchema,
+);
+export type CompetitionAwardListResponse = BaseResponse<
+  typeof competitionAwardListResponseSchema
+>;
+export type CompetitionAwardListType = z.infer<
+  typeof competitionAwardListResponseSchema
+>;
 
+// Award (Public)
+export const publicAwardSchema = z.object({
+  uuid: z.string().uuid(),
+  fullTitle: z.string(),
+  memberNames: z.array(z.string()),
+});
+export type PublicAwardResponse = BaseResponse<typeof publicAwardSchema>;
+export type PublicAwardType = z.infer<typeof publicAwardSchema>;
+
+// Award List (Public)
 export const publicAwardListResponseSchema = z.array(publicAwardSchema);
-
 export type PublicAwardListResponse = BaseResponse<
   typeof publicAwardListResponseSchema
 >;
-
-export const awardListResponseSchema = z.array(awardSchema);
-export type AwardListResponse = BaseResponse<typeof awardListResponseSchema>;
-export type CreateAward = z.infer<typeof addAwardSchema>;
-export type CreateAwardWithoutUUID = Omit<CreateAward, 'uuid'>;
-
-export type CreateAwardMember = Pick<
-  CreateAward,
-  'competition' | 'membersUUID'
->;
-
-export const competitionListResponseSchema = z.array(competitionSchema);
-
-export type CompetitionListResponse = BaseResponse<
-  typeof competitionListResponseSchema
->;
-
-export type CompetitionAwardListResponseSchema = BaseResponse<
-  typeof competitionAwardSchema
->;
-
-export type AwardType = z.infer<typeof awardSchema>;
-export type CompetitionType = z.infer<typeof competitionSchema>;
-export type CompetitionAwardType = z.infer<typeof competitionAwardSchema>;
+export type PublicAwardListType = z.infer<typeof publicAwardListResponseSchema>;
 
 // New exports for frontend props types
-export type PublicAwardSchemaProps = z.infer<typeof publicAwardSchema>;
-export type AwardSchemaProps = z.infer<typeof awardSchema>;
-export type AddAwardSchemaProps = z.infer<typeof addAwardSchema>;
+export type AwardSchemaProps = z.infer<typeof awardResponseSchema>;
 export type CompetitionSchemaProps = z.infer<typeof competitionSchema>;
 export type CompetitionAwardSchemaProps = z.infer<
   typeof competitionAwardSchema
@@ -111,12 +134,3 @@ export type PublicAwardListResponseSchemaProps = z.infer<
 export type AwardListResponseSchemaProps = z.infer<
   typeof awardListResponseSchema
 >;
-
-// New exports for frontend types (using "Data" suffix or similar)
-export type PublicAwardData = z.infer<typeof publicAwardSchema>;
-export type AwardData = z.infer<typeof awardSchema>;
-export type AddAwardData = z.infer<typeof addAwardSchema>;
-export type CompetitionData = z.infer<typeof competitionSchema>;
-export type CompetitionAwardData = z.infer<typeof competitionAwardSchema>;
-export type PublicAwardListData = z.infer<typeof publicAwardListResponseSchema>;
-export type AwardListData = z.infer<typeof awardListResponseSchema>;

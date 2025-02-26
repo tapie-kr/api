@@ -4,12 +4,13 @@ import useDynamicMutation from '@/hooks/use-dynamic-mutation';
 import { useFetch } from '@/hooks/use-fetch';
 import { useMutation } from '@/hooks/use-mutation';
 import {
+  AddAwardMemberRequest,
   AwardListResponse,
-  CompetitionAwardListResponseSchema,
+  CompetitionAwardListResponse,
   CompetitionListResponse,
-  CreateAward,
-  CreateAwardMember,
-  CreateAwardWithoutUUID,
+  CreateAwardRequest,
+  CreateAwardRequestWithoutUUID,
+  CreateAwardResponse,
 } from '@/schemas/award';
 
 type AwardUUID = string;
@@ -21,14 +22,14 @@ export const usePrivateAwardList = () => {
 };
 
 export const usePrivateCreateAward = () => {
-  return useMutation<unknown, CreateAward>(
+  return useMutation<CreateAwardResponse, CreateAwardRequest>(
     HttpMethod.POST,
     '/admin/portfolio/awards',
   );
 };
 
 export const usePrivateCreateAwardWithoutUUID = () => {
-  return useMutation<unknown, CreateAwardWithoutUUID>(
+  return useMutation<CreateAwardResponse, CreateAwardRequestWithoutUUID>(
     HttpMethod.POST,
     '/admin/portfolio/awards',
   );
@@ -41,8 +42,12 @@ export const usePrivateDeleteAward = () => {
   );
 };
 
-export const usePrivateCreateAwardMember = () => {
-  return useDynamicMutation<unknown, { awardId: AwardUUID }, CreateAwardMember>(
+export const usePrivateAddAwardMember = () => {
+  return useDynamicMutation<
+    unknown,
+    { awardId: AwardUUID },
+    AddAwardMemberRequest
+  >(
     ({ awardId }) => `/admin/portfolio/awards/${awardId}/members`,
     HttpMethod.POST,
   );
@@ -66,7 +71,7 @@ export const usePrivateCompetitionList = () => {
 
 export const usePrivateCompetitionAwardList = () => {
   return useDynamicFetch<
-    CompetitionAwardListResponseSchema,
+    CompetitionAwardListResponse,
     { competitionId: string }
   >(
     ({ competitionId }) =>
