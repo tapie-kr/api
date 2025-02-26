@@ -1,6 +1,6 @@
 {
   "name": "@tapie-kr/api-client",
-  "version": "0.0.29",
+  "version": "0.0.30",
   "description": "Type-safe API client for TAPIE API",
   "license": "MIT",
   "repository": {

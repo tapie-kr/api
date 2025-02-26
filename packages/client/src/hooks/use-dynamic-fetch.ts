@@ -23,7 +23,6 @@ function useDynamicFetch<TData, TParam>(
       
       // Skip cache가 true이거나 cacheKey가 변경된 경우에만 데이터를 요청
       if (opts.skipCache || cacheKey.current !== newCacheKey) {
-        setData(null);
         cacheKey.current = newCacheKey;
       }
       
@@ -59,7 +58,7 @@ function useDynamicFetch<TData, TParam>(
     },
     [client, urlGenerator, config]
   );
-  
+
   const refresh = useCallback(
     async (param: TParam) => {
       return fetch({ param, skipCache: true });

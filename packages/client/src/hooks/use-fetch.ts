@@ -25,7 +25,6 @@ export const useFetch = <TData>(
 
       // Skip cache가 true이거나 cacheKey가 변경된 경우에만 데이터를 요청
       if (options?.skipCache || cacheKey.current !== newCacheKey) {
-        setData(null);
         cacheKey.current = newCacheKey;
       }
 
