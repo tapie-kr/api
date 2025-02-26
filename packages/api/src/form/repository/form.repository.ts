@@ -59,6 +59,15 @@ export class FormRepository {
     return this.prisma.applyForm.findFirst({ where: { active: true } });
   }
   async activateForm(id: number): Promise<ApplyForm> {
+    const activeForm = await this.prisma.applyForm.findFirst({ where: { active: true } });
+
+    if (activeForm && activeForm.id !== id) {
+      await this.prisma.applyForm.update({
+        where: { id: activeForm.id },
+        data:  { active: false },
+      });
+    }
+
     return this.prisma.applyForm.update({
       where: { id },
       data:  { active: true },
