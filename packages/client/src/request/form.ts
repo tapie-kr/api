@@ -12,6 +12,7 @@ import useDynamicFetch from "@/hooks/use-dynamic-fetch";
 
 export type FormUUID = number;
 export type FormUUIDParam = { formUUID: FormUUID };
+export type FormApplicationParam = { applicationUUID: number };
 
 // Read-only endpoints remain unchanged:
 export const useFormListPublic = () => useFetch<FormListResponse>("/form");

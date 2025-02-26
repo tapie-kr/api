@@ -11,24 +11,24 @@ import {
   FormListResponse,
   FormResponse,
 } from "@/schemas/form";
-import { FormUUIDParam } from "./form";
+import { FormApplicationParam, FormUUIDParam } from "./form";
 
 export const usePrivateFormList = () =>
   useFetch<FormListResponse>("/admin/form");
 
 export const usePrivateForm = () =>
   useDynamicFetch<FormResponse, FormUUIDParam>(
-    ({ formUUID: formId }) => `/admin/form/${formId}`
+    ({ formUUID }) => `/admin/form/${formUUID}`
   );
 
 export const usePrivateFormResponseList = () =>
   useDynamicFetch<FormDetailListResponse, FormUUIDParam>(
-    ({ formUUID: formId }) => `/admin/form/${formId}/applications`
+    ({ formUUID }) => `/admin/form/${formUUID}/applications`
   );
 
 export const usePrivateFormApplication = () =>
-  useDynamicFetch<FormDetailResponse, FormUUIDParam>(
-    ({ formUUID: formId }) => `/admin/form/applications/${formId}`
+  useDynamicFetch<FormDetailResponse, FormApplicationParam>(
+    ({ applicationUUID }) => `/admin/form/applications/${applicationUUID}`
   );
 
 export const usePrivateCreateForm = () =>
@@ -37,28 +37,28 @@ export const usePrivateCreateForm = () =>
 // Updated dynamic hooks (no parameter on hook call; mutate receives parameter)
 export const usePrivateActivateForm = () => {
   return useDynamicMutation<FormResponse, FormUUIDParam>(
-    ({ formUUID: formId }) => `/admin/form/${formId}/activate`,
+    ({ formUUID }) => `/admin/form/${formUUID}/activate`,
     HttpMethod.POST
   );
 };
 
 export const usePrivateDeactivateForm = () => {
   return useDynamicMutation<FormResponse, FormUUIDParam>(
-    ({ formUUID: formId }) => `/admin/form/${formId}/deactivate`,
+    ({ formUUID }) => `/admin/form/${formUUID}/deactivate`,
     HttpMethod.POST
   );
 };
 
 export const usePrivateUpdateForm = () => {
   return useDynamicMutation<FormResponse, FormUUIDParam>(
-    ({ formUUID: formId }) => `/admin/form/${formId}`,
+    ({ formUUID }) => `/admin/form/${formUUID}`,
     HttpMethod.PATCH
   );
 };
 
 export const usePrivateDeleteForm = () => {
   return useDynamicMutation<DeleteFormResponseType, FormUUIDParam>(
-    ({ formUUID: formId }) => `/admin/form/${formId}`,
+    ({ formUUID }) => `/admin/form/${formUUID}`,
     HttpMethod.DELETE
   );
 };
