@@ -9,7 +9,6 @@ import {
   CompetitionAwardListResponse,
   CompetitionListResponse,
   CreateAwardRequest,
-  CreateAwardRequestWithoutUUID,
   CreateAwardResponse,
 } from '@/schemas/award';
 
@@ -23,13 +22,6 @@ export const usePrivateAwardList = () => {
 
 export const usePrivateCreateAward = () => {
   return useMutation<CreateAwardResponse, CreateAwardRequest>(
-    HttpMethod.POST,
-    '/admin/portfolio/awards',
-  );
-};
-
-export const usePrivateCreateAwardWithoutUUID = () => {
-  return useMutation<CreateAwardResponse, CreateAwardRequestWithoutUUID>(
     HttpMethod.POST,
     '/admin/portfolio/awards',
   );

@@ -57,7 +57,6 @@ export const createAwardSchema = z.object({
   membersUUID: z.array(z.string()),
 });
 export type CreateAwardRequest = z.infer<typeof createAwardSchema>;
-export type CreateAwardRequestWithoutUUID = Omit<CreateAwardRequest, 'uuid'>;
 export const createAwardResponseSchema = z.object({
   uuid: z.string(),
   competitionUUID: z.string(),
