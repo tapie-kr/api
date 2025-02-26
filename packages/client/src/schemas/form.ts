@@ -41,18 +41,21 @@ export const formDetailListResponseSchema = z.array(formDetailScheme);
 export const createFormSchema = formResponseSchema.omit({ id: true });
 export const updateFormSchema = formResponseSchema.omit({ id: true }).partial();
 export const deleteFormResponseSchema = z.object({});
+
+// Type exports for Form API with consistent naming
+export type FormDetailResponse = BaseResponse<typeof formDetailScheme>;
 export type FormResponse = BaseResponse<typeof formResponseSchema>;
 export type FormListResponse = BaseResponse<typeof formListResponseSchema>;
-export type CreateForm = z.infer<typeof createFormSchema>;
-export type UpdateForm = z.infer<typeof updateFormSchema>;
-export type DeleteFormResponse = BaseResponse<typeof deleteFormResponseSchema>;
-export type FormDetailResponse = BaseResponse<typeof formDetailScheme>;
-
 export type FormDetailListResponse = BaseResponse<
   typeof formDetailListResponseSchema
 >;
+export type CreateFormRequest = z.infer<typeof createFormSchema>;
+export type UpdateFormRequest = z.infer<typeof updateFormSchema>;
+export type DeleteFormResponseType = BaseResponse<
+  typeof deleteFormResponseSchema
+>;
 
-// Public Form API
+// Public Form API Schemas
 export const createFormApplicationSchema = formDetailScheme.pick({
   unit: true,
   phoneNumber: true,
@@ -61,14 +64,17 @@ export const createFormApplicationSchema = formDetailScheme.pick({
   expectedActivities: true,
   reasonToChoose: true,
 });
-
-export const updateFormApplicationScheme =
+export const updateFormApplicationSchema =
   createFormApplicationSchema.partial();
-
 export const formApplicationFile = z.object({ presignedUrl: z.string() });
-export type CreateFormApplication = z.infer<typeof createFormApplicationSchema>;
-export type UpdateFormApplication = z.infer<typeof updateFormApplicationScheme>;
-export type FormApplicationFile = BaseResponse<typeof formApplicationFile>;
 
-export type FormDetailType = z.infer<typeof formDetailScheme>;
-export type FormResponseType = z.infer<typeof formResponseSchema>;
+// Type exports for Public Form API with consistent naming
+export type CreateFormApplicationRequest = z.infer<
+  typeof createFormApplicationSchema
+>;
+export type UpdateFormApplicationRequest = z.infer<
+  typeof updateFormApplicationSchema
+>;
+export type FormApplicationFileResponse = BaseResponse<
+  typeof formApplicationFile
+>;
