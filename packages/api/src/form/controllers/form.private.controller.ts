@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   HttpStatus,
+  NotImplementedException,
   Param,
   Patch,
   Post,
@@ -95,6 +96,15 @@ export class FormPrivateController {
   deleteResponse(@Param('responseId') responseId: string) {
     // 특정 지원 폼의 특정 응답 삭제하기
     return this.applyFormService.deleteResponse(responseId);
+  }
+  @Post('applications/:responseId/approve')
+  @ApiOperation({
+    summary: '특정 지원 폼의 특정 응답 합격처리', description: '합격 처리 기능이 구현되지 않았습니다.', deprecated: true,
+  })
+  @ApiCommonResponse(HttpStatus.OK, { $ref: getSchemaPath(FormResponseDto) })
+  approveResponse(@Param('responseId') _responseId: string) {
+    // 특정 지원 폼의 특정 응답 합격처리하기
+    throw new NotImplementedException('합격 처리 기능이 구현되지 않았습니다.');
   }
   @Post(':id/activate')
   @ApiOperation({ summary: '지원 폼 활성화' })
