@@ -27,6 +27,16 @@ export type MemberResponse = BaseResponse<typeof memberSchema>;
 export type MemberListResponse = BaseResponse<typeof memberListSchema>;
 
 /**
+ * 멤버 생성 body 스키마 
+ * @description Create member schema
+ */
+export const createMemberScheme = memberSchema.omit({
+  uuid: true,
+  profileUri: true,
+})
+export type CreateMember = z.infer<typeof createMemberScheme>;
+
+/**
  * 멤버 프로필에 있는 링크 스키마
  * @description Member link schema
  */
