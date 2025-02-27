@@ -106,6 +106,7 @@ export class AddMemberAwardDto extends OmitType(CreateAwardDto, [
   'grade',
   'gradeLabel',
   'rewardedAt',
+  'competition',
 ] as const) {
 }
 
