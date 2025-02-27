@@ -5,9 +5,7 @@ import { useFetch } from '@/hooks/use-fetch';
 import { useMutation } from '@/hooks/use-mutation';
 import {
   CreateFormRequest,
-  DeleteFormApplicationResponse,
-  DeleteFormResponse,
-  FormApplicationResponse,
+  FormApplicationType,
   FormDetailListResponse,
   FormListResponse,
   FormResponse,
@@ -28,12 +26,12 @@ export const usePrivateFormResponseList = () =>
   );
 
 export const usePrivateFormApplication = () =>
-  useDynamicFetch<FormApplicationResponse, FormApplicationParam>(
+  useDynamicFetch<FormApplicationType, FormApplicationParam>(
     ({ applicationUUID }) => `/admin/form/applications/${applicationUUID}`,
   );
 
 export const usePrivateDeleteFormApplication = () =>
-  useDynamicMutation<DeleteFormApplicationResponse, FormApplicationParam>(
+  useDynamicMutation<unknown, FormApplicationParam>(
     ({ applicationUUID }) => `/admin/form/applications/${applicationUUID}`,
     HttpMethod.DELETE,
   );
@@ -63,7 +61,7 @@ export const usePrivateUpdateForm = () => {
 };
 
 export const usePrivateDeleteForm = () => {
-  return useDynamicMutation<DeleteFormResponse, FormUUIDParam>(
+  return useDynamicMutation<unknown, FormUUIDParam>(
     ({ formId }) => `/admin/form/${formId}`,
     HttpMethod.DELETE,
   );
