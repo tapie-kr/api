@@ -1,5 +1,6 @@
 import { BaseResponse } from "@/schemas/base";
 import { z } from "zod";
+import { memberSchema } from "./member";
 
 /**
  * Public 대회 수상 스키마
@@ -14,7 +15,9 @@ export const publicAwardListSchema = z.array(publicAwardSchema);
 
 export type PublicAward = z.infer<typeof publicAwardSchema>;
 export type PublicAwardResponse = BaseResponse<typeof publicAwardSchema>;
-export type PublicAwardListResponse = BaseResponse<typeof publicAwardListSchema>;
+export type PublicAwardListResponse = BaseResponse<
+  typeof publicAwardListSchema
+>;
 
 /**
  * 대회 스키마
@@ -42,14 +45,12 @@ export const awardSchema = z.object({
   gradeLabel: z.string(),
   rewardedAt: z.string(),
   competition: competitionSchema,
-  members: z.array(
-    z.object({
-      uuid: z.string().uuid(),
-      name: z.string(),
-      studentId: z.string(),
-      username: z.string(),
-    })
-  ),
+  members: memberSchema.pick({
+    uuid: true,
+    name: true,
+    studentID: true,
+    username: true,
+  }),
   createdAt: z.string(),
   updatedAt: z.string(),
 });
@@ -68,10 +69,7 @@ export const createAwardSchema = z.object({
   grade: z.number(),
   gradeLabel: z.string(),
   rewardedAt: z.string(),
-  competition: z.object({
-    uuid: z.string().optional(),
-    name: z.string().optional(),
-  }),
+  competition: competitionSchema.partial(),
   membersUUID: z.array(z.string()),
 });
 export type CreateAward = z.infer<typeof createAwardSchema>;
@@ -81,10 +79,7 @@ export type CreateAward = z.infer<typeof createAwardSchema>;
  * @description Create award member schema
  */
 export const addAwardMemberSchema = z.object({
-  competition: z.object({
-    uuid: z.string().optional(),
-    name: z.string().optional(),
-  }),
+  competition: competitionSchema.partial(),
   membersUUID: z.array(z.string()),
-})
+});
 export type AddAwardMember = z.infer<typeof addAwardMemberSchema>;
