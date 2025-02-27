@@ -1,8 +1,8 @@
-import { HttpMethod } from "@/constants/http-method";
-import { useFetch } from "@/hooks/use-fetch";
-import useDynamicFetch from "@/hooks/use-dynamic-fetch";
-import { useMutation } from "@/hooks/use-mutation";
-import useDynamicMutation from "@/hooks/use-dynamic-mutation";
+import { HttpMethod } from '@/constants/http-method';
+import useDynamicFetch from '@/hooks/use-dynamic-fetch';
+import useDynamicMutation from '@/hooks/use-dynamic-mutation';
+import { useFetch } from '@/hooks/use-fetch';
+import { useMutation } from '@/hooks/use-mutation';
 import {
   CreateMember,
   MemberLink,
@@ -11,37 +11,46 @@ import {
   MemberResponse,
   MemberSkillRequest,
   MemberSkillResponse,
+  SearchMemberResponse,
   UpdateMember,
   UpdateMemberLink,
   UpdateMemberSkill,
-} from "@/schemas/member";
+} from '@/schemas/member';
 
 type MemberUUID = string;
 type MemberUUIDParam = { memberUUID: MemberUUID };
+
+type MemberSearchParam = { username: string };
 
 type SkillUUID = string;
 
 export const usePrivateCreateMember = () => {
   return useMutation<MemberResponse, CreateMember>(
     HttpMethod.POST,
-    "/admin/members"
+    '/admin/members',
   );
 };
 
 export const usePrivateMemberList = () => {
-  return useFetch<MemberListResponse>("/admin/members");
+  return useFetch<MemberListResponse>('/admin/members');
+};
+
+export const usePrivateMemberSearch = () => {
+  return useDynamicFetch<SearchMemberResponse, MemberSearchParam>(
+    ({ username }) => `/admin/members/search?username=${username}`,
+  );
 };
 
 export const usePrivateMember = () => {
   return useDynamicFetch<MemberResponse, MemberUUIDParam>(
-    ({ memberUUID }) => `/admin/members/${memberUUID}`
+    ({ memberUUID }) => `/admin/members/${memberUUID}`,
   );
 };
 
 export const usePrivateUpdateMember = () => {
   return useDynamicMutation<MemberResponse, MemberUUIDParam, UpdateMember>(
     ({ memberUUID }) => `/admin/members/${memberUUID}`,
-    HttpMethod.PATCH
+    HttpMethod.PATCH,
   );
 };
 
@@ -49,21 +58,21 @@ export const usePrivateUpdateMemberProfileImage = () => {
   return useDynamicMutation<unknown, MemberUUIDParam, FormData>(
     ({ memberUUID }) => `/admin/members/${memberUUID}/profile`,
     HttpMethod.PATCH,
-    { headers: { "Content-Type": "multipart/form-data" } }
+    { headers: { 'Content-Type': 'multipart/form-data' } },
   );
 };
 
 export const usePrivateDeleteMemberProfileImage = () => {
   return useDynamicMutation<unknown, MemberUUIDParam, unknown>(
     ({ memberUUID }) => `/admin/members/${memberUUID}/profile`,
-    HttpMethod.DELETE
+    HttpMethod.DELETE,
   );
 };
 
 export const usePrivateCreateMemberLink = () => {
   return useDynamicMutation<MemberLinkResponse, MemberUUIDParam, MemberLink>(
     ({ memberUUID }) => `/admin/members/${memberUUID}/links`,
-    HttpMethod.POST
+    HttpMethod.POST,
   );
 };
 
@@ -75,7 +84,7 @@ export const usePrivateUpdateMemberLink = () => {
   >(
     ({ memberUUID, linkUUID }) =>
       `/admin/members/${memberUUID}/links/${linkUUID}`,
-    HttpMethod.PATCH
+    HttpMethod.PATCH,
   );
 };
 
@@ -87,7 +96,7 @@ export const usePrivateDeleteMemberLink = () => {
   >(
     ({ memberUUID, linkUUID }) =>
       `/admin/members/${memberUUID}/links/${linkUUID}`,
-    HttpMethod.DELETE
+    HttpMethod.DELETE,
   );
 };
 
@@ -107,7 +116,7 @@ export const usePrivateUpdateMemberSkill = () => {
   >(
     ({ memberUUID, skillUUID }) =>
       `/admin/members/${memberUUID}/skills/${skillUUID}`,
-    HttpMethod.PATCH
+    HttpMethod.PATCH,
   );
 };
 
@@ -119,6 +128,6 @@ export const usePrivateDeleteMemberSkill = () => {
   >(
     ({ memberUUID, skillUUID }) =>
       `/admin/members/${memberUUID}/skills/${skillUUID}`,
-    HttpMethod.DELETE
+    HttpMethod.DELETE,
   );
 };
