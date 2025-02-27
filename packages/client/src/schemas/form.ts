@@ -1,58 +1,62 @@
-import { z } from "zod";
-import { MemberUnit } from "@/constants/enum/unit-type";
-import { Regex } from "@/constants/regex";
-import { BaseResponse } from "@/schemas/base";
+import { z } from 'zod';
+import { MemberUnit } from '@/constants/enum/unit-type';
+import { Regex } from '@/constants/regex';
 
-export const formDetailScheme = z.object({
-  uuid: z.string().uuid(),
-  formId: z.number(),
-  memberUUID: z.string().uuid(),
-  portfolioAssetUUID: z.string().uuid(),
-  name: z.string().min(1, "이름은 필수입니다."),
-  studentId: z.string(),
-  googleEmail: z
-    .string()
-    .email("올바른 이메일 형식이 아닙니다.")
-    .endsWith("@gmail.com", "구글 이메일(@gmail.com)만 사용 가능합니다."),
-  unit: z.nativeEnum(MemberUnit),
-  phoneNumber: z
-    .string()
-    .regex(Regex.koreanPhoneNumberPattern)
-    .min(1, "전화번호는 필수입니다."),
-  introduction: z.string().min(1, "자기소개는 필수입니다."),
-  motivation: z.string().min(1, "지원동기는 필수입니다."),
-  expectedActivities: z.string().min(1, "기대하는 활동은 필수입니다."),
-  reasonToChoose: z.string().min(1, "선택이유는 필수입니다."),
-  createdAt: z.string(),
-  updatedAt: z.string(),
-  submitted: z.boolean(),
-});
-
-export const formResponseSchema = z.object({
+/**
+ * 동아리 지원 Form 스키마
+ * @description Form schema
+ */
+export const formSchema = z.object({
   id: z.number(),
   name: z.string(),
   startsAt: z.string(),
   endsAt: z.string(),
   active: z.boolean(),
 });
+export const formListSchema = z.array(formSchema);
 
-export const formListResponseSchema = z.array(formResponseSchema);
-export const formDetailListResponseSchema = z.array(formDetailScheme);
-export const createFormSchema = formResponseSchema.omit({ id: true });
-export const updateFormSchema = formResponseSchema.omit({ id: true }).partial();
+export type Form = z.infer<typeof formSchema>;
+export type FormResponse = z.infer<typeof formSchema>;
+export type FormListResponse = z.infer<typeof formListSchema>;
 
-// Type exports for Form API with consistent naming
-export type FormDetailResponse = BaseResponse<typeof formDetailScheme>;
-export type FormResponse = BaseResponse<typeof formResponseSchema>;
-export type FormListResponse = BaseResponse<typeof formListResponseSchema>;
-export type FormDetailListResponse = BaseResponse<
-  typeof formDetailListResponseSchema
->;
-export type CreateFormRequest = z.infer<typeof createFormSchema>;
-export type UpdateFormRequest = z.infer<typeof updateFormSchema>;
+export const mutateFormSchema = formSchema.omit({
+  id: true,
+})
+export type MutateForm = z.infer<typeof mutateFormSchema>;
 
-// Public Form API Schemas
-export const createFormApplicationSchema = formDetailScheme.pick({
+/**
+ * 동아리 지원 Form 응답 스키마
+ * @description Form application schema
+ */
+export const formApplicationSchema = z.object({
+  uuid: z.string().uuid(),
+  formId: z.number(),
+  memberUUID: z.string().uuid(),
+  portfolioAssetUUID: z.string().uuid(),
+  name: z.string(),
+  studentId: z.string(),
+  googleEmail: z.string(),
+  unit: z.nativeEnum(MemberUnit),
+  phoneNumber: z.string(),
+  introduction: z.string(),
+  motivation: z.string(),
+  expectedActivities: z.string(),
+  reasonToChoose: z.string(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
+  submitted: z.boolean(),
+});
+export const formApplicationList = z.array(formApplicationSchema);
+
+export type FormApplication = z.infer<typeof formApplicationSchema>;
+export type FormApplicationResponse = z.infer<typeof formApplicationSchema>;
+export type FormApplicationListResponse = z.infer<typeof formApplicationList>;
+
+/**
+ * 동아리 지원 CRUD용 body 스키마
+ * @description Create / Update form application schema
+ */
+export const MutateFormApplicationSchema = formApplicationSchema.pick({
   unit: true,
   phoneNumber: true,
   introduction: true,
@@ -60,31 +64,4 @@ export const createFormApplicationSchema = formDetailScheme.pick({
   expectedActivities: true,
   reasonToChoose: true,
 });
-export const updateFormApplicationSchema =
-  createFormApplicationSchema.partial();
-export const formApplicationFile = z.object({ presignedUrl: z.string() });
-
-// Type exports for Public Form API with consistent naming
-export type CreateFormApplicationRequest = z.infer<
-  typeof createFormApplicationSchema
->;
-export type UpdateFormApplicationRequest = z.infer<
-  typeof updateFormApplicationSchema
->;
-export type FormApplicationFileResponse = BaseResponse<
-  typeof formApplicationFile
->;
-
-// New exports for frontend types (using "Data" suffix)
-export type FormApplicationType = z.infer<typeof formDetailScheme>;
-export type FormType = z.infer<typeof formResponseSchema>;
-
-export type CreateFormType = z.infer<typeof createFormSchema>;
-export type UpdateFormType = z.infer<typeof updateFormSchema>;
-export type CreateFormApplicationType = z.infer<
-  typeof createFormApplicationSchema
->;
-export type UpdateFormApplicationType = z.infer<
-  typeof updateFormApplicationSchema
->;
-export type FormApplicationFileType = z.infer<typeof formApplicationFile>;
+export type MutateFormApplication = z.infer<typeof MutateFormApplicationSchema>;
