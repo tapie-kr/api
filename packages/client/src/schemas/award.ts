@@ -94,29 +94,7 @@ export type CompetitionAwardListResponseSchema = BaseResponse<
 >;
 
 export type AwardType = z.infer<typeof awardSchema>;
-export type CompetitionType = z.infer<typeof competitionSchema>;
 export type CompetitionAwardType = z.infer<typeof competitionAwardSchema>;
 
-// New exports for frontend props types
-export type PublicAwardSchemaProps = z.infer<typeof publicAwardSchema>;
-export type AwardSchemaProps = z.infer<typeof awardSchema>;
-export type AddAwardSchemaProps = z.infer<typeof addAwardSchema>;
-export type CompetitionSchemaProps = z.infer<typeof competitionSchema>;
-export type CompetitionAwardSchemaProps = z.infer<
-  typeof competitionAwardSchema
->;
-export type PublicAwardListResponseSchemaProps = z.infer<
-  typeof publicAwardListResponseSchema
->;
-export type AwardListResponseSchemaProps = z.infer<
-  typeof awardListResponseSchema
->;
-
-// New exports for frontend types (using "Data" suffix or similar)
-export type PublicAwardData = z.infer<typeof publicAwardSchema>;
-export type AwardData = z.infer<typeof awardSchema>;
-export type AddAwardData = z.infer<typeof addAwardSchema>;
-export type CompetitionData = z.infer<typeof competitionSchema>;
-export type CompetitionAwardData = z.infer<typeof competitionAwardSchema>;
-export type PublicAwardListData = z.infer<typeof publicAwardListResponseSchema>;
-export type AwardListData = z.infer<typeof awardListResponseSchema>;
+export type PublicAwardType = z.infer<typeof publicAwardSchema>;
+export type CreateAwardType = z.infer<typeof addAwardSchema>;
