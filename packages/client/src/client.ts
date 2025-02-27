@@ -3,12 +3,14 @@ import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 export class ApiClient {
   private instance: AxiosInstance;
   private authURL: string;
+  private service: string;
   private isRefreshing = false;
 
   constructor() {
     const version = process.env.API_VERSION || 'v1';
     const hostname = process.env.API_HOSTNAME || 'http://localhost:8877/';
     this.authURL = process.env.AUTH_URL || 'http://localhost:9876/';
+    this.service = process.env.AUTH_SERVICE || 'website';
     const baseURL = new URL(hostname);
 
     baseURL.pathname = version;
@@ -46,7 +48,7 @@ export class ApiClient {
             }
           } catch (refreshError) {
             console.error('Refresh token request failed:', refreshError);
-            window.location.href = this.authURL;
+            window.location.href = `${this.authURL}?service=${this.service}`;
           }
 
           this.isRefreshing = false;
