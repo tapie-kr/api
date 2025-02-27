@@ -40,7 +40,6 @@ export const formListResponseSchema = z.array(formResponseSchema);
 export const formDetailListResponseSchema = z.array(formDetailScheme);
 export const createFormSchema = formResponseSchema.omit({ id: true });
 export const updateFormSchema = formResponseSchema.omit({ id: true }).partial();
-export const deleteFormResponseSchema = z.object({});
 
 // Type exports for Form API with consistent naming
 export type FormDetailResponse = BaseResponse<typeof formDetailScheme>;
@@ -51,9 +50,6 @@ export type FormDetailListResponse = BaseResponse<
 >;
 export type CreateFormRequest = z.infer<typeof createFormSchema>;
 export type UpdateFormRequest = z.infer<typeof updateFormSchema>;
-export type DeleteFormResponseType = BaseResponse<
-  typeof deleteFormResponseSchema
->;
 
 // Public Form API Schemas
 export const createFormApplicationSchema = formDetailScheme.pick({
@@ -80,15 +76,11 @@ export type FormApplicationFileResponse = BaseResponse<
 >;
 
 // New exports for frontend types (using "Data" suffix)
-export type FormApplicationResponseType = z.infer<typeof formDetailScheme>;
-export type FormResponseType = z.infer<typeof formResponseSchema>;
-export type FormListResponseType = z.infer<typeof formListResponseSchema>;
-export type FormDetailListResponseType = z.infer<
-  typeof formDetailListResponseSchema
->;
+export type FormApplicationType = z.infer<typeof formDetailScheme>;
+export type FormType = z.infer<typeof formResponseSchema>;
+
 export type CreateFormType = z.infer<typeof createFormSchema>;
 export type UpdateFormType = z.infer<typeof updateFormSchema>;
-export type DeleteFormType = z.infer<typeof deleteFormResponseSchema>;
 export type CreateFormApplicationType = z.infer<
   typeof createFormApplicationSchema
 >;

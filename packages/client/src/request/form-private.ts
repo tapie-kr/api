@@ -5,7 +5,6 @@ import { useMutation } from "@/hooks/use-mutation";
 import useDynamicMutation from "@/hooks/use-dynamic-mutation";
 import {
   CreateFormRequest,
-  DeleteFormResponseType,
   FormDetailListResponse,
   FormDetailResponse,
   FormListResponse,
@@ -56,7 +55,7 @@ export const usePrivateUpdateForm = () => {
 };
 
 export const usePrivateDeleteForm = () => {
-  return useDynamicMutation<DeleteFormResponseType, FormUUIDParam>(
+  return useDynamicMutation<unknown, FormUUIDParam>(
     ({ formId }) => `/admin/form/${formId}`,
     HttpMethod.DELETE
   );
