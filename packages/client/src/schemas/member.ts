@@ -27,8 +27,8 @@ export type MemberResponse = BaseResponse<typeof memberSchema>;
 export type MemberListResponse = BaseResponse<typeof memberListSchema>;
 
 /**
- * 멤버 생성 body 스키마
- * @description Create member schema
+ * 멤버 CRUD용 body 스키마
+ * @description Create / Update member schema
  */
 export const mutateMemberScheme = memberSchema.omit({
   uuid: true,
