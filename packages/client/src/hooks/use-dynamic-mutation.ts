@@ -4,8 +4,8 @@ import { ApiClient } from "@/client";
 import { HttpMethod } from "@/constants/http-method";
 
 function useDynamicMutation<TData, TParam, TBody = unknown>(
-  urlGenerator: (params: TParam) => string,
   method: HttpMethod,
+  urlGenerator: (params: TParam) => string,
   config?: AxiosRequestConfig
 ) {
   const client = new ApiClient();
