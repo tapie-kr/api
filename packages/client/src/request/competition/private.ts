@@ -3,12 +3,7 @@ import useDynamicFetch from "@/hooks/use-dynamic-fetch"
 import useDynamicMutation from "@/hooks/use-dynamic-mutation";
 import { useFetch } from "@/hooks/use-fetch";
 import { useMutation } from "@/hooks/use-mutation";
-import {
-  AddAwardMember,
-  AwardListResponse,
-  CompetitionListResponse,
-  CreateAward,
-} from "@/schemas/competition";
+import { AddAwardMemberRequest, AwardListResponse, CompetitionListResponse, CreateAwardRequest, CreateAwardResponse } from "@/schemas/competition";
 
 type CompetitionUUIDParam = { competitionUUID: string };
 type AwardUUIDParam = { awardUUID: string };
@@ -31,10 +26,11 @@ export const usePrivateAwardList = () => {
  * 기존 competition을 연결하려면 uuid,
  * 새로운 competition을 만들려면 name을 입력하세요.
  * membersUUID field는 수상 멤버의 uuid를 입력하면 됩니다.
- * @body {CreateAward} CreateAward
+ * @body {CreateAward} CreateAwardRequest
+ * @returns {CreateAwardResponse} CreateAwardResponse
  */
 export const usePrivateCreateAward = () => {
-  return useMutation<unknown, CreateAward>(
+  return useMutation<CreateAwardResponse, CreateAwardRequest>(
     HttpMethod.PATCH,
     "/admin/portfolio/awards"
   );
@@ -57,7 +53,7 @@ export const usePrivateDeleteAward = () => {
  * @body {AddAwardMember} AddAwardMember
  */
 export const usePrivateAddAwardMember = () => {
-  return useDynamicMutation<unknown, AwardUUIDParam, AddAwardMember>(
+  return useDynamicMutation<unknown, AwardUUIDParam, AddAwardMemberRequest>(
     HttpMethod.POST,
     ({ awardUUID }) => `/admin/portfolio/awards/${awardUUID}/members`
   );

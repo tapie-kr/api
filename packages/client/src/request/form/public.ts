@@ -2,11 +2,14 @@ import { HttpMethod } from '@/constants/http-method';
 import useDynamicFetch from '@/hooks/use-dynamic-fetch';
 import useDynamicMutation from '@/hooks/use-dynamic-mutation';
 import { useFetch } from '@/hooks/use-fetch';
-import { FilePresignedUrlResponse } from '@/schemas/file'
 import {
+  CreateFormApplicationRequest,
+  FormAccessibilityResponse,
+  FormApplicationFileResponse,
   FormApplicationResponse,
-  FormListResponse,
-  MutateFormApplication,
+  FormResponse,
+  UpdateFormApplicationRequest,
+  UploadFormApplicationFileResponse,
 } from '@/schemas/form';
 
 export type FormIDParam = { formId: number };
@@ -16,7 +19,7 @@ export type FormIDParam = { formId: number };
  * @return {FormListResponse} FormListResponse
  */
 export const useFormList = () => {
-  return useFetch<FormListResponse>('/form');
+  return useFetch<FormResponse>('/form');
 };
 
 /**
@@ -27,9 +30,9 @@ export const useFormList = () => {
  */
 export const useCreateFormApplication = () => {
   useDynamicMutation<
-    FormApplicationResponse,
+    FormResponse,
     FormIDParam,
-    MutateFormApplication
+    CreateFormApplicationRequest
   >(HttpMethod.POST, ({ formId }) => `/form/${formId}/application`);
 };
 
@@ -39,7 +42,7 @@ export const useCreateFormApplication = () => {
  * @return {FormResponse} FormResponse
  */
 export const useFormApplication = () => {
-  useDynamicFetch<FormApplicationResponse, FormIDParam>(
+  useDynamicFetch<FormResponse, FormIDParam>(
     ({ formId }) => `/form/${formId}/application`
   );
 };
@@ -52,19 +55,19 @@ export const useFormApplication = () => {
  */
 export const useUpdateFormApplication = () => {
   useDynamicMutation<
-    FormApplicationResponse,
+    FormResponse,
     FormIDParam,
-    MutateFormApplication
+    UpdateFormApplicationRequest
   >(HttpMethod.PATCH, ({ formId }) => `/form/${formId}/application`);
 };
 
 /**
  * 내 Form 응답 삭제하기
  * @queryParam {number} formId
- * @return {FormResponse} FormResponse
+ * @return {FormApplicationResponse} FormApplicationResponse
  */
 export const useDeleteFormApplication = () => {
-  useDynamicMutation<FormApplicationResponse, FormIDParam, unknown>(
+  useDynamicMutation<FormApplicationResponse, FormIDParam>(
     HttpMethod.DELETE,
     ({ formId }) => `/form/${formId}/application`
   );
@@ -77,7 +80,7 @@ export const useDeleteFormApplication = () => {
  * @return {FormResponse} FormResponse
  */
 export const useUploadFormApplicationFile = () => {
-  useDynamicMutation<unknown, FormIDParam, FormData>(
+  useDynamicMutation<UploadFormApplicationFileResponse, FormIDParam, FormData>(
     HttpMethod.PATCH,
     ({ formId }) => `/form/${formId}/application/file`,
     { headers: { 'Content-Type': 'multipart/form-data' } }
@@ -90,7 +93,7 @@ export const useUploadFormApplicationFile = () => {
  * @return {FilePresignedUrlResponse} FilePresignedUrlResponse
  */
 export const useFormApplicationFile = () => {
-    useDynamicFetch<FilePresignedUrlResponse, FormIDParam>(
+    useDynamicFetch<FormApplicationFileResponse, FormIDParam>(
         ({ formId }) => `/form/${formId}/application/file`
     );
 }
@@ -101,7 +104,7 @@ export const useFormApplicationFile = () => {
  * @return {FormResponse} FormResponse
  */
 export const useDeleteFormApplicationFile = () => {
-    useDynamicMutation<FormApplicationResponse, FormIDParam, unknown>(
+    useDynamicMutation<FormApplicationResponse, FormIDParam>(
         HttpMethod.DELETE,
         ({ formId }) => `/form/${formId}/application/file`
     );
@@ -113,7 +116,7 @@ export const useDeleteFormApplicationFile = () => {
  * @return {FormResponse} FormResponse
  */
 export const useFormApplicationSubmit = () => {
-    useDynamicMutation<FormApplicationResponse, FormIDParam, unknown>(
+    useDynamicMutation<FormApplicationResponse, FormIDParam>(
         HttpMethod.POST,
         ({ formId }) => `/form/${formId}/application/apply`
     );
@@ -124,7 +127,7 @@ export const useFormApplicationSubmit = () => {
  * @queryParam {number} formId
  */
 export const useFormAccessibility = () => {
-    useDynamicFetch<boolean, FormIDParam>(
+    useDynamicFetch<FormAccessibilityResponse, FormIDParam>(
         ({ formId }) => `/form/${formId}/application/accessibility`
     );
 }
