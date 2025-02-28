@@ -1,38 +1,41 @@
-import { z } from 'zod';
 import { MemberUnit } from '@/constants/enum/unit-type';
-import { Regex } from '@/constants/regex';
+import { BaseResponse } from '@/schemas/base';
+import { z } from 'zod';
 
-/**
- * 동아리 지원 Form 스키마
- * @description Form schema
- */
-export const formSchema = z.object({
+// Form
+export const formResponseSchema = z.object({
   id: z.number(),
   name: z.string(),
   startsAt: z.string(),
   endsAt: z.string(),
   active: z.boolean(),
 });
-export const formListSchema = z.array(formSchema);
+export type FormResponse = BaseResponse<typeof formResponseSchema>;
+export type FormType = z.infer<typeof formResponseSchema>;
 
-export type Form = z.infer<typeof formSchema>;
-export type FormResponse = z.infer<typeof formSchema>;
-export type FormListResponse = z.infer<typeof formListSchema>;
+// Form List
+export const formListResponseSchema = z.array(formResponseSchema);
+export type FormListResponse = BaseResponse<typeof formListResponseSchema>;
+export type FormListType = z.infer<typeof formListResponseSchema>;
 
-export const mutateFormSchema = formSchema.omit({
-  id: true,
-})
-export type MutateForm = z.infer<typeof mutateFormSchema>;
+// Create Form
+export const createFormSchema = formResponseSchema.omit({ id: true });
+export type CreateFormRequest = z.infer<typeof createFormSchema>;
 
-/**
- * 동아리 지원 Form 응답 스키마
- * @description Form application schema
- */
+// Update Form
+export const updateFormSchema = formResponseSchema.omit({ id: true }).partial();
+export type UpdateFormRequest = z.infer<typeof updateFormSchema>;
+
+// Delete Form
+export const deleteFormResponseSchema = z.string();
+export type DeleteFormResponse = BaseResponse<typeof deleteFormResponseSchema>;
+
+// Form Application
 export const formApplicationSchema = z.object({
-  uuid: z.string().uuid(),
+  uuid: z.string(),
   formId: z.number(),
-  memberUUID: z.string().uuid(),
-  portfolioAssetUUID: z.string().uuid(),
+  memberUUID: z.string(),
+  portfolioAssetUUID: z.string(),
   name: z.string(),
   studentId: z.string(),
   googleEmail: z.string(),
@@ -46,17 +49,28 @@ export const formApplicationSchema = z.object({
   updatedAt: z.string(),
   submitted: z.boolean(),
 });
-export const formApplicationList = z.array(formApplicationSchema);
+export type FormApplicationResponse = BaseResponse<
+  typeof formApplicationSchema
+>;
+export type FormApplicationType = z.infer<typeof formApplicationSchema>;
 
-export type FormApplication = z.infer<typeof formApplicationSchema>;
-export type FormApplicationResponse = z.infer<typeof formApplicationSchema>;
-export type FormApplicationListResponse = z.infer<typeof formApplicationList>;
+// Form Application List
+export const FormApplicationListResponseSchema = z.array(formApplicationSchema);
+export type FormDetailListResponse = BaseResponse<
+  typeof FormApplicationListResponseSchema
+>;
+export type FormApplicationListType = z.infer<
+  typeof FormApplicationListResponseSchema
+>;
 
-/**
- * 동아리 지원 CRUD용 body 스키마
- * @description Create / Update form application schema
- */
-export const MutateFormApplicationSchema = formApplicationSchema.pick({
+// Delete Form Application
+export const DeleteFormApplicationResponseSchema = z.string();
+export type DeleteFormApplicationResponse = BaseResponse<
+  typeof DeleteFormApplicationResponseSchema
+>;
+
+// Create Form Application (Public)
+export const createFormApplicationSchema = formApplicationSchema.pick({
   unit: true,
   phoneNumber: true,
   introduction: true,
@@ -64,4 +78,32 @@ export const MutateFormApplicationSchema = formApplicationSchema.pick({
   expectedActivities: true,
   reasonToChoose: true,
 });
-export type MutateFormApplication = z.infer<typeof MutateFormApplicationSchema>;
+export type CreateFormApplicationRequest = z.infer<
+  typeof createFormApplicationSchema
+>;
+
+// Update Form Application (Public)
+export const updateFormApplicationSchema =
+  createFormApplicationSchema.partial();
+export type UpdateFormApplicationRequest = z.infer<
+  typeof updateFormApplicationSchema
+>;
+
+// Form Application File (Public)
+export const uploadFormApplicationFile = z.string();
+export type UploadFormApplicationFileResponse = BaseResponse<
+  typeof uploadFormApplicationFile
+>;
+export type UploadFormApplicationFileType = z.infer<
+  typeof uploadFormApplicationFile
+>;
+
+export const formApplicationFile = z.object({ presignedUrl: z.string() });
+export type FormApplicationFileResponse = BaseResponse<
+  typeof formApplicationFile
+>;
+export type FormApplicationFileType = z.infer<typeof formApplicationFile>;
+
+export const formAccessibility = z.boolean();
+export type FormAccessibilityResponse = BaseResponse<typeof formAccessibility>;
+export type FormAccessibilityType = z.infer<typeof formAccessibility>;

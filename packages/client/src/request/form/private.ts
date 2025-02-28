@@ -2,7 +2,7 @@ import { HttpMethod } from "@/constants/http-method"
 import useDynamicMutation from "@/hooks/use-dynamic-mutation"
 import { useFetch } from "@/hooks/use-fetch"
 import { useMutation } from "@/hooks/use-mutation"
-import { FormApplicationResponse, FormListResponse, FormResponse, MutateForm } from "@/schemas/form"
+import { DeleteFormApplicationResponse, FormApplicationResponse, FormListResponse, FormResponse, UpdateFormApplicationRequest } from "@/schemas/form"
 import { FormIDParam } from "./public"
 import useDynamicFetch from "@/hooks/use-dynamic-fetch"
 
@@ -11,11 +11,11 @@ type FormApplicationUUIDParam = { applicationUUID: string }
 /**
  * 지원 폼 생성
  * @description 지원 폼을 생성합니다 (응답 생성 X)
- * @body {MutateForm} MutateForm
+ * @body {UpdateFormApplicationRequest} UpdateFormApplicationRequest
  * @returns {FormResponse} FormResponse
  */
 export const usePrivateCreateForm = () => {
-    return useMutation<FormResponse, MutateForm>(
+    return useMutation<FormResponse, UpdateFormApplicationRequest>(
         HttpMethod.POST,
         "/admin/form"
     )
@@ -32,11 +32,11 @@ export const usePrivateFormList = () => {
 /**
  * 특정 지원 폼 수정
  * @queryParam {string} formId
- * @body {MutateForm} MutateForm
+ * @body {UpdateFormApplicationRequest} UpdateFormApplicationRequest
  * @returns {FormResponse} FormResponse
  */
 export const usePrivateUpdateForm = () => {
-    return useDynamicMutation<FormResponse, FormIDParam, MutateForm>(
+    return useDynamicMutation<FormResponse, FormIDParam, UpdateFormApplicationRequest>(
         HttpMethod.PATCH,
         ({ formId }) => `/admin/form/${formId}`
     )
@@ -93,7 +93,7 @@ export const usePrivateFormApplication = () => {
  * @returns {FormResponse} FormResponse
  */
 export const usePrivateDeleteFormApplication = () => {
-    return useDynamicMutation<string, FormApplicationUUIDParam>(
+    return useDynamicMutation<DeleteFormApplicationResponse, FormApplicationUUIDParam>(
         HttpMethod.DELETE,
         ({ applicationUUID }) => `/admin/form/applications/${applicationUUID}`
     )

@@ -4,12 +4,16 @@ import useDynamicMutation from '@/hooks/use-dynamic-mutation';
 import { useFetch } from '@/hooks/use-fetch';
 import { useMutation } from '@/hooks/use-mutation';
 import {
-  MutateMember,
-  MemberLinkWithoutID,
+  CreateMember,
+  DeleteMemberProfileImageResponse,
+  MemberLink,
   MemberListResponse,
   MemberResponse,
-  MemberSkill,
-  MemberSkillWithoutUUID,
+  MemberSkillRequest,
+  MemberSkillResponse,
+  UpdateMember,
+  UpdateMemberProfileImageResponse,
+  UpdateMemberSkill,
 } from '@/schemas/member';
 
 type MemberSearchParam = { username: string };
@@ -19,10 +23,11 @@ type MemberUUIDWithSkillParam = { memberUUID: string; skillUUID: string };
 
 /**
  * 새 멤버 생성
+ * @body {CreateMember} CreateMember
  * @returns {MemberResponse} MemberResponse
  */
 export const usePrivateCreateMember = () => {
-  return useMutation<MemberResponse, MutateMember>(
+  return useMutation<MemberResponse, CreateMember>(
     HttpMethod.POST,
     '/admin/members'
   );
@@ -66,7 +71,7 @@ export const usePrivateMember = () => {
  * @returns {MemberResponse} MemberResponse
  */
 export const usePrivateUpdateMember = () => {
-  return useDynamicMutation<MemberResponse, MemberUUIDParam, MutateMember>(
+  return useDynamicMutation<MemberResponse, MemberUUIDParam, UpdateMember>(
     HttpMethod.PATCH,
     ({ memberUUID }) => `/admin/members/${memberUUID}`
   );
@@ -76,9 +81,14 @@ export const usePrivateUpdateMember = () => {
  * 멤버 프로필 이미지 수정하기
  * @queryParam {string} memberUUID
  * @body {FormData} FormData
+ * @returns {UpdateMemberProfileImageResponse} UpdateMemberProfileImageResponse
  */
 export const usePrivateUpdateMemberProfileImage = () => {
-  return useDynamicMutation<unknown, MemberUUIDParam, FormData>(
+  return useDynamicMutation<
+    UpdateMemberProfileImageResponse,
+    MemberUUIDParam,
+    FormData
+  >(
     HttpMethod.PATCH,
     ({ memberUUID }) => `/admin/members/${memberUUID}/profile`,
     { headers: { 'Content-Type': 'multipart/form-data' } }
@@ -88,9 +98,10 @@ export const usePrivateUpdateMemberProfileImage = () => {
 /**
  * 멤버 프로필 이미지 삭제하기
  * @queryParam {string} memberUUID
+ * @returns {DeleteMemberProfileImageResponse} DeleteMemberProfileImageResponse
  */
 export const usePrivateDeleteMemberProfileImage = () => {
-  return useDynamicMutation<unknown, MemberUUIDParam, unknown>(
+  return useDynamicMutation<DeleteMemberProfileImageResponse, MemberUUIDParam>(
     HttpMethod.DELETE,
     ({ memberUUID }) => `/admin/members/${memberUUID}/profile`
   );
@@ -99,29 +110,28 @@ export const usePrivateDeleteMemberProfileImage = () => {
 /**
  * 멤버 프로필에 링크 추가하기
  * @queryParam {string} memberUUID
- * @body {MemberLinkWithoutID} MemberLinkWithoutID
+ * @body {MemberLink} MemberLink
  * @returns {MemberResponse} MemberResponse
  */
 export const usePrivateCreateMemberLink = () => {
-  return useDynamicMutation<
-    MemberResponse,
-    MemberUUIDParam,
-    MemberLinkWithoutID
-  >(HttpMethod.POST, ({ memberUUID }) => `/admin/members/${memberUUID}/links`);
+  return useDynamicMutation<MemberResponse, MemberUUIDParam, MemberLink>(
+    HttpMethod.POST,
+    ({ memberUUID }) => `/admin/members/${memberUUID}/links`
+  );
 };
 
 /**
  * 멤버 프로필에 링크 수정하기
  * @queryParam {string} memberUUID
  * @queryParam {string} linkUUID
- * @body {MemberLinkWithoutID} MemberLinkWithoutID
+ * @body {MemberLink} MemberLink
  * @returns {MemberResponse} MemberResponse
  */
 export const usePrivateUpdateMemberLink = () => {
   return useDynamicMutation<
     MemberResponse,
     MemberUUIDWithLinkParam,
-    MemberLinkWithoutID
+    MemberLink
   >(
     HttpMethod.PATCH,
     ({ memberUUID, linkUUID }) =>
@@ -146,14 +156,14 @@ export const usePrivateDeleteMemberLink = () => {
 /**
  * 멤버 스킬 추가하기
  * @queryParam {string} memberUUID
- * @body {MemberSkillWithoutUUID} MemberSkillWithoutUUID
+ * @body {MemberSkillRequest} MemberSkillRequest
  * @returns {MemberSkill} MemberSkill
  */
 export const usePrivateCreateMemberSkill = () => {
   return useDynamicMutation<
-    MemberSkill,
+    MemberSkillResponse,
     MemberUUIDParam,
-    MemberSkillWithoutUUID
+    MemberSkillRequest
   >(HttpMethod.POST, ({ memberUUID }) => `/admin/members/${memberUUID}/skills`);
 };
 
@@ -161,14 +171,14 @@ export const usePrivateCreateMemberSkill = () => {
  * 멤버 스킬 수정하기
  * @queryParam {string} memberUUID
  * @queryParam {string} skillUUID
- * @body {MemberSkillWithoutUUID} MemberSkillWithoutUUID
+ * @body {UpdateMemberSkill} UpdateMemberSkill
  * @returns {MemberSkill} MemberSkill
  */
 export const usePrivateUpdateMemberSkill = () => {
   return useDynamicMutation<
-    MemberSkill,
+    MemberSkillResponse,
     MemberUUIDWithSkillParam,
-    MemberSkillWithoutUUID
+    UpdateMemberSkill
   >(
     HttpMethod.PATCH,
     ({ memberUUID, skillUUID }) =>
