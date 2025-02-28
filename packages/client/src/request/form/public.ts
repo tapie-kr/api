@@ -17,10 +17,10 @@ export type FormIDParam = { formId: number };
 
 /**
  * 활성화 된 폼 찾기
- * @return {FormListResponse} FormListResponse
+ * @return {FormResponse} FormListResponse
  */
 export const useFormList = () => {
-  return useFetch<FormListResponse>('/form');
+  return useFetch<FormResponse>('/form');
 };
 
 /**
