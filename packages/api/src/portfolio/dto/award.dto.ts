@@ -44,10 +44,8 @@ export class AwardDto {
   @ApiProperty({ description: '수상일' })
   rewardedAt: Date;
 
-  @ApiProperty({
-    type: () => CompetitionPreviewDto, isArray: true,
-  })
-  competition?: CompetitionPreviewDto[];
+  @ApiProperty({ type: () => CompetitionPreviewDto })
+  competition?: CompetitionPreviewDto;
 
   @ApiProperty({
     type: () => MemberPreviewDto, isArray: true,
@@ -61,6 +59,14 @@ export class AwardDto {
   @IsDate()
   @ApiProperty({ description: '수상 데이터 수정일' })
   updatedAt: Date;
+}
+
+export class PreviewAwardDto extends OmitType(AwardDto, [
+  'competition',
+  'members',
+  'createdAt',
+  'updatedAt',
+] as const) {
 }
 
 export class CreateAwardAdditionalDto {
@@ -100,6 +106,7 @@ export class AddMemberAwardDto extends OmitType(CreateAwardDto, [
   'grade',
   'gradeLabel',
   'rewardedAt',
+  'competition',
 ] as const) {
 }
 
@@ -122,3 +129,4 @@ export class AwardPublicPreviewDto {
   })
   memberNames: string[];
 }
+

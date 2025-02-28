@@ -27,12 +27,12 @@ model Portfolio {
   thumbnails              Asset[]
   presentation            Asset?                  @relation(name: "PortfolioPresentation", fields: [presentationUUID], references: [uuid], onDelete: Restrict)
   competition             Competition?            @relation(fields: [competitionUUID], references: [uuid], onDelete: SetNull)
-  visitStats              PortfolioVisitStat[]
-  downloadStats           PortfolioDownloadStat[]
+  visitStats              Int               @default(0)
+  downloadStats           Int               @default(0)
 
-  releasedAt DateTime
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  releasedAt            DateTime
+  createdAt             DateTime                @default(now())
+  updatedAt             DateTime                @updatedAt
 
   @@unique([name])
 }

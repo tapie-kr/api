@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { AssetService } from '@/asset/asset.service';
 import { FileType } from '@/asset/types/fileType';
 import { MemberGuestPayload } from '@/auth/dto/member-payload.dto';
+import { PrismaForeignKeyConstraintError, PrismaOperationFailedError, toTypedPrismaError } from '@/common/prisma/prisma.exception';
 import { decodeFileNameKorean } from '@/common/utils/string';
 import { CreateFormDto, UpdateFormDto } from '@/form/dto/form.dto';
 import { CreateFormResponseDto, UpdateFormResponseDto } from '@/form/dto/response.dto';
@@ -27,11 +28,17 @@ export class FormService {
   async remove(id: number) {
     try {
       await this.formRepository.remove(id);
-    } catch (_error) {
-      throw new NotFoundException('지원 폼을 찾을 수 없습니다');
-    }
+    } catch (error) {
+      const prismaException = toTypedPrismaError(error);
 
-    return 'ok';
+      if (prismaException instanceof PrismaForeignKeyConstraintError) {
+        throw new BadRequestException('지원 폼을 삭제할 수 없습니다. 응답이 존재합니다');
+      } else if (prismaException instanceof PrismaOperationFailedError) {
+        throw new BadRequestException('지원 폼을 찾을 수 없습니다.');
+      }
+
+      throw error;
+    }
   }
   async findAll() {
     return this.formRepository.findAll();
@@ -65,7 +72,7 @@ export class FormService {
     const isAvailable = await this.formRepository.isAvailableToAccessForm(formId);
 
     if (!isAvailable) {
-      throw new BadRequestException('지원 가능한 시간이 아닙니다');
+      throw new BadRequestException('지원 가능한 상태가 아닙니다.');
     }
 
     const response =  await this.findResponse(formId, user);
@@ -79,11 +86,24 @@ export class FormService {
   async findResponse(formId: number, user: MemberGuestPayload) {
     return this.formRepository.findResponse(formId, user.email);
   }
+  async deleteResponse(responseId: string) {
+    try {
+      await this.formRepository.deleteResponseByID(responseId);
+    } catch (error) {
+      const prismaException = toTypedPrismaError(error);
+
+      if (prismaException instanceof PrismaOperationFailedError) {
+        throw new BadRequestException('응답을 찾을 수 없습니다');
+      }
+
+      throw error;
+    }
+  }
   async updateResponse(formId: number, user: MemberGuestPayload, data: UpdateFormResponseDto) {
     const isAvailable = await this.formRepository.isAvailableToAccessForm(formId);
 
     if (!isAvailable) {
-      throw new BadRequestException('지원 가능한 시간이 아닙니다');
+      throw new BadRequestException('지원 가능한 상태가 아닙니다');
     }
 
     const isSubmitted = await this.formRepository.isResponseSubmitted(formId, user);
@@ -98,7 +118,7 @@ export class FormService {
     const isAvailable = await this.formRepository.isAvailableToAccessForm(formId);
 
     if (!isAvailable) {
-      throw new BadRequestException('지원 가능한 시간이 아닙니다');
+      throw new BadRequestException('지원 가능한 상태가 아닙니다');
     }
 
     const isSubmitted = await this.formRepository.isResponseSubmitted(formId, user);
@@ -132,7 +152,7 @@ export class FormService {
     const isAvailable = await this.formRepository.isAvailableToAccessForm(formId);
 
     if (!isAvailable) {
-      throw new BadRequestException('지원 가능한 시간이 아닙니다');
+      throw new BadRequestException('지원 가능한 상태가 아닙니다');
     }
 
     const isSubmitted = await this.formRepository.isResponseSubmitted(formId, user);
@@ -153,7 +173,7 @@ export class FormService {
     const isAvailable = await this.formRepository.isAvailableToAccessForm(formId);
 
     if (!isAvailable) {
-      throw new BadRequestException('지원 가능한 시간이 아닙니다');
+      throw new BadRequestException('지원 가능한 상태가 아닙니다');
     }
 
     const isSubmitted = await this.formRepository.isResponseSubmitted(formId, user);
@@ -168,7 +188,7 @@ export class FormService {
     const isAvailable = await this.formRepository.isAvailableToAccessForm(formId);
 
     if (!isAvailable) {
-      throw new BadRequestException('지원 가능한 시간이 아닙니다');
+      throw new BadRequestException('지원 가능한 상태가 아닙니다');
     }
 
     const isSubmitted = await this.formRepository.isResponseSubmitted(formId, user);

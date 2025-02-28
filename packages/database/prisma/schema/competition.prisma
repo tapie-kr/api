@@ -25,8 +25,4 @@ model Award {
   rewardedAt DateTime
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
-
-  @@unique([competitionUUID, title])
-  @@unique([title, grade])
-  @@unique([grade, gradeLabel])
 }

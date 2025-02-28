@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { AssetService } from '@/asset/asset.service';
 import { FileType } from '@/asset/types/fileType';
 import { decodeFileNameKorean } from '@/common/utils/string';
-import { CreateMemberDto, MemberDto } from '@/members/dto/member.dto';
+import { CreateMemberDto, MemberDto, SpecificDetailMemberDto } from '@/members/dto/member.dto';
 import { CreateMemberLinkDto, UpdateMemberLinkDto } from '@/members/dto/member-link.dto';
 import { ConnectSkillDto, CreateMemberSkillDto, UpdateMemberSkillDto } from '@/members/dto/member-skill.dto';
 import { GetMemberMethod } from '@/members/enums/member.enum';
@@ -21,6 +21,9 @@ export class MembersService {
 
     return `${uuidv4()}.${extension}`;
   }
+  private getDefaultUsername(uuid: string): string {
+    return `unknown-${uuid.slice(0, 8)}`;
+  }
   async getMember(method: GetMemberMethod, value: string) {
     switch (method) {
       case GetMemberMethod.UUID:
@@ -33,6 +36,17 @@ export class MembersService {
         return this.memberRepository.getMemberByGoogleEmail(value);
     }
   }
+  async searchMembers(options: {
+    username: string;
+  }) {
+    const member = await this.getMember(GetMemberMethod.USERNAME, options.username);
+
+    if (!member) {
+      throw new BadRequestException('멤버를 찾을 수 없습니다.');
+    }
+
+    return member;
+  }
   async getMemberWithData(uuid: string) {
     const member = await this.memberRepository.getMemberWithData(uuid);
 
@@ -40,7 +54,28 @@ export class MembersService {
       throw new BadRequestException('멤버를 찾을 수 없습니다.');
     }
 
-    return member;
+    const currentYear = (new Date).getFullYear();
+    const highSchoolSecondYearGeneration = 119;
+    const isGraduated = member.generation <= highSchoolSecondYearGeneration - (currentYear - 2024);
+    const profileAssetPath = member.profile ? member.profile.path : 'profile/default.png';
+
+    return {
+      uuid:        member.uuid,
+      name:        member.name,
+      username:    member.username  || this.getDefaultUsername(member.uuid),
+      permissions: member.permissions,
+      isGraduated: isGraduated,
+      studentID:   member.studentID,
+      googleEmail: member.googleEmail,
+      role:        member.role,
+      unit:        member.unit,
+      generation:  member.generation,
+      profileUri:  this.minioService.buildPublicUrl(profileAssetPath),
+      links:       member.links,
+      awards:      member.awards,
+      skills:      member.skills,
+      history:     member.history,
+    } satisfies SpecificDetailMemberDto;
   }
   async createMember(data: CreateMemberDto) {
     return this.memberRepository.createMember(data);
@@ -76,11 +111,12 @@ export class MembersService {
         return {
           uuid:        member.uuid,
           name:        member.name,
-          username:    member.username,
+          studentID:   member.studentID,
+          username:    member.username || this.getDefaultUsername(member.uuid),
           role:        member.role,
           unit:        member.unit,
           generation:  member.generation,
-          googleEmail: '',
+          googleEmail: member.googleEmail,
           profileUri:  this.minioService.buildPublicUrl(profileAssetPath),
         } satisfies MemberDto;
       });
@@ -91,7 +127,8 @@ export class MembersService {
         return {
           uuid:        member.uuid,
           name:        member.name,
-          username:    member.username,
+          username:    member.username  || this.getDefaultUsername(member.uuid),
+          studentID:   member.studentID,
           googleEmail: member.googleEmail,
           role:        member.role,
           unit:        member.unit,

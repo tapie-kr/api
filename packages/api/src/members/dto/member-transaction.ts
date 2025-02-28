@@ -5,6 +5,7 @@ export class CreateMemberPrismaDto {
   name:        string;
   role:        MemberRole;
   unit:        MemberUnit;
+  studentID:   number;
   username?:   string;
 }
 

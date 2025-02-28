@@ -23,7 +23,7 @@ export class PortfolioService {
       return awards.map(award => {
         return {
           uuid:        award.uuid,
-          fullTitle:   award.title + ' ' + award.gradeLabel,
+          fullTitle:   award.competition.name + ' ' + award.title + ' ' + award.gradeLabel,
           memberNames: award.members.map(member => member.name),
         } satisfies AwardPublicPreviewDto;
       });

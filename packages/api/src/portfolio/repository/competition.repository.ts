@@ -41,6 +41,6 @@ export class CompetitionRepository {
     });
   }
   async getAllCompetitions() {
-    return this.prisma.competition.findMany();
+    return this.prisma.competition.findMany({ orderBy: { createdAt: 'desc' } });
   }
 }

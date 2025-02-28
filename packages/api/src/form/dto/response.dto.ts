@@ -11,6 +11,7 @@ import {
   IsString,
   IsUUID,
 } from 'class-validator';
+import { PrivatePreviewAssetDTO } from '@/asset/dto/asset.dto';
 
 export class FormResponseDto {
   @IsUUID()
@@ -100,4 +101,9 @@ export class CreateFormResponseDto extends OmitType(FormResponseDto, [
 }
 
 export class UpdateFormResponseDto extends PartialType(CreateFormResponseDto) {
+}
+
+export class PreviewPrivateResponseDto extends OmitType(FormResponseDto, ['portfolioAssetUUID'] as const) {
+  @ApiProperty({ description: '포트폴리오' })
+  portfolio: PrivatePreviewAssetDTO;
 }

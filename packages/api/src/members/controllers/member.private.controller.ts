@@ -8,6 +8,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   Req,
   UploadedFile,
   UseGuards,
@@ -28,7 +29,7 @@ import { PermissionGuard } from '@/auth/guards/permission.guard';
 import { UserAuthGuard } from '@/auth/guards/user-auth.guard';
 import { Permissions as P } from '@/common/utils/permissions';
 import { ApiCommonResponse } from '@/common/utils/swagger';
-import { CreateMemberDto, MemberDto } from '@/members/dto/member.dto';
+import { CreateMemberDto, MemberDto, SpecificDetailMemberDto } from '@/members/dto/member.dto';
 import { CreateMemberLinkDto, UpdateMemberLinkDto } from '@/members/dto/member-link.dto';
 import { CreateMemberSkillDto, MemberSkillDto, UpdateMemberSkillDto } from '@/members/dto/member-skill.dto';
 import { MembersService } from '@/members/service/members.service';
@@ -36,7 +37,7 @@ import { MembersService } from '@/members/service/members.service';
 @Controller('admin/members')
 @RequirePermissions(P.MEMBER_MANAGE)
 @UseGuards(UserAuthGuard, PermissionGuard)
-@ApiExtraModels(MemberDto,  MemberSkillDto)
+@ApiExtraModels(MemberDto,  MemberSkillDto, SpecificDetailMemberDto)
 export class MemberPrivateController {
   constructor(private readonly membersService: MembersService) {
   }
@@ -47,16 +48,28 @@ export class MemberPrivateController {
     return this.membersService.createMember(createMemberDto);
   }
   @Get()
-  @ApiOperation({ summary: '모든 멤버 가져오기' })
+  @ApiOperation({
+    summary: '모든 멤버 가져오기', description: 'username이 unknown으로 시작하는 멤버는 DB에서 username이 null입니다.',
+  })
   @ApiCommonResponse(HttpStatus.OK, {
     type: 'array', items: { $ref: getSchemaPath(MemberDto) },
   })
   async getAllMembers() {
     return this.membersService.getAllMembers({ publicOnly: false });
   }
-  @Get(':memberUUID')
-  @ApiOperation({ summary: '특정 멤버 가져오기' })
+  @Get('/search')
+  @ApiOperation({
+    summary: '멤버 검색하기', description: '(이 버전은 username 검색만 가능)',
+  })
   @ApiCommonResponse(HttpStatus.OK, { $ref: getSchemaPath(MemberDto) })
+  async searchMembers(@Query('username') username: string) {
+    return this.membersService.searchMembers({ username });
+  }
+  @Get(':memberUUID')
+  @ApiOperation({
+    summary: '특정 멤버 가져오기', description: 'username이 unknown으로 시작하는 멤버는 DB에서 username이 null입니다.',
+  })
+  @ApiCommonResponse(HttpStatus.OK, { $ref: getSchemaPath(SpecificDetailMemberDto) })
   async getMember(@Param('memberUUID') uuid: string) {
     return this.membersService.getMemberWithData(uuid);
   }
