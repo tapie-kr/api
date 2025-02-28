@@ -6,7 +6,6 @@ import { AuthModule } from '@/auth/auth.module';
 import { FormModule } from '@/form/form.module';
 import { MembersModule } from '@/members/members.module';
 import { PortfolioModule } from '@/portfolio/portfolio.module';
-import { ProjectModule } from '@/projects/projects.module';
 
 @Module({ imports: [
   ConfigModule.forRoot({
@@ -29,7 +28,6 @@ import { ProjectModule } from '@/projects/projects.module';
 
   // Awards, Competitions
   PortfolioModule,
-  ProjectModule,
 ] })
 export class AppModule {
 }
