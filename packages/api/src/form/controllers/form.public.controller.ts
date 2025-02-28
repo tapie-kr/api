@@ -43,7 +43,9 @@ export class FormPublicController {
     return this.formService.getActiveForm();
   }
   @Post(':id/application')
-  @ApiOperation({ summary: '새 응답 만들기' })
+  @ApiOperation({
+    summary: '새 응답 만들기', deprecated: true,
+  })
   @ApiCommonResponse(HttpStatus.OK, { $ref: getSchemaPath(FormResponseDto) })
   async createResponse(@Param('id') id: number, @Req() req: Response & {
     user: MemberPayloadDto;
