@@ -1,4 +1,5 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { MemberUnit } from '@tapie-kr/api-database';
 import { v4 as uuidv4 } from 'uuid';
 import { AssetService } from '@/asset/asset.service';
 import { FileType } from '@/asset/types/fileType';
@@ -106,6 +107,21 @@ export class FormService {
       throw new BadRequestException('지원 가능한 상태가 아닙니다');
     }
 
+    const response = await this.formRepository.findResponse(formId, user.email);
+
+    if (!response) {
+      const createResponseDto = {
+        unit:               data.unit || MemberUnit.DEVELOPER,
+        phoneNumber:        data.phoneNumber || '',
+        introduction:       data.introduction || '',
+        motivation:         data.motivation || '',
+        expectedActivities: data.expectedActivities || '',
+        reasonToChoose:     data.reasonToChoose || '',
+      } satisfies CreateFormResponseDto;
+
+      return this.createResponse(formId, user, createResponseDto);
+    }
+
     const isSubmitted = await this.formRepository.isResponseSubmitted(formId, user);
 
     if (isSubmitted) {
@@ -195,6 +211,30 @@ export class FormService {
 
     if (isSubmitted) {
       throw new BadRequestException('이미 응답을 제출했습니다.');
+    }
+
+    const response = await this.formRepository.findResponse(formId, user.email);
+
+    if (!response) {
+      throw new BadRequestException('응답이 존재하지 않습니다');
+    }
+
+    const {
+      unit,
+      introduction,
+      motivation,
+      expectedActivities,
+      reasonToChoose,
+    } = response;
+
+    if ([
+      unit,
+      introduction,
+      motivation,
+      expectedActivities,
+      reasonToChoose,
+    ].some(value => value === '')) {
+      throw new BadRequestException('응답 데이터가 비어있으면 제출할 수 없습니다.');
     }
 
     return this.formRepository.submitResponse(formId, user);

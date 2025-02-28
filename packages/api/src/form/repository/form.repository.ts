@@ -159,6 +159,10 @@ export class FormRepository {
   async isResponseSubmitted(formId: number, user: MemberGuestPayload): Promise<boolean> {
     const data = await this.findResponse(formId, user.email);
 
+    if (!data) {
+      throw new BadRequestException('폼 응답을 찾을 수 없습니다.');
+    }
+
     return data.submitted;
   }
   async submitResponse(formId: number, user: MemberGuestPayload): Promise<FormResponse> {
