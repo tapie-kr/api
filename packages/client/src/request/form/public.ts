@@ -19,7 +19,7 @@ export type FormIDParam = { formId: number };
  * 활성화 된 폼 찾기
  * @return {FormResponse} FormListResponse
  */
-export const useFormList = () => {
+export const useForm = () => {
   return useFetch<FormResponse>('/form');
 };
 
