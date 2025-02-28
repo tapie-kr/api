@@ -30,7 +30,7 @@ export const useForm = () => {
  * @return {FormResponse} FormResponse
  */
 export const useCreateFormApplication = () => {
-  useDynamicMutation<
+  return useDynamicMutation<
     FormResponse,
     FormIDParam,
     CreateFormApplicationRequest
@@ -43,7 +43,7 @@ export const useCreateFormApplication = () => {
  * @return {FormResponse} FormResponse
  */
 export const useFormApplication = () => {
-  useDynamicFetch<FormResponse, FormIDParam>(
+  return useDynamicFetch<FormResponse, FormIDParam>(
     ({ formId }) => `/form/${formId}/application`
   );
 };
@@ -55,7 +55,7 @@ export const useFormApplication = () => {
  * @return {FormResponse} FormResponse
  */
 export const useUpdateFormApplication = () => {
-  useDynamicMutation<
+  return useDynamicMutation<
     FormResponse,
     FormIDParam,
     UpdateFormApplicationRequest
@@ -68,7 +68,7 @@ export const useUpdateFormApplication = () => {
  * @return {FormApplicationResponse} FormApplicationResponse
  */
 export const useDeleteFormApplication = () => {
-  useDynamicMutation<FormApplicationResponse, FormIDParam>(
+  return useDynamicMutation<FormApplicationResponse, FormIDParam>(
     HttpMethod.DELETE,
     ({ formId }) => `/form/${formId}/application`
   );
@@ -81,11 +81,13 @@ export const useDeleteFormApplication = () => {
  * @return {FormResponse} FormResponse
  */
 export const useUploadFormApplicationFile = () => {
-  useDynamicMutation<UploadFormApplicationFileResponse, FormIDParam, FormData>(
-    HttpMethod.PATCH,
-    ({ formId }) => `/form/${formId}/application/file`,
-    { headers: { 'Content-Type': 'multipart/form-data' } }
-  );
+  return useDynamicMutation<
+    UploadFormApplicationFileResponse,
+    FormIDParam,
+    FormData
+  >(HttpMethod.PATCH, ({ formId }) => `/form/${formId}/application/file`, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  });
 };
 
 /**
@@ -94,10 +96,10 @@ export const useUploadFormApplicationFile = () => {
  * @return {FilePresignedUrlResponse} FilePresignedUrlResponse
  */
 export const useFormApplicationFile = () => {
-    useDynamicFetch<FormApplicationFileResponse, FormIDParam>(
-        ({ formId }) => `/form/${formId}/application/file`
-    );
-}
+  return useDynamicFetch<FormApplicationFileResponse, FormIDParam>(
+    ({ formId }) => `/form/${formId}/application/file`
+  );
+};
 
 /**
  * 내 Form 응답에 있는 파일 삭제하기
@@ -105,11 +107,11 @@ export const useFormApplicationFile = () => {
  * @return {FormResponse} FormResponse
  */
 export const useDeleteFormApplicationFile = () => {
-    useDynamicMutation<FormApplicationResponse, FormIDParam>(
-        HttpMethod.DELETE,
-        ({ formId }) => `/form/${formId}/application/file`
-    );
-}
+  return useDynamicMutation<FormApplicationResponse, FormIDParam>(
+    HttpMethod.DELETE,
+    ({ formId }) => `/form/${formId}/application/file`
+  );
+};
 
 /**
  * 내 Form 응답 제출하기
@@ -117,18 +119,18 @@ export const useDeleteFormApplicationFile = () => {
  * @return {FormResponse} FormResponse
  */
 export const useFormApplicationSubmit = () => {
-    useDynamicMutation<FormApplicationResponse, FormIDParam>(
-        HttpMethod.POST,
-        ({ formId }) => `/form/${formId}/application/apply`
-    );
-}
+  return useDynamicMutation<FormApplicationResponse, FormIDParam>(
+    HttpMethod.POST,
+    ({ formId }) => `/form/${formId}/application/apply`
+  );
+};
 
 /**
  * 해당 Form 접근 가능 여부
  * @queryParam {number} formId
  */
 export const useFormAccessibility = () => {
-    useDynamicFetch<FormAccessibilityResponse, FormIDParam>(
-        ({ formId }) => `/form/${formId}/application/accessibility`
-    );
-}
+  return useDynamicFetch<FormAccessibilityResponse, FormIDParam>(
+    ({ formId }) => `/form/${formId}/application/accessibility`
+  );
+};
