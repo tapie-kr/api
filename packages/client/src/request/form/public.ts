@@ -6,12 +6,11 @@ import {
   CreateFormApplicationRequest,
   FormAccessibilityResponse,
   FormApplicationFileResponse,
-  FormApplicationResponse,
-  FormListResponse,
   FormResponse,
   UpdateFormApplicationRequest,
   UploadFormApplicationFileResponse,
 } from '@/schemas/form';
+import { FormApplicationResponse } from './../../schemas/form';
 
 export type FormIDParam = { formId: number };
 
@@ -43,8 +42,8 @@ export const useCreateFormApplication = () => {
  * @return {FormResponse} FormResponse
  */
 export const useFormApplication = () => {
-  return useDynamicFetch<FormResponse, FormIDParam>(
-    ({ formId }) => `/form/${formId}/application`
+  return useDynamicFetch<FormApplicationResponse, FormIDParam>(
+    ({ formId }) => `/form/${formId}/application`,
   );
 };
 
@@ -70,7 +69,7 @@ export const useUpdateFormApplication = () => {
 export const useDeleteFormApplication = () => {
   return useDynamicMutation<FormApplicationResponse, FormIDParam>(
     HttpMethod.DELETE,
-    ({ formId }) => `/form/${formId}/application`
+    ({ formId }) => `/form/${formId}/application`,
   );
 };
 
@@ -97,7 +96,7 @@ export const useUploadFormApplicationFile = () => {
  */
 export const useFormApplicationFile = () => {
   return useDynamicFetch<FormApplicationFileResponse, FormIDParam>(
-    ({ formId }) => `/form/${formId}/application/file`
+    ({ formId }) => `/form/${formId}/application/file`,
   );
 };
 
@@ -109,7 +108,7 @@ export const useFormApplicationFile = () => {
 export const useDeleteFormApplicationFile = () => {
   return useDynamicMutation<FormApplicationResponse, FormIDParam>(
     HttpMethod.DELETE,
-    ({ formId }) => `/form/${formId}/application/file`
+    ({ formId }) => `/form/${formId}/application/file`,
   );
 };
 
@@ -121,7 +120,7 @@ export const useDeleteFormApplicationFile = () => {
 export const useFormApplicationSubmit = () => {
   return useDynamicMutation<FormApplicationResponse, FormIDParam>(
     HttpMethod.POST,
-    ({ formId }) => `/form/${formId}/application/apply`
+    ({ formId }) => `/form/${formId}/application/apply`,
   );
 };
 
@@ -131,6 +130,6 @@ export const useFormApplicationSubmit = () => {
  */
 export const useFormAccessibility = () => {
   return useDynamicFetch<FormAccessibilityResponse, FormIDParam>(
-    ({ formId }) => `/form/${formId}/application/accessibility`
+    ({ formId }) => `/form/${formId}/application/accessibility`,
   );
 };
