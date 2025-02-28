@@ -16,6 +16,7 @@ import { UserAuthGuard } from '@/auth/guards/user-auth.guard';
 import { Permissions as P } from '@/common/utils/permissions';
 import { ApiCommonResponse } from '@/common/utils/swagger';
 import { AddMemberAwardDto, AwardDto, CreateAwardDto } from '@/portfolio/dto/award.dto';
+import { CompetitionDto } from '@/portfolio/dto/competition.dto';
 import { PortfolioService } from '@/portfolio/service/portfolio.service';
 
 @Controller('admin/portfolio')
@@ -63,7 +64,7 @@ export class PortfolioPrivateController {
   @Get('competitions')
   @ApiOperation({ summary: '모든 대회 가져오기' })
   @ApiCommonResponse(HttpStatus.OK, {
-    type: 'array', items: { $ref: getSchemaPath(AwardDto) },
+    type: 'array', items: { $ref: getSchemaPath(CompetitionDto) },
   })
   async getAllCompetitions() {
     return this.portfolioService.getAllCompetitions();
