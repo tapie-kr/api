@@ -3,6 +3,7 @@ import { ApplyForm, Asset, FormResponse } from '@tapie-kr/api-database';
 import { MemberGuestPayload } from '@/auth/dto/member-payload.dto';
 import { PrismaUniqueConstraintError, toTypedPrismaError } from '@/common/prisma/prisma.exception';
 import { PrismaService } from '@/common/prisma/prisma.service';
+import { KSTDate } from '@/common/utils/date';
 import { CreateFormDto, UpdateFormDto } from '@/form/dto/form.dto';
 import { CreateFormResponseDto, UpdateFormResponseDto } from '@/form/dto/response.dto';
 
@@ -175,7 +176,7 @@ export class FormRepository {
   }
   async isAvailableToAccessForm(formId: number): Promise<boolean> {
     const form = await this.prisma.applyForm.findUnique({ where: { id: formId } });
-    const now = new Date;
+    const now = (new KSTDate).getDate();
 
     if (!form) {
       throw new BadRequestException('폼을 찾을 수 없습니다.');
