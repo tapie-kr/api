@@ -30,17 +30,23 @@ export type UpdateFormRequest = z.infer<typeof updateFormSchema>;
 export const deleteFormResponseSchema = z.string();
 export type DeleteFormResponse = BaseResponse<typeof deleteFormResponseSchema>;
 
+export const formApplicationPortfolioSchema = z.object({
+  createdAt: z.string(),
+  filename: z.string(),
+  path: z.string(),
+  portfolioUuid: z.string(),
+  uuid: z.string(),
+});
+
+export type FormApplicationPortfolioType = z.infer<
+  typeof formApplicationPortfolioSchema
+>;
+
 // Form Application
 export const formApplicationSchema = z.object({
   uuid: z.string(),
   formId: z.number(),
-  portfolio: z.object({
-    createdAt: z.string(),
-    filename: z.string(),
-    path: z.string(),
-    portfolioUuid: z.string(),
-    uuid: z.string(),
-  }),
+  portfolio: formApplicationPortfolioSchema,
   memberUUID: z.string(),
   portfolioAssetUUID: z.string(),
   name: z.string(),
