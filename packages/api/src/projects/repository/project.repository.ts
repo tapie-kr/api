@@ -12,7 +12,7 @@ export class ProjectRepository {
   }
   async getAllProjects() {
     return this.prisma.portfolio.findMany({ include: {
-      members: true, links: true, competition: true, thumbnails: true,
+      members: { include: { member: { include: { profile: true } } } }, links: true, competition: true, thumbnails: true,
     } });
   }
   async getProjectById(uuid: string) {
