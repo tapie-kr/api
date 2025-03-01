@@ -5,6 +5,7 @@ import {
   Delete,
   Get,
   HttpStatus,
+  Param,
   Post,
   UploadedFile,
   UseGuards,
@@ -24,12 +25,13 @@ import { UserAuthGuard } from '@/auth/guards/user-auth.guard';
 import { Permissions as P } from '@/common/utils/permissions';
 import { ApiCommonResponse } from '@/common/utils/swagger';
 import { CreatePortfolioDto, PortfolioDto, PreviewPortfolioDto } from '@/projects/dto/portfolio.dto';
+import { CreatePortfolioLinkDto } from '@/projects/dto/portfolio-link.dto';
 import { ProjectService } from '@/projects/projects.service';
 
 @Controller('admin/projects')
 @UseGuards(UserAuthGuard, PermissionGuard)
 @RequirePermissions(P.PORTFOLIO_MANAGE)
-@ApiExtraModels(PortfolioDto)
+@ApiExtraModels(PreviewPortfolioDto, CreatePortfolioLinkDto)
 export class ProjectPrivateController {
   constructor(private readonly projectService: ProjectService) {
   }
@@ -61,7 +63,7 @@ export class ProjectPrivateController {
       description: '이미지 파일',
     } },
   } })
-  @ApiOperation({ summary: '유저 프로필 이미지 수정하기' })
+  @ApiOperation({ summary: '썸네일 이미지 추가하기 (thumbnails에 하나씩 들어감)' })
   @UseInterceptors(FileInterceptor('file', { fileFilter: (req, file, callback) => {
     if (!file.mimetype.match(/\/(jpg|jpeg|png|webp)$/)) {
       return callback(new BadRequestException('지원되지 않는 파일 형식입니다.'), false);
@@ -72,16 +74,35 @@ export class ProjectPrivateController {
   @ApiCommonResponse(HttpStatus.OK, {
     type: 'string', example: 'ok',
   })
-  async updateThumbnailFile(@UploadedFile() file: Express.Multer.File) {
+  async updateThumbnailFile(@Param('projectUUID') projectUUID: string, @UploadedFile() file: Express.Multer.File) {
     if (!file) {
       throw new BadRequestException('이미지 파일이 필요합니다.');
     }
+
+    return this.projectService.attachThumbnailImage(projectUUID, file);
   }
   @Delete(':projectUUID/thumbnails/:imageIndex')
-  @ApiOperation({ summary: '유저 프로필 이미지 삭제하기' })
+  @ApiOperation({ summary: '썸네일 이미지 삭제하기' })
   @ApiCommonResponse(HttpStatus.OK, {
     type: 'string', example: 'ok',
   })
-  async deleteThumbnailImage() {
+  async deleteThumbnailImage(@Param('projectUUID') projectUUID: string, @Param('imageIndex') imageIndex: number) {
+    return this.projectService.deleteThumbnailImage(projectUUID, imageIndex);
+  }
+  @Post(':projectUUID/links')
+  @ApiOperation({ summary: '링크 추가하기' })
+  @ApiCommonResponse(HttpStatus.OK, {
+    type: 'string', example: 'ok',
+  })
+  async createLink(@Param('projectUUID') projectUUID: string, @Body() createPortfolioLinkDto: CreatePortfolioLinkDto) {
+    return this.projectService.createPortfolioLink(projectUUID, createPortfolioLinkDto);
+  }
+  @Delete(':projectUUID/links/:linkUUID')
+  @ApiOperation({ summary: '링크 삭제하기' })
+  @ApiCommonResponse(HttpStatus.OK, {
+    type: 'string', example: 'ok',
+  })
+  async deleteLink(@Param('projectUUID') projectUUID: string, @Param('linkUUID') linkUUID: string) {
+    return this.projectService.deletePortfolioLink(projectUUID, linkUUID);
   }
 }
