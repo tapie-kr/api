@@ -114,7 +114,7 @@ export class MemberPrivateController {
   @Patch(':memberUUID')
   @ApiOperation({ summary: '멤버 정보 수정하기' })
   @ApiCommonResponse(HttpStatus.OK, { $ref: getSchemaPath(MemberDto) })
-  async updateMember(@Param('memberUUID') uuid: string, @Body() updateMemberDto: CreateMemberDto) {
+  async updateMember(@Param('memberUUID') uuid: string, @Body() updateMemberDto: UpdateMemberDto) {
     return this.membersService.updateMember(uuid, updateMemberDto);
   }
   @Post(':memberUUID/links')
