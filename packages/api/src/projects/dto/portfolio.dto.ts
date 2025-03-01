@@ -12,7 +12,7 @@ import {
 } from 'class-validator';
 import { CompetitionDto, ConnectCompetitionDto } from '@/portfolio/dto/competition.dto';
 import { ConnectPortfolioLinkDto, PortfolioLinkDto } from '@/projects/dto/portfolio-link.dto';
-import { ConnectPortfolioMemberDto, PortfolioMemberDto } from '@/projects/dto/portfolio-member.dto';
+import { ConnectPortfolioMemberDto, PreviewPortfolioMemberDto } from '@/projects/dto/portfolio-member.dto';
 
 export class PortfolioDto {
   @IsUUID()
@@ -63,11 +63,11 @@ export class PortfolioDto {
   links: PortfolioLinkDto[];
 
   @ApiProperty({
-    type:        () => PortfolioMemberDto,
+    type:        () => PreviewPortfolioMemberDto,
     isArray:     true,
     description: '포트폴리오에 연결된 멤버',
   })
-  members: PortfolioMemberDto[];
+  members: PreviewPortfolioMemberDto[];
 
   @ApiProperty({
     type:        () => CompetitionDto,
