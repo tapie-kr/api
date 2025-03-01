@@ -79,8 +79,6 @@ async function bootstrap() {
     '0.0.0.0');
 
   logger.log(`Server running on ${await app.getUrl()}`);
-
-  logger.log(`hello: ${new Date}`);
 }
 
 bootstrap().then();

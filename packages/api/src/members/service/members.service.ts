@@ -2,6 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
 import { AssetService } from '@/asset/asset.service';
 import { FileType } from '@/asset/types/fileType';
+import { KSTDate } from '@/common/utils/date';
 import { decodeFileNameKorean } from '@/common/utils/string';
 import { CreateMemberDto, MemberDto, SpecificDetailMemberDto } from '@/members/dto/member.dto';
 import { CreateMemberLinkDto, UpdateMemberLinkDto } from '@/members/dto/member-link.dto';
@@ -54,7 +55,7 @@ export class MembersService {
       throw new BadRequestException('멤버를 찾을 수 없습니다.');
     }
 
-    const currentYear = (new Date).getFullYear();
+    const currentYear = (new KSTDate).getFullYear();
     const highSchoolSecondYearGeneration = 119;
     const isGraduated = member.generation <= highSchoolSecondYearGeneration - (currentYear - 2024);
     const profileAssetPath = member.profile ? member.profile.path : 'profile/default.png';
