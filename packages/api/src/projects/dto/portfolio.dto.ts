@@ -1,4 +1,4 @@
-import { ApiProperty, OmitType } from '@nestjs/swagger';
+import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger';
 import { PortfolioTag } from '@tapie-kr/api-database';
 import { Type } from 'class-transformer';
 import {
@@ -114,6 +114,16 @@ export class PublicPreviewPortfolioDto extends OmitType(PreviewPortfolioDto, [
   @ApiProperty({ description: '포트폴리오 관련 수상여부' })
   @IsBoolean()
   isAwarded: boolean;
+}
+
+export class UpdatePortfolioDto extends PartialType(OmitType(PortfolioDto, [
+  'uuid',
+  'links',
+  'members',
+  'competition',
+  'createdAt',
+  'updatedAt',
+] as const)) {
 }
 
 export class CreatePortfolioDto extends OmitType(PortfolioDto, [

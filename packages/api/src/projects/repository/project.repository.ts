@@ -131,4 +131,23 @@ export class ProjectRepository {
 
     return this.prisma.portfolioLink.delete({ where: { uuid: linkUUID } });
   }
+  async updateProject(projectUUID: string, data: Prisma.PortfolioUpdateInput) {
+    try {
+      return await this.prisma.portfolio.update({
+        where:   { uuid: projectUUID },
+        data,
+        include: {
+          members: true, links: true, competition: true,
+        },
+      });
+    } catch (error) {
+      const prismaException = toTypedPrismaError(error);
+
+      if (prismaException instanceof PrismaOperationFailedError) {
+        throw new BadRequestException('입력된 데이터 값이 잘못되었습니다.');
+      }
+
+      throw error;
+    }
+  }
 }

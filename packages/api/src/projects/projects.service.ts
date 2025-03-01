@@ -4,7 +4,12 @@ import { FileType } from '@/asset/types/fileType';
 import { decodeFileNameKorean } from '@/common/utils/string';
 import { ConnectCompetitionDto } from '@/portfolio/dto/competition.dto';
 import { CompetitionRepository } from '@/portfolio/repository/competition.repository';
-import { CreatePortfolioDto, PreviewPortfolioDto, PublicPreviewPortfolioDto } from '@/projects/dto/portfolio.dto';
+import {
+  CreatePortfolioDto,
+  PreviewPortfolioDto,
+  PublicPreviewPortfolioDto,
+  UpdatePortfolioDto,
+} from '@/projects/dto/portfolio.dto';
 import { ConnectPortfolioLinkDto, CreatePortfolioLinkDto } from '@/projects/dto/portfolio-link.dto';
 import { ConnectPortfolioMemberDto, PreviewPortfolioMemberDto } from '@/projects/dto/portfolio-member.dto';
 import { ProjectRepository } from '@/projects/repository/project.repository';
@@ -289,5 +294,8 @@ export class ProjectService {
   }
   async connectProjectMember(projectMemberUUID: string, data: ConnectPortfolioMemberDto) {
     return this.projectMemberRepository.connectProjectMember(projectMemberUUID, data.uuid);
+  }
+  async updateProject(projectUUID: string, data: UpdatePortfolioDto) {
+    return this.projectRepository.updateProject(projectUUID, data);
   }
 }

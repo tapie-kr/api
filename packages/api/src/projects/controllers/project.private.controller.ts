@@ -6,6 +6,7 @@ import {
   Get,
   HttpStatus,
   Param,
+  Patch,
   Post,
   UploadedFile,
   UseGuards,
@@ -24,7 +25,12 @@ import { PermissionGuard } from '@/auth/guards/permission.guard';
 import { UserAuthGuard } from '@/auth/guards/user-auth.guard';
 import { Permissions as P } from '@/common/utils/permissions';
 import { ApiCommonResponse } from '@/common/utils/swagger';
-import { CreatePortfolioDto, PortfolioDto, PreviewPortfolioDto } from '@/projects/dto/portfolio.dto';
+import {
+  CreatePortfolioDto,
+  PortfolioDto,
+  PreviewPortfolioDto,
+  UpdatePortfolioDto,
+} from '@/projects/dto/portfolio.dto';
 import { CreatePortfolioLinkDto } from '@/projects/dto/portfolio-link.dto';
 import { PortfolioMemberDto } from '@/projects/dto/portfolio-member.dto';
 import { ProjectService } from '@/projects/projects.service';
@@ -53,6 +59,12 @@ export class ProjectPrivateController {
   @ApiCommonResponse(HttpStatus.CREATED, { $ref: getSchemaPath(PortfolioDto) })
   async createProject(@Body() createPortfolioDto: CreatePortfolioDto) {
     return this.projectService.createProject(createPortfolioDto);
+  }
+  @Patch(':projectUUID')
+  @ApiOperation({ summary: '프로젝트 수정하기' })
+  @ApiCommonResponse(HttpStatus.OK, { $ref: getSchemaPath(PortfolioDto) })
+  async updateProject(@Param('projectUUID') projectUUID: string, @Body() updatePortfolioDto: UpdatePortfolioDto) {
+    return this.projectService.updateProject(projectUUID, updatePortfolioDto);
   }
   @Post(':projectUUID/thumbnails')
   @ApiConsumes('multipart/form-data')
