@@ -176,7 +176,7 @@ export class FormRepository {
   }
   async isAvailableToAccessForm(formId: number): Promise<boolean> {
     const form = await this.prisma.applyForm.findUnique({ where: { id: formId } });
-    const now = (new KSTDate).getDate();
+    const now = new KSTDate;
 
     if (!form) {
       throw new BadRequestException('폼을 찾을 수 없습니다.');
