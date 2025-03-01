@@ -1,6 +1,5 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { MemberUnit } from '@tapie-kr/api-database';
-import { v4 as uuidv4 } from 'uuid';
 import { AssetService } from '@/asset/asset.service';
 import { FileType } from '@/asset/types/fileType';
 import { MemberGuestPayload } from '@/auth/dto/member-payload.dto';
@@ -13,12 +12,7 @@ import { FormRepository } from '@/form/repository/form.repository';
 @Injectable()
 export class FormService {
   constructor(private readonly formRepository: FormRepository,
-    private readonly minioService: AssetService) {
-  }
-  private generateFilename(originalName: string): string {
-    const extension = originalName.split('.').pop();
-
-    return `${uuidv4()}.${extension}`;
+    private readonly assetService: AssetService) {
   }
   async create(createFormDto: CreateFormDto) {
     return this.formRepository.create(createFormDto);
@@ -144,9 +138,9 @@ export class FormService {
     }
 
     const originalFileName = decodeFileNameKorean(file.originalname);
-    const filename = this.generateFilename(originalFileName);
+    const filename = this.assetService.generateFilename(originalFileName);
 
-    const asset = await this.minioService.uploadFile(new File([file.buffer], originalFileName),
+    const asset = await this.assetService.uploadFile(new File([file.buffer], originalFileName),
       filename,
       FileType.FORM_PORTFOLIO,
       originalFileName);
@@ -160,7 +154,7 @@ export class FormService {
       throw new NotFoundException('포트폴리오 파일을 찾을 수 없습니다');
     }
 
-    const { presignedUrl } = await this.minioService.getFileWithUrl(portfolio.uuid);
+    const { presignedUrl } = await this.assetService.getFileWithUrl(portfolio.uuid);
 
     return { presignedUrl };
   }
