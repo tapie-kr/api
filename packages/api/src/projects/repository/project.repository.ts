@@ -15,6 +15,14 @@ export class ProjectRepository {
       members: true, links: true, competition: true, thumbnails: true,
     } });
   }
+  async getProjectById(uuid: string) {
+    return this.prisma.portfolio.findUnique({
+      where:   { uuid },
+      include: {
+        members: true, links: true, competition: true, thumbnails: true,
+      },
+    });
+  }
   async createProject(data: Prisma.PortfolioCreateInput) {
     try {
       return await this.prisma.portfolio.create({
@@ -61,12 +69,12 @@ export class ProjectRepository {
   async getPortfolioLinkById(uuid: string) {
     return this.prisma.portfolioLink.findUnique({ where: { uuid } });
   }
-  async createPortfolioLink(createPortfolioLink: CreatePortfolioLinkDto) {
+  async createPortfolioLink(createPortfolioLink: CreatePortfolioLinkDto, portfolioUUID?: string) {
     try {
       const data = omit<CreatePortfolioLinkDto>(createPortfolioLink, ['portfolioUUID']);
 
       return await this.prisma.portfolioLink.create({ data: {
-        ...data, portfolio: {  },
+        ...data, portfolio: { connect: { uuid: portfolioUUID } },
       } });
     } catch (error) {
       const prismaException = toTypedPrismaError(error);
@@ -79,5 +87,42 @@ export class ProjectRepository {
 
       throw error;
     }
+  }
+  async attachThumbnailImage(projectUUID: string, assetUUID: string) {
+    const project = await this.getProjectById(projectUUID);
+
+    if (!project) {
+      throw new BadRequestException('프로젝트를 찾을 수 없습니다.');
+    }
+
+    return this.prisma.portfolio.update({
+      where: { uuid: projectUUID },
+      data:  { thumbnails: { connect: { uuid: assetUUID } } },
+    });
+  }
+  async deleteThumbnailImage(projectUUID: string, imageIndex: number) {
+    const project = await this.getProjectById(projectUUID);
+
+    if (!project) {
+      throw new BadRequestException('프로젝트를 찾을 수 없습니다.');
+    }
+
+    if (!project.thumbnails[imageIndex]) {
+      throw new BadRequestException('삭제할 이미지가 존재하지 않습니다.');
+    }
+
+    return this.prisma.portfolio.update({
+      where: { uuid: projectUUID },
+      data:  { thumbnails: { disconnect: { uuid: project.thumbnails[imageIndex].uuid } } },
+    });
+  }
+  async deletePortfolioLink(linkUUID: string) {
+    const link = await this.getPortfolioLinkById(linkUUID);
+
+    if (!link) {
+      throw new BadRequestException('링크를 찾을 수 없습니다.');
+    }
+
+    return this.prisma.portfolioLink.delete({ where: { uuid: linkUUID } });
   }
 }
