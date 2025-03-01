@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@/common/prisma/prisma.service';
+import { UpdateMemberDto } from '@/members/dto/member.dto';
 import { CreateMemberLinkDto, UpdateMemberLinkDto } from '@/members/dto/member-link.dto';
 import { CreateMemberPrismaDto } from '@/members/dto/member-transaction';
 
@@ -37,7 +38,7 @@ export class MemberRepository {
   async createMember(data: CreateMemberPrismaDto) {
     return this.prisma.member.create({ data });
   }
-  async updateMember(uuid: string, data: CreateMemberPrismaDto) {
+  async updateMember(uuid: string, data: UpdateMemberDto) {
     return this.prisma.member.update({
       where: { uuid }, data,
     });

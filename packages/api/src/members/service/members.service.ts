@@ -4,7 +4,12 @@ import { AssetService } from '@/asset/asset.service';
 import { FileType } from '@/asset/types/fileType';
 import { KSTDate } from '@/common/utils/date';
 import { decodeFileNameKorean } from '@/common/utils/string';
-import { CreateMemberDto, MemberDto, SpecificDetailMemberDto } from '@/members/dto/member.dto';
+import {
+  CreateMemberDto,
+  MemberDto,
+  SpecificDetailMemberDto,
+  UpdateMemberDto,
+} from '@/members/dto/member.dto';
 import { CreateMemberLinkDto, UpdateMemberLinkDto } from '@/members/dto/member-link.dto';
 import { ConnectSkillDto, CreateMemberSkillDto, UpdateMemberSkillDto } from '@/members/dto/member-skill.dto';
 import { GetMemberMethod } from '@/members/enums/member.enum';
@@ -81,7 +86,7 @@ export class MembersService {
   async createMember(data: CreateMemberDto) {
     return this.memberRepository.createMember(data);
   }
-  async updateMember(uuid: string, data: CreateMemberDto) {
+  async updateMember(uuid: string, data: UpdateMemberDto) {
     return this.memberRepository.updateMember(uuid, data);
   }
   async updateMemberProfileImage(uuid: string, file: Express.Multer.File) {
