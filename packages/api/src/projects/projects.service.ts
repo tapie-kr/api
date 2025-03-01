@@ -4,7 +4,7 @@ import { FileType } from '@/asset/types/fileType';
 import { decodeFileNameKorean } from '@/common/utils/string';
 import { ConnectCompetitionDto } from '@/portfolio/dto/competition.dto';
 import { CompetitionRepository } from '@/portfolio/repository/competition.repository';
-import { CreatePortfolioDto, PreviewPortfolioDto } from '@/projects/dto/portfolio.dto';
+import { CreatePortfolioDto, PreviewPortfolioDto, PublicPreviewPortfolioDto } from '@/projects/dto/portfolio.dto';
 import { ConnectPortfolioLinkDto, CreatePortfolioLinkDto } from '@/projects/dto/portfolio-link.dto';
 import { ConnectPortfolioMemberDto, PreviewPortfolioMemberDto } from '@/projects/dto/portfolio-member.dto';
 import { ProjectRepository } from '@/projects/repository/project.repository';
@@ -17,9 +17,7 @@ export class ProjectService {
     private readonly projectMemberRepository: ProjectMemberRepository,
     private readonly assetService: AssetService) {
   }
-  async getAllProjects(_options: {
-    publicOnly: boolean;
-  }) {
+  async getAllPrivateProjects() {
     const data = await this.projectRepository.getAllProjects();
 
     return data.map(project => {
@@ -65,6 +63,45 @@ export class ProjectService {
         thumbnailEffectColor: project.thumbnailEffectColor,
       } as PreviewPortfolioDto;
     });
+  }
+  async getAllPublicProjects() {
+    const data = await this.projectRepository.getAllProjects();
+
+    return data.map(project => {
+      let representativeThumbnailPath: string;
+
+      if (project.thumbnails.length === 0) {
+        representativeThumbnailPath = 'default.png';
+      } else {
+        representativeThumbnailPath = project.thumbnails[project.representativeThumbnail].path;
+      }
+
+      return {
+        uuid:        project.uuid,
+        name:        project.name,
+        catchPhrase: project.catchPhrase,
+        description: project.description,
+        tags:        project.tags,
+
+        representativeThumbnailUrl: this.assetService.buildPublicUrl(representativeThumbnailPath),
+        thumbnailUrls:              [...project.thumbnails.map(thumbnail => this.assetService.buildPublicUrl(thumbnail.path))],
+
+        thumbnailEffectColor: project.thumbnailEffectColor,
+        releasedAt:           project.releasedAt,
+        createdAt:            project.createdAt,
+        updatedAt:            project.updatedAt,
+        isAwarded:            !!project.competition,
+      } satisfies PublicPreviewPortfolioDto;
+    });
+  }
+  async getAllProjects(options: {
+    publicOnly: boolean;
+  }) {
+    if (options.publicOnly) {
+      return this.getAllPublicProjects();
+    }
+
+    return this.getAllPrivateProjects();
   }
   async createProject(createPortfolioDto: CreatePortfolioDto) {
     const data = {

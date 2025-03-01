@@ -11,9 +11,15 @@ export class ProjectRepository {
   constructor(private readonly prisma: PrismaService) {
   }
   async getAllProjects() {
-    return this.prisma.portfolio.findMany({ include: {
-      members: { include: { member: { include: { profile: true } } } }, links: true, competition: true, thumbnails: true,
-    } });
+    return this.prisma.portfolio.findMany({
+      include: {
+        members:     { include: { member: { include: { profile: true } } } },
+        links:       true,
+        competition: true,
+        thumbnails:  true,
+      },
+      orderBy: [{ competition: { uuid: 'desc' } }, { createdAt: 'desc' }],
+    });
   }
   async getProjectById(uuid: string) {
     return this.prisma.portfolio.findUnique({

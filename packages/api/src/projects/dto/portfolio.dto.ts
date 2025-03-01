@@ -3,6 +3,7 @@ import { PortfolioTag } from '@tapie-kr/api-database';
 import { Type } from 'class-transformer';
 import {
   IsArray,
+  IsBoolean,
   IsDate,
   IsDateString,
   IsEnum,
@@ -103,6 +104,16 @@ export class PreviewPortfolioDto extends PortfolioDto {
   })
   @IsArray()
   thumbnailUrls: string[];
+}
+
+export class PublicPreviewPortfolioDto extends OmitType(PreviewPortfolioDto, [
+  'links',
+  'members',
+  'competition',
+] as const) {
+  @ApiProperty({ description: '포트폴리오 관련 수상여부' })
+  @IsBoolean()
+  isAwarded: boolean;
 }
 
 export class CreatePortfolioDto extends OmitType(PortfolioDto, [
