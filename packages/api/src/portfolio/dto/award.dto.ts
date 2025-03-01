@@ -110,7 +110,7 @@ export class AddMemberAwardDto extends OmitType(CreateAwardDto, [
 ] as const) {
 }
 
-export class AwardPublicPreviewDto {
+export class AwardPublicMainPreviewDto {
   @IsUUID()
   @ApiProperty({
     description: '수상실적 UUID', example: '123e4567-e89b-12d3-a456-426614174000',
@@ -129,4 +129,3 @@ export class AwardPublicPreviewDto {
   })
   memberNames: string[];
 }
-
