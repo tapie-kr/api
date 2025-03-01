@@ -85,7 +85,7 @@ export class ProjectService {
       data.competition = { connect: { uuid: competition.uuid } };
     }
 
-    return this.projectRepository.createProject(data);
+    return this.projectRepository.createProject({});
   }
   private async portfolioLinkConnector(data: ConnectPortfolioLinkDto) {
     if (data.uuid && data.href) {
