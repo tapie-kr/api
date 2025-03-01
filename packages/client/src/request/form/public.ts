@@ -40,10 +40,10 @@ export const useCreateFormApplication = () => {
 /**
  * 내 Form 응답 가져오기
  * @queryParam {number} formId
- * @return {FormResponse} FormResponse
+ * @return {FormApplicationResponse} FormApplicationResponse
  */
 export const useFormApplication = () => {
-  return useDynamicFetch<FormResponse, FormIDParam>(
+  return useDynamicFetch<FormApplicationResponse, FormIDParam>(
     ({ formId }) => `/form/${formId}/application`
   );
 };
@@ -52,11 +52,11 @@ export const useFormApplication = () => {
  * 내 Form 응답 수정하기
  * @queryParam {number} formId
  * @body {MutateFormApplication} MutateFormApplication
- * @return {FormResponse} FormResponse
+ * @return {FormApplicationResponse} FormApplicationResponse
  */
 export const useUpdateFormApplication = () => {
   return useDynamicMutation<
-    FormResponse,
+    FormApplicationResponse,
     FormIDParam,
     UpdateFormApplicationRequest
   >(HttpMethod.PATCH, ({ formId }) => `/form/${formId}/application`);
