@@ -34,6 +34,13 @@ export type DeleteFormResponse = BaseResponse<typeof deleteFormResponseSchema>;
 export const formApplicationSchema = z.object({
   uuid: z.string(),
   formId: z.number(),
+  portfolio: z.object({
+    createdAt: z.string(),
+    filename: z.string(),
+    path: z.string(),
+    portfolioUuid: z.string(),
+    uuid: z.string(),
+  }),
   memberUUID: z.string(),
   portfolioAssetUUID: z.string(),
   name: z.string(),
