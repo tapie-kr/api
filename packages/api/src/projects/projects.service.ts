@@ -1,9 +1,11 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { AssetService } from '@/asset/asset.service';
+import { FileType } from '@/asset/types/fileType';
+import { decodeFileNameKorean } from '@/common/utils/string';
 import { ConnectCompetitionDto } from '@/portfolio/dto/competition.dto';
 import { CompetitionRepository } from '@/portfolio/repository/competition.repository';
 import { CreatePortfolioDto, PreviewPortfolioDto } from '@/projects/dto/portfolio.dto';
-import { ConnectPortfolioLinkDto } from '@/projects/dto/portfolio-link.dto';
+import { ConnectPortfolioLinkDto, CreatePortfolioLinkDto } from '@/projects/dto/portfolio-link.dto';
 import { ConnectPortfolioMemberDto } from '@/projects/dto/portfolio-member.dto';
 import { ProjectRepository } from '@/projects/repository/project.repository';
 
@@ -19,7 +21,13 @@ export class ProjectService {
     const data = await this.projectRepository.getAllProjects();
 
     return data.map(project => {
-      const representativeThumbnailPath = 'projectThumbnails/' + project.thumbnails[project.representativeThumbnail].path;
+      let representativeThumbnailPath: string;
+
+      if (project.thumbnails.length === 0) {
+        representativeThumbnailPath = 'default.png';
+      } else {
+        representativeThumbnailPath = project.thumbnails[project.representativeThumbnail].path;
+      }
 
       return {
         uuid:        project.uuid,
@@ -35,7 +43,7 @@ export class ProjectService {
         updatedAt:   project.updatedAt,
 
         representativeThumbnailUrl: this.assetService.buildPublicUrl(representativeThumbnailPath),
-        thumbnailUrls:              [this.assetService.buildPublicUrl(representativeThumbnailPath)],
+        thumbnailUrls:              [...project.thumbnails.map(thumbnail => this.assetService.buildPublicUrl(thumbnail.path))],
 
         thumbnailEffectColor: project.thumbnailEffectColor,
       } as PreviewPortfolioDto;
@@ -85,7 +93,9 @@ export class ProjectService {
       data.competition = { connect: { uuid: competition.uuid } };
     }
 
-    return this.projectRepository.createProject({});
+    return this.projectRepository.createProject({
+      ...data, representativeThumbnail: 0,
+    });
   }
   private async portfolioLinkConnector(data: ConnectPortfolioLinkDto) {
     if (data.uuid && data.href) {
@@ -159,6 +169,48 @@ export class ProjectService {
 
     throw new BadRequestException('유효한 멤버 정보를 제공해야 합니다.');
   }
-  async updateThumbnailFile() {
+  async attachThumbnailImage(projectUUID: string, file: Express.Multer.File) {
+    const project = await this.projectRepository.getProjectById(projectUUID);
+
+    if (!project) {
+      throw new BadRequestException('프로젝트를 찾을 수 없습니다.');
+    }
+
+    const originalFileName = decodeFileNameKorean(file.originalname);
+    const filename = this.assetService.generateFilename(originalFileName);
+
+    const asset = await this.assetService.uploadFile(new File([file.buffer], originalFileName),
+      filename,
+      FileType.PORTFOLIO_THUMBNAIL,
+      originalFileName);
+
+    await this.projectRepository.attachThumbnailImage(projectUUID, asset.uuid);
+  }
+  async deleteThumbnailImage(projectUUID: string, imageIndex: number) {
+    const project = await this.projectRepository.getProjectById(projectUUID);
+
+    if (!project) {
+      throw new BadRequestException('프로젝트를 찾을 수 없습니다.');
+    }
+
+    return this.projectRepository.deleteThumbnailImage(projectUUID, imageIndex);
+  }
+  async deletePortfolioLink(projectUUID: string, linkUUID: string) {
+    const project = await this.projectRepository.getProjectById(projectUUID);
+
+    if (!project) {
+      throw new BadRequestException('프로젝트를 찾을 수 없습니다.');
+    }
+
+    return this.projectRepository.deletePortfolioLink(linkUUID);
+  }
+  async createPortfolioLink(projectUUID: string, data: CreatePortfolioLinkDto) {
+    const project = await this.projectRepository.getProjectById(projectUUID);
+
+    if (!project) {
+      throw new BadRequestException('프로젝트를 찾을 수 없습니다.');
+    }
+
+    return this.projectRepository.createPortfolioLink(data, projectUUID);
   }
 }
