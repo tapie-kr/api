@@ -26,12 +26,13 @@ import { Permissions as P } from '@/common/utils/permissions';
 import { ApiCommonResponse } from '@/common/utils/swagger';
 import { CreatePortfolioDto, PortfolioDto, PreviewPortfolioDto } from '@/projects/dto/portfolio.dto';
 import { CreatePortfolioLinkDto } from '@/projects/dto/portfolio-link.dto';
+import { PortfolioMemberDto } from '@/projects/dto/portfolio-member.dto';
 import { ProjectService } from '@/projects/projects.service';
 
 @Controller('admin/projects')
 @UseGuards(UserAuthGuard, PermissionGuard)
 @RequirePermissions(P.PORTFOLIO_MANAGE)
-@ApiExtraModels(PreviewPortfolioDto, CreatePortfolioLinkDto)
+@ApiExtraModels(PreviewPortfolioDto, CreatePortfolioLinkDto, PortfolioMemberDto)
 export class ProjectPrivateController {
   constructor(private readonly projectService: ProjectService) {
   }
@@ -88,21 +89,5 @@ export class ProjectPrivateController {
   })
   async deleteThumbnailImage(@Param('projectUUID') projectUUID: string, @Param('imageIndex') imageIndex: number) {
     return this.projectService.deleteThumbnailImage(projectUUID, imageIndex);
-  }
-  @Post(':projectUUID/links')
-  @ApiOperation({ summary: '링크 추가하기' })
-  @ApiCommonResponse(HttpStatus.OK, {
-    type: 'string', example: 'ok',
-  })
-  async createLink(@Param('projectUUID') projectUUID: string, @Body() createPortfolioLinkDto: CreatePortfolioLinkDto) {
-    return this.projectService.createPortfolioLink(projectUUID, createPortfolioLinkDto);
-  }
-  @Delete(':projectUUID/links/:linkUUID')
-  @ApiOperation({ summary: '링크 삭제하기' })
-  @ApiCommonResponse(HttpStatus.OK, {
-    type: 'string', example: 'ok',
-  })
-  async deleteLink(@Param('projectUUID') projectUUID: string, @Param('linkUUID') linkUUID: string) {
-    return this.projectService.deletePortfolioLink(projectUUID, linkUUID);
   }
 }

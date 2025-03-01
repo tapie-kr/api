@@ -6,13 +6,15 @@ import { ConnectCompetitionDto } from '@/portfolio/dto/competition.dto';
 import { CompetitionRepository } from '@/portfolio/repository/competition.repository';
 import { CreatePortfolioDto, PreviewPortfolioDto } from '@/projects/dto/portfolio.dto';
 import { ConnectPortfolioLinkDto, CreatePortfolioLinkDto } from '@/projects/dto/portfolio-link.dto';
-import { ConnectPortfolioMemberDto } from '@/projects/dto/portfolio-member.dto';
+import { ConnectPortfolioMemberDto, PreviewPortfolioMemberDto } from '@/projects/dto/portfolio-member.dto';
 import { ProjectRepository } from '@/projects/repository/project.repository';
+import { ProjectMemberRepository } from '@/projects/repository/projectMember.repository';
 
 @Injectable()
 export class ProjectService {
   constructor(private readonly projectRepository: ProjectRepository,
     private readonly competitionRepository: CompetitionRepository,
+    private readonly projectMemberRepository: ProjectMemberRepository,
     private readonly assetService: AssetService) {
   }
   async getAllProjects(_options: {
@@ -36,7 +38,22 @@ export class ProjectService {
         description: project.description,
         tags:        project.tags,
         links:       project.links,
-        members:     project.members,
+        members:     project.members.map(projectMember => {
+          const profileImageUrl = projectMember.member
+            ? this.assetService.buildPublicUrl(projectMember.member.profile.path)
+            : this.assetService.buildPublicUrl('profile/default.png');
+
+          return {
+            uuid:        projectMember.uuid,
+            name:        projectMember.name,
+            role:        projectMember.role,
+            description: projectMember.description,
+            createdAt:   projectMember.createdAt,
+            updatedAt:   projectMember.updatedAt,
+            username:    projectMember.member ? projectMember.member.username : 'unknown-user',
+            profileImageUrl,
+          } satisfies PreviewPortfolioMemberDto;
+        }),
         competition: null,
         releasedAt:  project.releasedAt,
         createdAt:   project.createdAt,
@@ -212,5 +229,28 @@ export class ProjectService {
     }
 
     return this.projectRepository.createPortfolioLink(data, projectUUID);
+  }
+  async getAllProjectMembers() {
+    const members = await this.projectMemberRepository.getAllProjectMembers();
+
+    return members.map(projectMember => {
+      const profileImageUrl = projectMember.member
+        ? this.assetService.buildPublicUrl(projectMember.member.profile.path)
+        : this.assetService.buildPublicUrl('profile/default.png');
+
+      return {
+        uuid:        projectMember.uuid,
+        name:        projectMember.name,
+        role:        projectMember.role,
+        description: projectMember.description,
+        createdAt:   projectMember.createdAt,
+        updatedAt:   projectMember.updatedAt,
+        username:    projectMember.member ? projectMember.member.username : 'unknown-user',
+        profileImageUrl,
+      } satisfies PreviewPortfolioMemberDto;
+    });
+  }
+  async connectProjectMember(projectMemberUUID: string, data: ConnectPortfolioMemberDto) {
+    return this.projectMemberRepository.connectProjectMember(projectMemberUUID, data.uuid);
   }
 }
