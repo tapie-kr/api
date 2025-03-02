@@ -60,7 +60,7 @@ export const usePrivateDeleteForm = () => {
  * @returns {FormResponse} FormResponse
  */
 export const usePrivateForm = () => {
-    return useDynamicFetch<FormApplicationResponse, FormIDParam>(
+    return useDynamicFetch<FormResponse, FormIDParam>(
         ({ formId }) => `/admin/form/${formId}`
     )
 }
@@ -82,7 +82,7 @@ export const usePrivateFormApplicationList = () => {
  * @returns {FormResponse} FormResponse
  */
 export const usePrivateFormApplication = () => {
-    return useDynamicFetch<FormResponse, FormApplicationUUIDParam>(
+    return useDynamicFetch<FormApplicationResponse, FormApplicationUUIDParam>(
         ({ applicationUUID }) => `/admin/form/applications/${applicationUUID}`
     )
 }
