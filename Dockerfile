@@ -3,7 +3,7 @@ FROM node:23-bookworm-slim AS builder
 COPY . /app
 WORKDIR /app
 
-ENV time_zone=Asia/Seoul
+ENV TZ=Asia/Seoul
 
 RUN apt-get update -y && apt-get install -y openssl
 
