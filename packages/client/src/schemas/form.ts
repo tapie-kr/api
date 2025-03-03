@@ -69,7 +69,7 @@ export type FormApplicationType = z.infer<typeof formApplicationSchema>;
 
 // Form Application List
 export const FormApplicationListResponseSchema = z.array(formApplicationSchema);
-export type FormDetailListResponse = BaseResponse<
+export type FormApplicationListResponse = BaseResponse<
   typeof FormApplicationListResponseSchema
 >;
 export type FormApplicationListType = z.infer<

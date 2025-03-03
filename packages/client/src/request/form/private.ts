@@ -2,7 +2,7 @@ import { HttpMethod } from "@/constants/http-method"
 import useDynamicMutation from "@/hooks/use-dynamic-mutation"
 import { useFetch } from "@/hooks/use-fetch"
 import { useMutation } from "@/hooks/use-mutation"
-import { DeleteFormApplicationResponse, FormApplicationResponse, FormListResponse, FormResponse, UpdateFormApplicationRequest } from "@/schemas/form"
+import { DeleteFormApplicationResponse, FormApplicationListResponse, FormApplicationListType, FormApplicationResponse, FormListResponse, FormResponse, UpdateFormApplicationRequest } from "@/schemas/form"
 import { FormIDParam } from "./public"
 import useDynamicFetch from "@/hooks/use-dynamic-fetch"
 
@@ -71,7 +71,7 @@ export const usePrivateForm = () => {
  * @returns {FormListResponse} FormListResponse
  */
 export const usePrivateFormApplicationList = () => {
-    return useDynamicFetch<FormListResponse, FormIDParam>(
+    return useDynamicFetch<FormApplicationListResponse, FormIDParam>(
         ({ formId }) => `/admin/form/${formId}/applications`
     )
 }
