@@ -14,6 +14,10 @@ export class FormService {
   constructor(private readonly formRepository: FormRepository,
     private readonly assetService: AssetService) {
   }
+  private generateFilename(originalName: string): string {
+    const extension = originalName.split('.').pop();
+    return `${uuidv4()}.${extension}`;
+  }
   async create(createFormDto: CreateFormDto) {
     return this.formRepository.create(createFormDto);
   }
@@ -153,8 +157,7 @@ export class FormService {
     if (!portfolio) {
       throw new NotFoundException('포트폴리오 파일을 찾을 수 없습니다');
     }
-
-    const { presignedUrl } = await this.assetService.getFileWithUrl(portfolio.uuid);
+    const { presignedUrl } = await this.assetService.getPresignedUrl(portfolio.uuid);
 
     return { presignedUrl };
   }
@@ -235,5 +238,20 @@ export class FormService {
   }
   async isAvailableToAccessForm(formId: number) {
     return this.formRepository.isAvailableToAccessForm(formId);
+  }
+  async getPresignedUrl(responseId: string) {
+    const response = await this.formRepository.findResponseById(responseId);
+
+    if (!response) {
+      throw new BadRequestException('응답을 찾을 수 없습니다');
+    }
+
+    if (!response.portfolio) {
+      throw new BadRequestException('첨부된 파일이 없습니다.');
+    }
+
+    const asset = await this.assetService.getPresignedUrl(response.portfolio.uuid);
+
+    return asset.presignedUrl;
   }
 }
