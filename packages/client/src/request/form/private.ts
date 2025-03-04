@@ -2,7 +2,7 @@ import { HttpMethod } from "@/constants/http-method"
 import useDynamicMutation from "@/hooks/use-dynamic-mutation"
 import { useFetch } from "@/hooks/use-fetch"
 import { useMutation } from "@/hooks/use-mutation"
-import { DeleteFormApplicationResponse, FormApplicationFileResponse, FormApplicationListResponse, FormApplicationResponse, FormListResponse, FormResponse, UpdateFormApplicationRequest } from "@/schemas/form"
+import { CreateFormRequest, DeleteFormApplicationResponse, FormApplicationFileResponse, FormApplicationListResponse, FormApplicationResponse, FormListResponse, FormResponse, UpdateFormApplicationRequest, UpdateFormRequest } from "@/schemas/form"
 import { FormIDParam } from "./public"
 import useDynamicFetch from "@/hooks/use-dynamic-fetch"
 
@@ -15,7 +15,7 @@ type FormApplicationUUIDParam = { applicationUUID: string }
  * @returns {FormResponse} FormResponse
  */
 export const usePrivateCreateForm = () => {
-    return useMutation<FormResponse, UpdateFormApplicationRequest>(
+    return useMutation<FormResponse, CreateFormRequest>(
         HttpMethod.POST,
         "/admin/form"
     )
@@ -36,7 +36,7 @@ export const usePrivateFormList = () => {
  * @returns {FormResponse} FormResponse
  */
 export const usePrivateUpdateForm = () => {
-    return useDynamicMutation<FormResponse, FormIDParam, UpdateFormApplicationRequest>(
+    return useDynamicMutation<FormResponse, FormIDParam, UpdateFormRequest>(
         HttpMethod.PATCH,
         ({ formId }) => `/admin/form/${formId}`
     )
