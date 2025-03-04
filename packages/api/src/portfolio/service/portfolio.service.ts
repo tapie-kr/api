@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaOperationFailedError, toTypedPrismaError } from '@/common/prisma/prisma.exception';
-import { AwardPublicPreviewDto, CreateAwardDto } from '@/portfolio/dto/award.dto';
+import { AwardPublicMainPreviewDto, CreateAwardDto } from '@/portfolio/dto/award.dto';
 import { ConnectCompetitionDto } from '@/portfolio/dto/competition.dto';
 import { AwardRepository } from '@/portfolio/repository/award.repository';
 import { CompetitionRepository } from '@/portfolio/repository/competition.repository';
@@ -25,7 +25,7 @@ export class PortfolioService {
           uuid:        award.uuid,
           fullTitle:   award.competition.name + ' ' + award.title + ' ' + award.gradeLabel,
           memberNames: award.members.map(member => member.name),
-        } satisfies AwardPublicPreviewDto;
+        } satisfies AwardPublicMainPreviewDto;
       });
     }
 
