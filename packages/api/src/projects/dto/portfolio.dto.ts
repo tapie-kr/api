@@ -7,6 +7,7 @@ import {
   IsDate,
   IsDateString,
   IsEnum,
+  IsNumber,
   IsString,
   IsUUID,
   ValidateNested,
@@ -124,6 +125,9 @@ export class UpdatePortfolioDto extends PartialType(OmitType(PortfolioDto, [
   'createdAt',
   'updatedAt',
 ] as const)) {
+  @ApiProperty({ description: '대표 썸네일 사진 번째' })
+  @IsNumber()
+  representativeThumbnail: number;
 }
 
 export class CreatePortfolioDto extends OmitType(PortfolioDto, [
