@@ -2,7 +2,7 @@ import { HttpMethod } from "@/constants/http-method"
 import useDynamicMutation from "@/hooks/use-dynamic-mutation"
 import { useFetch } from "@/hooks/use-fetch"
 import { useMutation } from "@/hooks/use-mutation"
-import { DeleteFormApplicationResponse, FormApplicationListResponse, FormApplicationListType, FormApplicationResponse, FormListResponse, FormResponse, UpdateFormApplicationRequest } from "@/schemas/form"
+import { DeleteFormApplicationResponse, FormApplicationFileResponse, FormApplicationListResponse, FormApplicationResponse, FormListResponse, FormResponse, UpdateFormApplicationRequest } from "@/schemas/form"
 import { FormIDParam } from "./public"
 import useDynamicFetch from "@/hooks/use-dynamic-fetch"
 
@@ -96,6 +96,12 @@ export const usePrivateDeleteFormApplication = () => {
     return useDynamicMutation<DeleteFormApplicationResponse, FormApplicationUUIDParam>(
         HttpMethod.DELETE,
         ({ applicationUUID }) => `/admin/form/applications/${applicationUUID}`
+    )
+}
+
+export const usePrivateDownloadApplicationPortfolio = () => {
+    return useDynamicFetch<FormApplicationFileResponse, FormApplicationUUIDParam>(
+        ({ applicationUUID }) => `/admin/form/applications/${applicationUUID}/attachment`
     )
 }
 

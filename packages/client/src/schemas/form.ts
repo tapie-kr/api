@@ -111,7 +111,7 @@ export type UploadFormApplicationFileType = z.infer<
   typeof uploadFormApplicationFile
 >;
 
-export const formApplicationFile = z.object({ presignedUrl: z.string() });
+export const formApplicationFile = z.object({ downloadUrl: z.string() });
 export type FormApplicationFileResponse = BaseResponse<
   typeof formApplicationFile
 >;
