@@ -1,4 +1,4 @@
-import { ApiProperty, OmitType } from '@nestjs/swagger';
+import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger';
 import { MemberRole, MemberUnit } from '@tapie-kr/api-database';
 import {
   IsBoolean,
@@ -77,6 +77,10 @@ export class MemberPreviewDto extends OmitType(MemberDto, [
 }
 
 export class CreateMemberDto extends OmitType(MemberDto, ['uuid', 'profileUri'] as const) {
+}
+
+export class UpdateMemberDto extends PartialType(CreateMemberDto) {
+
 }
 
 export class PublicOnlyMemberDto extends OmitType(MemberDto, ['googleEmail'] as const) {

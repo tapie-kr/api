@@ -1,18 +1,20 @@
-import { ApiProperty, OmitType } from '@nestjs/swagger';
+import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger';
 import { PortfolioTag } from '@tapie-kr/api-database';
 import { Type } from 'class-transformer';
 import {
   IsArray,
+  IsBoolean,
   IsDate,
   IsDateString,
   IsEnum,
+  IsNumber,
   IsString,
   IsUUID,
   ValidateNested,
 } from 'class-validator';
 import { CompetitionDto, ConnectCompetitionDto } from '@/portfolio/dto/competition.dto';
 import { ConnectPortfolioLinkDto, PortfolioLinkDto } from '@/projects/dto/portfolio-link.dto';
-import { ConnectPortfolioMemberDto, PortfolioMemberDto } from '@/projects/dto/portfolio-member.dto';
+import { ConnectPortfolioMemberDto, PreviewPortfolioMemberDto } from '@/projects/dto/portfolio-member.dto';
 
 export class PortfolioDto {
   @IsUUID()
@@ -63,11 +65,11 @@ export class PortfolioDto {
   links: PortfolioLinkDto[];
 
   @ApiProperty({
-    type:        () => PortfolioMemberDto,
+    type:        () => PreviewPortfolioMemberDto,
     isArray:     true,
     description: '포트폴리오에 연결된 멤버',
   })
-  members: PortfolioMemberDto[];
+  members: PreviewPortfolioMemberDto[];
 
   @ApiProperty({
     type:        () => CompetitionDto,
@@ -103,6 +105,29 @@ export class PreviewPortfolioDto extends PortfolioDto {
   })
   @IsArray()
   thumbnailUrls: string[];
+}
+
+export class PublicPreviewPortfolioDto extends OmitType(PreviewPortfolioDto, [
+  'links',
+  'members',
+  'competition',
+] as const) {
+  @ApiProperty({ description: '포트폴리오 관련 수상여부' })
+  @IsBoolean()
+  isAwarded: boolean;
+}
+
+export class UpdatePortfolioDto extends PartialType(OmitType(PortfolioDto, [
+  'uuid',
+  'links',
+  'members',
+  'competition',
+  'createdAt',
+  'updatedAt',
+] as const)) {
+  @ApiProperty({ description: '대표 썸네일 사진 번째' })
+  @IsNumber()
+  representativeThumbnail: number;
 }
 
 export class CreatePortfolioDto extends OmitType(PortfolioDto, [

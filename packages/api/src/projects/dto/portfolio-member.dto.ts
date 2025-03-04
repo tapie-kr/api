@@ -35,6 +35,18 @@ export class PortfolioMemberDto {
   updatedAt: Date;
 }
 
+export class PreviewPortfolioMemberDto extends PortfolioMemberDto {
+  @ApiProperty({
+    description: '포트폴리오 멤버 프로필 이미지', example: 'https://s3.example.com/profile.png',
+  })
+  profileImageUrl: string;
+
+  @ApiProperty({
+    description: '포트폴리오 멤버 USERNAME', example: 'iamfiro',
+  })
+  username: string;
+}
+
 export class CreatePortfolioMemberDto extends OmitType(PortfolioMemberDto, [
   'uuid',
   'createdAt',
@@ -43,4 +55,12 @@ export class CreatePortfolioMemberDto extends OmitType(PortfolioMemberDto, [
 }
 
 export class ConnectPortfolioMemberDto extends PartialType(OmitType(PortfolioMemberDto, ['createdAt', 'updatedAt'] as const)) {
+}
+
+export class ConnectOriginMemberDto {
+  @IsString()
+  @ApiProperty({
+    description: '연결할 멤버의 UUID', example: '123e4567-e89b-12d3-a456-426614174000',
+  })
+  uuid: string;
 }
