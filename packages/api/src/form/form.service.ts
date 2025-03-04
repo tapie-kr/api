@@ -13,7 +13,7 @@ import { FormRepository } from '@/form/repository/form.repository';
 @Injectable()
 export class FormService {
   constructor(private readonly formRepository: FormRepository,
-    private readonly minioService: AssetService) {
+    private readonly assetService: AssetService) {
   }
   private generateFilename(originalName: string): string {
     const extension = originalName.split('.').pop();
@@ -146,7 +146,7 @@ export class FormService {
     const originalFileName = decodeFileNameKorean(file.originalname);
     const filename = this.generateFilename(originalFileName);
 
-    const asset = await this.minioService.uploadFile(new File([file.buffer], originalFileName),
+    const asset = await this.assetService.uploadFile(new File([file.buffer], originalFileName),
       filename,
       FileType.FORM_PORTFOLIO,
       originalFileName);
@@ -160,7 +160,7 @@ export class FormService {
       throw new NotFoundException('포트폴리오 파일을 찾을 수 없습니다');
     }
 
-    const { presignedUrl } = await this.minioService.getFileWithUrl(portfolio.uuid);
+    const { presignedUrl } = await this.assetService.getPresignedUrl(portfolio.uuid);
 
     return { presignedUrl };
   }
@@ -241,5 +241,20 @@ export class FormService {
   }
   async isAvailableToAccessForm(formId: number) {
     return this.formRepository.isAvailableToAccessForm(formId);
+  }
+  async getPresignedUrl(responseId: string) {
+    const response = await this.formRepository.findResponseById(responseId);
+
+    if (!response) {
+      throw new BadRequestException('응답을 찾을 수 없습니다');
+    }
+
+    if (!response.portfolio) {
+      throw new BadRequestException('첨부된 파일이 없습니다.');
+    }
+
+    const asset = await this.assetService.getPresignedUrl(response.portfolio.uuid);
+
+    return asset.presignedUrl;
   }
 }
