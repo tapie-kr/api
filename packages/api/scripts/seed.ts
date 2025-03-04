@@ -29,7 +29,7 @@ async function main() {
 
     await prisma.member.create({ data: {
         googleEmail: TEMPORARY_GOOGLE_EMAIL,
-        name:        '임시 사용자',
+        name:        '조성주',
         studentID:   Math.floor(Math.random() * 10000) + 10000,
         role:        MemberRole.MANAGER,
         unit:        MemberUnit.DEVELOPER,
