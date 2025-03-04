@@ -27,7 +27,7 @@ export class AssetService {
     });
   }
   @CacheTTL(1800)
-  async getFileWithUrl(uuid: string) {
+  async getPresignedUrl(uuid: string) {
     const asset = await this.assetRepository.getAsset(uuid);
     const presignedUrl = await this.minioClient.presignedUrl('GET', this.configService.get('MINIO_BUCKET_NAME'), asset.path, this.PRESIGNED_URL_EXPIRY);
 
