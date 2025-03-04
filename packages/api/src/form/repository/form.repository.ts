@@ -115,6 +115,11 @@ export class FormRepository {
       include: { portfolio: true },
     });
   }
+  async findResponseById(responseId: string) {
+    return this.prisma.formResponse.findUnique({
+      where: { uuid: responseId }, include: { portfolio: true },
+    });
+  }
   async updateResponse(formId: number, user: MemberGuestPayload, data: UpdateFormResponseDto): Promise<FormResponse> {
     const { uuid } = await this.findResponse(formId, user.email);
 

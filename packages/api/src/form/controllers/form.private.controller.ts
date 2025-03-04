@@ -88,6 +88,16 @@ export class FormPrivateController {
     // 특정 지원 폼의 특정 응답 조회하기
     return this.applyFormService.findOneResponse(responseId);
   }
+  @Get('applications/:responseId/attachment')
+  @ApiOperation({ summary: '특정 지원 폼의 첨부파일 다운로드' })
+  @ApiCommonResponse(HttpStatus.OK, {
+    type: 'object', properties: { downloadUrl: { type: 'string' } },
+  })
+  async getAttachmentPresignedUrl(@Param('responseId') responseId: string) {
+    const downloadUrl = await this.applyFormService.getPresignedUrl(responseId);
+
+    return { downloadUrl };
+  }
   @Delete('applications/:responseId')
   @ApiOperation({ summary: '특정 지원 폼의 특정 응답 삭제' })
   @ApiCommonResponse(HttpStatus.OK, {
