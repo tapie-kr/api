@@ -1,6 +1,5 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { MemberUnit } from '@tapie-kr/api-database';
-import { v4 as uuidv4 } from 'uuid';
 import { AssetService } from '@/asset/asset.service';
 import { FileType } from '@/asset/types/fileType';
 import { MemberGuestPayload } from '@/auth/dto/member-payload.dto';
@@ -17,7 +16,6 @@ export class FormService {
   }
   private generateFilename(originalName: string): string {
     const extension = originalName.split('.').pop();
-
     return `${uuidv4()}.${extension}`;
   }
   async create(createFormDto: CreateFormDto) {
@@ -144,7 +142,7 @@ export class FormService {
     }
 
     const originalFileName = decodeFileNameKorean(file.originalname);
-    const filename = this.generateFilename(originalFileName);
+    const filename = this.assetService.generateFilename(originalFileName);
 
     const asset = await this.assetService.uploadFile(new File([file.buffer], originalFileName),
       filename,
@@ -159,7 +157,6 @@ export class FormService {
     if (!portfolio) {
       throw new NotFoundException('포트폴리오 파일을 찾을 수 없습니다');
     }
-
     const { presignedUrl } = await this.assetService.getPresignedUrl(portfolio.uuid);
 
     return { presignedUrl };

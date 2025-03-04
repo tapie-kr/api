@@ -31,7 +31,7 @@ export class MemberRepository {
   }
   async getAllMembers() {
     return this.prisma.member.findMany({
-      include: { profile: true }, orderBy: { createdAt: 'desc' },
+      include: { profile: true }, orderBy: [{ createdAt: 'desc' }, { role: 'desc' }],
     });
   }
   async createMember(data: CreateMemberPrismaDto) {

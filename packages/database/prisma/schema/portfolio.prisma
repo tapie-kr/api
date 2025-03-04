@@ -9,11 +9,9 @@ enum PortfolioTag {
 }
 
 model Portfolio {
-  uuid                 String  @id @default(uuid())
-  thumbnailUUID        String?
-  presentationUUID     String?
-  competitionUUID      String?
-  previewThumbnailUUID String
+  uuid             String  @id @default(uuid())
+  presentationUUID String?
+  competitionUUID  String?
 
   name                 String
   catchPhrase          String
@@ -25,14 +23,14 @@ model Portfolio {
   members                 PortfolioMember[]
   representativeThumbnail Int
   thumbnails              Asset[]
-  presentation            Asset?                  @relation(name: "PortfolioPresentation", fields: [presentationUUID], references: [uuid], onDelete: Restrict)
-  competition             Competition?            @relation(fields: [competitionUUID], references: [uuid], onDelete: SetNull)
+  presentation            Asset?            @relation(name: "PortfolioPresentation", fields: [presentationUUID], references: [uuid], onDelete: Restrict)
+  competition             Competition?      @relation(fields: [competitionUUID], references: [uuid], onDelete: SetNull)
   visitStats              Int               @default(0)
   downloadStats           Int               @default(0)
 
-  releasedAt            DateTime
-  createdAt             DateTime                @default(now())
-  updatedAt             DateTime                @updatedAt
+  releasedAt DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
   @@unique([name])
 }
