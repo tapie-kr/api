@@ -59,7 +59,13 @@ export class FormRepository {
     });
   }
   async getActiveForm(): Promise<ApplyForm> {
-    return this.prisma.applyForm.findFirst({ where: { active: true } });
+    const now = new KSTDate;
+
+    return this.prisma.applyForm.findFirst({ where: {
+      active:   true,
+      startsAt: { lte: now },
+      endsAt:   { gte: now },
+    } });
   }
   async activateForm(id: number): Promise<ApplyForm> {
     const activeForm = await this.prisma.applyForm.findFirst({ where: { active: true } });
