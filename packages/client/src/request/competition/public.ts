@@ -9,6 +9,6 @@ type YearFilterParam = { year?: string };
  */
 export const useAwardList = () => {
   return useDynamicFetch<PublicAwardListResponse, YearFilterParam>(
-    ({ year }) => `/portfolio/awards?year=${year}`
+    ({ year }) => `/portfolio/awards/main?year=${year}`
   );
 };
