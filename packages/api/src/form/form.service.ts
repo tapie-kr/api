@@ -8,16 +8,11 @@ import { decodeFileNameKorean } from '@/common/utils/string';
 import { CreateFormDto, UpdateFormDto } from '@/form/dto/form.dto';
 import { CreateFormResponseDto, UpdateFormResponseDto } from '@/form/dto/response.dto';
 import { FormRepository } from '@/form/repository/form.repository';
-import {v4 as uuidv4} from 'uuid'; 
 
 @Injectable()
 export class FormService {
   constructor(private readonly formRepository: FormRepository,
     private readonly assetService: AssetService) {
-  }
-  private generateFilename(originalName: string): string {
-    const extension = originalName.split('.').pop();
-    return `${uuidv4()}.${extension}`;
   }
   async create(createFormDto: CreateFormDto) {
     return this.formRepository.create(createFormDto);
@@ -61,9 +56,6 @@ export class FormService {
   }
   async activateForm(id: number) {
     return this.formRepository.activateForm(id);
-  }
-  async isResponseSubmitted(formId: number, user: MemberGuestPayload) {
-    return this.formRepository.isResponseSubmitted(formId, user);
   }
   async deactivateForm(id: number) {
     return this.formRepository.deactivateForm(id);
@@ -158,6 +150,7 @@ export class FormService {
     if (!portfolio) {
       throw new NotFoundException('포트폴리오 파일을 찾을 수 없습니다');
     }
+
     const { presignedUrl } = await this.assetService.getPresignedUrl(portfolio.uuid);
 
     return { presignedUrl };
