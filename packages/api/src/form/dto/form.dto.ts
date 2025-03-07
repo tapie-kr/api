@@ -35,6 +35,12 @@ export class FormDto {
 export type CreateFormType = Omit<FormDto, 'id'>;
 export type UpdateFormType = Partial<CreateFormDto>;
 
+export class FormPreviewDto extends FormDto {
+  @IsBoolean()
+  @ApiProperty({ description: '지원 가능 여부' })
+  available: boolean;
+}
+
 export class CreateFormDto extends OmitType(FormDto, ['id'] as const) {
 }
 

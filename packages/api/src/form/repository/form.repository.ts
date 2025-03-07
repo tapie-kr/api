@@ -58,14 +58,8 @@ export class FormRepository {
       where: { uuid: responseId }, include: { portfolio: true },
     });
   }
-  async getActiveForm(): Promise<ApplyForm> {
-    const now = new KSTDate;
-
-    return this.prisma.applyForm.findFirst({ where: {
-      active:   true,
-      startsAt: { lte: now },
-      endsAt:   { gte: now },
-    } });
+  async getActiveForm(): Promise<ApplyForm | null> {
+    return this.prisma.applyForm.findFirst({ where: { active: true } });
   }
   async activateForm(id: number): Promise<ApplyForm> {
     const activeForm = await this.prisma.applyForm.findFirst({ where: { active: true } });

@@ -5,7 +5,7 @@ import { FileType } from '@/asset/types/fileType';
 import { MemberGuestPayload } from '@/auth/dto/member-payload.dto';
 import { PrismaForeignKeyConstraintError, PrismaOperationFailedError, toTypedPrismaError } from '@/common/prisma/prisma.exception';
 import { decodeFileNameKorean } from '@/common/utils/string';
-import { CreateFormDto, UpdateFormDto } from '@/form/dto/form.dto';
+import { CreateFormDto, FormPreviewDto, UpdateFormDto } from '@/form/dto/form.dto';
 import { CreateFormResponseDto, UpdateFormResponseDto } from '@/form/dto/response.dto';
 import { FormRepository } from '@/form/repository/form.repository';
 
@@ -52,7 +52,12 @@ export class FormService {
     return this.formRepository.findOneResponse(responseId);
   }
   async getActiveForm() {
-    return this.formRepository.getActiveForm();
+    const data = await this.formRepository.getActiveForm();
+
+    return {
+      ...data,
+      available: data.active && data.startsAt <= new Date && data.endsAt >= new Date,
+    } satisfies FormPreviewDto;
   }
   async activateForm(id: number) {
     return this.formRepository.activateForm(id);
