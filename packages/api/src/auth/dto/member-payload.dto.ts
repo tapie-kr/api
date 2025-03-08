@@ -1,30 +1,29 @@
-import { ApiProperty, ApiPropertyOptional, OmitType } from '@nestjs/swagger';
-import { IsEmail, IsString } from 'class-validator';
-
-export enum TokenType {
-  ACCESS_TOKEN = 'accessToken',
-  REFRESH_TOKEN = 'refreshToken',
-}
+import { MemberRole } from '@tapie-kr/api-database';
+import {
+  IsEmail,
+  IsEnum,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export class MemberPayloadDto {
   @IsString()
-  @ApiProperty({ enum: TokenType })
-  public type: TokenType;
-
-  @IsString()
-  @ApiPropertyOptional({ format: 'uuid' })
-  public id?: string;
+  public username: string;
 
   @IsEmail()
-  @ApiProperty({ format: 'email' })
-  public email: string;
+  public googleEmail: string;
+
+  @IsEnum(MemberRole)
+  public role: MemberRole;
 
   @IsString()
-  @ApiProperty()
   public name: string;
-}
 
-export type MemberGuestPayload = Omit<MemberPayloadDto, 'id'>;
+  @IsOptional()
+  @IsString()
+  public unit?: string;
 
-export class MemberPayloadWithoutTypeDto extends OmitType(MemberPayloadDto, ['type'] as const) {
+  @IsOptional()
+  @IsString()
+  public additionalTitle?: string;
 }

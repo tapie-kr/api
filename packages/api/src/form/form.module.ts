@@ -2,27 +2,20 @@ import { CacheModule } from '@nestjs/cache-manager';
 import { Module } from '@nestjs/common';
 import { AssetModule } from '@/asset/asset.module';
 import { PrismaService } from '@/common/prisma/prisma.service';
-import { FormPrivateController } from '@/form/controllers/form.private.controller';
-import { FormPublicController } from '@/form/controllers/form.public.controller';
-import { FormService } from '@/form/form.service';
-import { FormRepository } from '@/form/repository/form.repository';
-import { MembersModule } from '@/members/members.module';
-import { MembersService } from '@/members/service/members.service';
+import { ApplyFormPrivateController } from '@/form/controllers/form.private.controller';
+import { ApplyFormPublicController } from '@/form/controllers/form.public.controller';
+import { ApplyFormService } from '@/form/form.service';
+import { ApplyFormRepository } from '@/form/repository/form.repository';
 
 @Module({
-  imports: [
-    AssetModule,
-    CacheModule.register(),
-    MembersModule,
-  ],
-  controllers: [FormPrivateController, FormPublicController],
+  imports:     [AssetModule, CacheModule.register()],
+  controllers: [ApplyFormPrivateController, ApplyFormPublicController],
   providers:   [
-    FormService,
-    FormRepository,
+    ApplyFormService,
+    ApplyFormRepository,
     PrismaService,
-    MembersService,
   ],
-  exports: [FormService, FormRepository],
+  exports: [ApplyFormService, ApplyFormRepository],
 })
 export class FormModule {
 }
