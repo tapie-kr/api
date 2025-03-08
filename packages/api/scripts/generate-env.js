@@ -3,6 +3,8 @@ const path = require('path');
 const envFilePath = path.join(__dirname, '../packages/database/.env');
 const databaseUrl = process.env.DATABASE_URL;
 
+console.log(databaseUrl);
+
 if (!databaseUrl) {
   console.error('❌ DATABASE_URL 환경 변수가 설정되지 않았습니다.');
 
