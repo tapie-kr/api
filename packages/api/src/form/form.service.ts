@@ -54,6 +54,10 @@ export class FormService {
   async getActiveForm() {
     const data = await this.formRepository.getActiveForm();
 
+    if (!data) {
+      return null;
+    }
+
     return {
       ...data,
       available: data.active && data.startsAt <= new Date && data.endsAt >= new Date,
