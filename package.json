@@ -7,8 +7,7 @@
   "description": "TAPIE API Service",
   "scripts": {
     "api": "pnpm -F @tapie-kr/api",
-    "db": "pnpm -F @tapie-kr/api-database",
-    "client": "pnpm -F @tapie-kr/api-client"
+    "db": "pnpm -F @tapie-kr/api-database"
   },
   "author": {
     "name": "Taeyeong Kim",

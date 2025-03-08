@@ -5,8 +5,9 @@ dist/
 .cache
 .env
 .DS_Store
-packages/database/client/
+client/
 build/
 __test__/
-
+.idea/dataSources.xml
 .github/copilot-instructions.md
+repomix-output.txt

@@ -1,6 +1,7 @@
 import {
   CanActivate,
   ExecutionContext,
+  ForbiddenException,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -31,7 +32,7 @@ export class PermissionGuard implements CanActivate {
       requiredPermissions);
 
     if (!hasPermission) {
-      throw new UnauthorizedException('권힌이 없습니다.');
+      throw new ForbiddenException('권한이 없습니다.');
     }
 
     return true;
