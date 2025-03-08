@@ -272,7 +272,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateMemberDto"
+                "$ref": "#/components/schemas/UpdateMemberDto"
               }
             }
           }
@@ -1750,7 +1750,7 @@
                           "format": "date-time"
                         },
                         "data": {
-                          "$ref": "#/components/schemas/FormDto"
+                          "$ref": "#/components/schemas/FormPreviewDto"
                         }
                       }
                     }
@@ -1766,6 +1766,64 @@
           }
         ],
         "summary": "활성화 된 폼 찾기",
+        "tags": [
+          "FormPublic"
+        ]
+      }
+    },
+    "/form/{id}/accessibility": {
+      "get": {
+        "operationId": "FormPublicController_isAvailableToAccessForm",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/APIResponseDto"
+                    },
+                    {
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "example": 200
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "responseAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "data": {
+                          "type": "boolean"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "accessToken": []
+          }
+        ],
+        "summary": "해당 폼 접근 가능 여부",
         "tags": [
           "FormPublic"
         ]
@@ -2267,65 +2325,7 @@
         ]
       }
     },
-    "/form/{id}/accessibility": {
-      "get": {
-        "operationId": "FormPublicController_isAvailableToAccessForm",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "number"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/APIResponseDto"
-                    },
-                    {
-                      "properties": {
-                        "status": {
-                          "type": "number",
-                          "example": 200
-                        },
-                        "message": {
-                          "type": "string"
-                        },
-                        "responseAt": {
-                          "type": "string",
-                          "format": "date-time"
-                        },
-                        "data": {
-                          "type": "boolean"
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "accessToken": []
-          }
-        ],
-        "summary": "해당 폼 접근 가능 여부",
-        "tags": [
-          "FormPublic"
-        ]
-      }
-    },
-    "/portfolio/awards": {
+    "/portfolio/awards/main": {
       "get": {
         "description": "year Query가 Swagger 버그로 required로 되어 있습니다. year Query는 optional입니다.",
         "operationId": "PortfolioPublicController_getAllAwards",
@@ -2365,7 +2365,7 @@
                         "data": {
                           "type": "array",
                           "items": {
-                            "$ref": "#/components/schemas/AwardPublicPreviewDto"
+                            "$ref": "#/components/schemas/AwardPublicMainPreviewDto"
                           }
                         }
                       }
@@ -2377,6 +2377,54 @@
           }
         },
         "summary": "모든 대회 수상 가져오기 (메인 페이지용)",
+        "tags": [
+          "PortfolioPublic"
+        ]
+      }
+    },
+    "/portfolio/awards/detail": {
+      "get": {
+        "deprecated": true,
+        "operationId": "PortfolioPublicController_getAllAwardsDetail",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/APIResponseDto"
+                    },
+                    {
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "example": 200
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "responseAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/AwardPublicMainPreviewDto"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "summary": "모든 대회 수상 가져오기 (상세 페이지용)",
         "tags": [
           "PortfolioPublic"
         ]
@@ -2665,6 +2713,585 @@
         "summary": "대회 삭제",
         "tags": [
           "PortfolioPrivate"
+        ]
+      }
+    },
+    "/admin/projects": {
+      "get": {
+        "operationId": "ProjectPrivateController_getAllProjects",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/APIResponseDto"
+                    },
+                    {
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "example": 200
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "responseAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/PreviewPortfolioDto"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "summary": "모든 프로젝트 가져오기",
+        "tags": [
+          "ProjectPrivate"
+        ]
+      },
+      "post": {
+        "description": "members, links, competitions는 기존 데이터를 연결하려면 uuid만, 새로운 데이터를 자동으로 추가하려면 uuid를 제외한 데이터를 추가하세요.",
+        "operationId": "ProjectPrivateController_createProject",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePortfolioDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/APIResponseDto"
+                    },
+                    {
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "example": 201
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "responseAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "data": {
+                          "$ref": "#/components/schemas/PortfolioDto"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "summary": "프로젝트 생성",
+        "tags": [
+          "ProjectPrivate"
+        ]
+      }
+    },
+    "/admin/projects/{projectUUID}": {
+      "patch": {
+        "operationId": "ProjectPrivateController_updateProject",
+        "parameters": [
+          {
+            "name": "projectUUID",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePortfolioDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/APIResponseDto"
+                    },
+                    {
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "example": 200
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "responseAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "data": {
+                          "$ref": "#/components/schemas/PortfolioDto"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "summary": "프로젝트 수정하기",
+        "tags": [
+          "ProjectPrivate"
+        ]
+      }
+    },
+    "/admin/projects/{projectUUID}/thumbnails": {
+      "post": {
+        "operationId": "ProjectPrivateController_updateThumbnailFile",
+        "parameters": [
+          {
+            "name": "projectUUID",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "이미지 파일"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/APIResponseDto"
+                    },
+                    {
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "example": 200
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "responseAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "data": {
+                          "type": "string",
+                          "example": "ok"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "summary": "썸네일 이미지 추가하기 (thumbnails에 하나씩 들어감)",
+        "tags": [
+          "ProjectPrivate"
+        ]
+      }
+    },
+    "/admin/projects/{projectUUID}/thumbnails/{imageIndex}": {
+      "delete": {
+        "operationId": "ProjectPrivateController_deleteThumbnailImage",
+        "parameters": [
+          {
+            "name": "projectUUID",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "imageIndex",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/APIResponseDto"
+                    },
+                    {
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "example": 200
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "responseAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "data": {
+                          "type": "string",
+                          "example": "ok"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "summary": "썸네일 이미지 삭제하기",
+        "tags": [
+          "ProjectPrivate"
+        ]
+      }
+    },
+    "/admin/projects/members": {
+      "get": {
+        "operationId": "ProjectMemberPrivateController_getAllProjectMembers",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/APIResponseDto"
+                    },
+                    {
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "example": 200
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "responseAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/PreviewPortfolioMemberDto"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "summary": "모든 프로젝트 멤버 가져오기",
+        "tags": [
+          "ProjectMemberPrivate"
+        ]
+      }
+    },
+    "/admin/projects/members/{projectMemberUUID}/connect": {
+      "patch": {
+        "operationId": "ProjectMemberPrivateController_connectProjectMember",
+        "parameters": [
+          {
+            "name": "projectMemberUUID",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConnectOriginMemberDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/APIResponseDto"
+                    },
+                    {
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "example": 200
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "responseAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "data": {
+                          "example": "ok"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "summary": "프로젝트 멤버 연결하기",
+        "tags": [
+          "ProjectMemberPrivate"
+        ]
+      }
+    },
+    "/admin/projects/{projectUUID}/links": {
+      "post": {
+        "operationId": "ProjectLinkPrivateController_createLink",
+        "parameters": [
+          {
+            "name": "projectUUID",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePortfolioLinkDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/APIResponseDto"
+                    },
+                    {
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "example": 200
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "responseAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "data": {
+                          "type": "string",
+                          "example": "ok"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "summary": "링크 추가하기",
+        "tags": [
+          "ProjectLinkPrivate"
+        ]
+      }
+    },
+    "/admin/projects/{projectUUID}/links/{linkUUID}": {
+      "delete": {
+        "operationId": "ProjectLinkPrivateController_deleteLink",
+        "parameters": [
+          {
+            "name": "projectUUID",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "linkUUID",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/APIResponseDto"
+                    },
+                    {
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "example": 200
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "responseAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "data": {
+                          "type": "string",
+                          "example": "ok"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "summary": "링크 삭제하기",
+        "tags": [
+          "ProjectLinkPrivate"
+        ]
+      }
+    },
+    "/projects": {
+      "get": {
+        "operationId": "ProjectPublicController_getAllProjects",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/APIResponseDto"
+                    },
+                    {
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "example": 200
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "responseAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/PublicPreviewPortfolioDto"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "summary": "모든 프로젝트 가져오기",
+        "tags": [
+          "ProjectPublic"
         ]
       }
     }
@@ -3204,6 +3831,57 @@
           "generation"
         ]
       },
+      "UpdateMemberDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "회원 이름",
+            "example": "Jeewon Kwon"
+          },
+          "studentID": {
+            "type": "number",
+            "description": "학번",
+            "example": "10912"
+          },
+          "username": {
+            "type": "string",
+            "description": "회원 아이디",
+            "example": "jeewonkwon"
+          },
+          "googleEmail": {
+            "type": "string",
+            "description": "회원 이메일",
+            "example": "noreply@tapie.kr"
+          },
+          "role": {
+            "type": "string",
+            "description": "회원 역할",
+            "example": "MEMBER",
+            "enum": [
+              "CO_MANAGER",
+              "MANAGER",
+              "MEMBER",
+              "GUEST"
+            ]
+          },
+          "unit": {
+            "type": "string",
+            "description": "회원 유닛",
+            "example": "DEVELOPER",
+            "enum": [
+              "DEVELOPER",
+              "DESIGNER",
+              "EXTERNAL"
+            ]
+          },
+          "generation": {
+            "type": "number",
+            "description": "기수",
+            "example": 119
+          }
+        }
+      },
       "CreateMemberLinkDto": {
         "type": "object",
         "properties": {
@@ -3587,7 +4265,7 @@
           }
         }
       },
-      "AwardPublicPreviewDto": {
+      "AwardPublicMainPreviewDto": {
         "type": "object",
         "properties": {
           "uuid": {
@@ -3801,6 +4479,612 @@
         },
         "required": [
           "membersUUID"
+        ]
+      },
+      "PortfolioLinkDto": {
+        "type": "object",
+        "properties": {
+          "uuid": {
+            "type": "string",
+            "description": "포트폴리오 링크 UUID",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "type": {
+            "type": "string",
+            "description": "포트폴리오 링크 타입",
+            "enum": [
+              "LANDING",
+              "GITHUB"
+            ]
+          },
+          "href": {
+            "type": "string",
+            "description": "포트폴리오 링크 URL",
+            "example": "https://example.com/"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "포트폴리오 링크 생성일"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "포트폴리오 링크 수정일"
+          }
+        },
+        "required": [
+          "uuid",
+          "type",
+          "href",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "PreviewPortfolioMemberDto": {
+        "type": "object",
+        "properties": {
+          "uuid": {
+            "type": "string",
+            "description": "포트폴리오 멤버 UUID",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "name": {
+            "type": "string",
+            "description": "포트폴리오 멤버 이름",
+            "example": "권지원"
+          },
+          "role": {
+            "type": "string",
+            "description": "포트폴리오 멤버 역할",
+            "example": "개발자"
+          },
+          "description": {
+            "type": "string",
+            "description": "포트폴리오 멤버 설명",
+            "example": "프론트엔드 개발을 담당했습니다."
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "포트폴리오 멤버 생성일"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "포트폴리오 멤버 수정일"
+          },
+          "profileImageUrl": {
+            "type": "string",
+            "description": "포트폴리오 멤버 프로필 이미지",
+            "example": "https://s3.example.com/profile.png"
+          },
+          "username": {
+            "type": "string",
+            "description": "포트폴리오 멤버 USERNAME",
+            "example": "iamfiro"
+          }
+        },
+        "required": [
+          "uuid",
+          "name",
+          "role",
+          "description",
+          "createdAt",
+          "updatedAt",
+          "profileImageUrl",
+          "username"
+        ]
+      },
+      "CompetitionDto": {
+        "type": "object",
+        "properties": {
+          "uuid": {
+            "type": "string",
+            "description": "대회 UUID",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "name": {
+            "type": "string",
+            "description": "대회 이름",
+            "example": "STA+C 1981"
+          },
+          "awards": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AwardDto"
+            }
+          }
+        },
+        "required": [
+          "uuid",
+          "name",
+          "awards"
+        ]
+      },
+      "PreviewPortfolioDto": {
+        "type": "object",
+        "properties": {
+          "uuid": {
+            "type": "string",
+            "description": "포트폴리오 UUID",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "name": {
+            "type": "string",
+            "description": "포트폴리오 이름",
+            "example": "TAPIE Inspire"
+          },
+          "catchPhrase": {
+            "type": "string",
+            "description": "포트폴리오 캐치프레이즈",
+            "example": "TAPIE Inspire Kit입니다"
+          },
+          "description": {
+            "type": "string",
+            "description": "포트폴리오 설명",
+            "example": "TAPIE Inspire Kit은 TAPIE의 디자인 시스템입니다"
+          },
+          "tags": {
+            "type": "array",
+            "description": "포트폴리오에 연결된 태그",
+            "example": [
+              "DESIGN",
+              "WEB"
+            ],
+            "items": {
+              "type": "string",
+              "enum": [
+                "WEB",
+                "APP",
+                "DESIGN",
+                "HACKATHON",
+                "WINNER",
+                "ENTRY",
+                "OTHER"
+              ]
+            }
+          },
+          "thumbnailEffectColor": {
+            "type": "string",
+            "description": "포트폴리오 효과 색 (hex color)",
+            "example": "8ecae6"
+          },
+          "links": {
+            "description": "포트폴리오에 연결된 링크",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PortfolioLinkDto"
+            }
+          },
+          "members": {
+            "description": "포트폴리오에 연결된 멤버",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PreviewPortfolioMemberDto"
+            }
+          },
+          "competition": {
+            "description": "포트폴리오에 연결된 대회",
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CompetitionDto"
+              }
+            ]
+          },
+          "releasedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "포트폴리오 프로젝트 생성일"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "포트폴리오 생성일"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "포트폴리오 수정일"
+          },
+          "representativeThumbnailUrl": {
+            "type": "string",
+            "description": "포트폴리오 대표 썸네일 이미지 URL",
+            "example": "https://example.com/thumbnail.png"
+          },
+          "thumbnailUrls": {
+            "type": "array",
+            "description": "포트폴리오 대표 썸네일들",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "https://example.com/thumbnail1.png",
+              "https://example.com/thumbnail2.png"
+            ]
+          }
+        },
+        "required": [
+          "uuid",
+          "name",
+          "catchPhrase",
+          "description",
+          "tags",
+          "thumbnailEffectColor",
+          "links",
+          "members",
+          "competition",
+          "releasedAt",
+          "createdAt",
+          "updatedAt",
+          "representativeThumbnailUrl",
+          "thumbnailUrls"
+        ]
+      },
+      "CreatePortfolioLinkDto": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "포트폴리오 링크 타입",
+            "enum": [
+              "LANDING",
+              "GITHUB"
+            ]
+          },
+          "href": {
+            "type": "string",
+            "description": "포트폴리오 링크 URL",
+            "example": "https://example.com/"
+          }
+        },
+        "required": [
+          "type",
+          "href"
+        ]
+      },
+      "PortfolioMemberDto": {
+        "type": "object",
+        "properties": {
+          "uuid": {
+            "type": "string",
+            "description": "포트폴리오 멤버 UUID",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "name": {
+            "type": "string",
+            "description": "포트폴리오 멤버 이름",
+            "example": "권지원"
+          },
+          "role": {
+            "type": "string",
+            "description": "포트폴리오 멤버 역할",
+            "example": "개발자"
+          },
+          "description": {
+            "type": "string",
+            "description": "포트폴리오 멤버 설명",
+            "example": "프론트엔드 개발을 담당했습니다."
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "포트폴리오 멤버 생성일"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "포트폴리오 멤버 수정일"
+          }
+        },
+        "required": [
+          "uuid",
+          "name",
+          "role",
+          "description",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "ConnectPortfolioMemberDto": {
+        "type": "object",
+        "properties": {
+          "uuid": {
+            "type": "string",
+            "description": "포트폴리오 멤버 UUID",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "name": {
+            "type": "string",
+            "description": "포트폴리오 멤버 이름",
+            "example": "권지원"
+          },
+          "role": {
+            "type": "string",
+            "description": "포트폴리오 멤버 역할",
+            "example": "개발자"
+          },
+          "description": {
+            "type": "string",
+            "description": "포트폴리오 멤버 설명",
+            "example": "프론트엔드 개발을 담당했습니다."
+          }
+        }
+      },
+      "ConnectPortfolioLinkDto": {
+        "type": "object",
+        "properties": {
+          "uuid": {
+            "type": "string",
+            "description": "포트폴리오 링크 UUID",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "type": {
+            "type": "string",
+            "description": "포트폴리오 링크 타입",
+            "enum": [
+              "LANDING",
+              "GITHUB"
+            ]
+          },
+          "href": {
+            "type": "string",
+            "description": "포트폴리오 링크 URL",
+            "example": "https://example.com/"
+          }
+        }
+      },
+      "CreatePortfolioDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "포트폴리오 이름",
+            "example": "TAPIE Inspire"
+          },
+          "catchPhrase": {
+            "type": "string",
+            "description": "포트폴리오 캐치프레이즈",
+            "example": "TAPIE Inspire Kit입니다"
+          },
+          "description": {
+            "type": "string",
+            "description": "포트폴리오 설명",
+            "example": "TAPIE Inspire Kit은 TAPIE의 디자인 시스템입니다"
+          },
+          "tags": {
+            "type": "array",
+            "description": "포트폴리오에 연결된 태그",
+            "example": [
+              "DESIGN",
+              "WEB"
+            ],
+            "items": {
+              "type": "string",
+              "enum": [
+                "WEB",
+                "APP",
+                "DESIGN",
+                "HACKATHON",
+                "WINNER",
+                "ENTRY",
+                "OTHER"
+              ]
+            }
+          },
+          "thumbnailEffectColor": {
+            "type": "string",
+            "description": "포트폴리오 효과 색 (hex color)",
+            "example": "8ecae6"
+          },
+          "releasedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "포트폴리오 프로젝트 생성일"
+          },
+          "members": {
+            "description": "포트폴리오에 연결할 멤버",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ConnectPortfolioMemberDto"
+            }
+          },
+          "links": {
+            "description": "포트폴리오에 연결할 링크",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ConnectPortfolioLinkDto"
+            }
+          },
+          "competition": {
+            "description": "포트폴리오에 연결할 대회",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ConnectCompetitionDto"
+              }
+            ]
+          }
+        },
+        "required": [
+          "name",
+          "catchPhrase",
+          "description",
+          "tags",
+          "thumbnailEffectColor",
+          "releasedAt",
+          "members",
+          "links",
+          "competition"
+        ]
+      },
+      "UpdatePortfolioDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "포트폴리오 이름",
+            "example": "TAPIE Inspire"
+          },
+          "catchPhrase": {
+            "type": "string",
+            "description": "포트폴리오 캐치프레이즈",
+            "example": "TAPIE Inspire Kit입니다"
+          },
+          "description": {
+            "type": "string",
+            "description": "포트폴리오 설명",
+            "example": "TAPIE Inspire Kit은 TAPIE의 디자인 시스템입니다"
+          },
+          "tags": {
+            "type": "array",
+            "description": "포트폴리오에 연결된 태그",
+            "example": [
+              "DESIGN",
+              "WEB"
+            ],
+            "items": {
+              "type": "string",
+              "enum": [
+                "WEB",
+                "APP",
+                "DESIGN",
+                "HACKATHON",
+                "WINNER",
+                "ENTRY",
+                "OTHER"
+              ]
+            }
+          },
+          "thumbnailEffectColor": {
+            "type": "string",
+            "description": "포트폴리오 효과 색 (hex color)",
+            "example": "8ecae6"
+          },
+          "releasedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "포트폴리오 프로젝트 생성일"
+          },
+          "representativeThumbnail": {
+            "type": "number",
+            "description": "대표 썸네일 사진 번째"
+          }
+        },
+        "required": [
+          "representativeThumbnail"
+        ]
+      },
+      "ConnectOriginMemberDto": {
+        "type": "object",
+        "properties": {
+          "uuid": {
+            "type": "string",
+            "description": "연결할 멤버의 UUID",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          }
+        },
+        "required": [
+          "uuid"
+        ]
+      },
+      "PublicPreviewPortfolioDto": {
+        "type": "object",
+        "properties": {
+          "uuid": {
+            "type": "string",
+            "description": "포트폴리오 UUID",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "name": {
+            "type": "string",
+            "description": "포트폴리오 이름",
+            "example": "TAPIE Inspire"
+          },
+          "catchPhrase": {
+            "type": "string",
+            "description": "포트폴리오 캐치프레이즈",
+            "example": "TAPIE Inspire Kit입니다"
+          },
+          "description": {
+            "type": "string",
+            "description": "포트폴리오 설명",
+            "example": "TAPIE Inspire Kit은 TAPIE의 디자인 시스템입니다"
+          },
+          "tags": {
+            "type": "array",
+            "description": "포트폴리오에 연결된 태그",
+            "example": [
+              "DESIGN",
+              "WEB"
+            ],
+            "items": {
+              "type": "string",
+              "enum": [
+                "WEB",
+                "APP",
+                "DESIGN",
+                "HACKATHON",
+                "WINNER",
+                "ENTRY",
+                "OTHER"
+              ]
+            }
+          },
+          "thumbnailEffectColor": {
+            "type": "string",
+            "description": "포트폴리오 효과 색 (hex color)",
+            "example": "8ecae6"
+          },
+          "releasedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "포트폴리오 프로젝트 생성일"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "포트폴리오 생성일"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "포트폴리오 수정일"
+          },
+          "representativeThumbnailUrl": {
+            "type": "string",
+            "description": "포트폴리오 대표 썸네일 이미지 URL",
+            "example": "https://example.com/thumbnail.png"
+          },
+          "thumbnailUrls": {
+            "type": "array",
+            "description": "포트폴리오 대표 썸네일들",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "https://example.com/thumbnail1.png",
+              "https://example.com/thumbnail2.png"
+            ]
+          },
+          "isAwarded": {
+            "type": "boolean",
+            "description": "포트폴리오 관련 수상여부"
+          }
+        },
+        "required": [
+          "uuid",
+          "name",
+          "catchPhrase",
+          "description",
+          "tags",
+          "thumbnailEffectColor",
+          "releasedAt",
+          "createdAt",
+          "updatedAt",
+          "representativeThumbnailUrl",
+          "thumbnailUrls",
+          "isAwarded"
         ]
       }
     }
