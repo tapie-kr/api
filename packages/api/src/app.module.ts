@@ -1,6 +1,7 @@
 import { CacheModule } from '@nestjs/cache-manager';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { ThrottlerModule } from '@nestjs/throttler';
 import { SentryModule } from '@sentry/nestjs/setup';
 import { AssetModule } from '@/asset/asset.module';
 import { AuthModule } from '@/auth/auth.module';
@@ -15,6 +16,12 @@ import { ProjectModule } from '@/projects/projects.module';
     envFilePath: ['.env', '.env.development'],
   }),
   SentryModule.forRoot(),
+  ThrottlerModule.forRoot({ throttlers: [
+    {
+      ttl:   1000,
+      limit: 20,
+    },
+  ] }),
 
   // Members
   MembersModule,
