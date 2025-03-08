@@ -21,6 +21,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
       }),
     }),
     MembersModule,
+    ConfigModule,
     HttpModule.registerAsync({ useFactory: () => ({ baseURL: 'https://www.googleapis.com' }) }),
   ],
   controllers: [AuthController],
