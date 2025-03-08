@@ -15,7 +15,6 @@ EXPOSE 8877
 
 WORKDIR /app/packages/database
 RUN pnpm run generate
-RUN pnpm run migrate:prod
 
 WORKDIR /app/packages/api
 RUN pnpm run build
