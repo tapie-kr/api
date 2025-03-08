@@ -28,6 +28,7 @@
     "@nestjs/throttler": "^6.4.0",
     "@prisma/client": "^6.3.0",
     "@sentry/nestjs": "^9.5.0",
+    "@sentry/profiling-node": "^9.5.0",
     "@tapie-kr/api-database": "workspace:*",
     "ajv": "^8.17.1",
     "axios": "^1.7.9",
