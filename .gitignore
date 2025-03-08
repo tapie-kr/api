@@ -4,6 +4,8 @@ dist/
 .pnpm-store
 .cache
 .env
+.env.production
+.env.development
 .DS_Store
 client/
 build/
