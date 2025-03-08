@@ -11,3 +11,5 @@ __test__/
 .idea/dataSources.xml
 .github/copilot-instructions.md
 repomix-output.txt
+# Sentry Config File
+.sentryclirc
