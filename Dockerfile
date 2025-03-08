@@ -13,13 +13,8 @@ RUN pnpm install --frozen-lockfile
 
 EXPOSE 8877
 
-WORKDIR /app/packages/api
-RUN pnpm run generate:env
-
 WORKDIR /app/packages/database
-
 RUN pnpm run generate
-RUN pnpm run migrate:prod
 
 WORKDIR /app/packages/api
 RUN pnpm run build
