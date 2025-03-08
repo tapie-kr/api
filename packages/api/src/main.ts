@@ -5,7 +5,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import cookieParser from 'cookie-parser';
 import { SwaggerTheme, SwaggerThemeNameEnum } from 'swagger-themes';
 import { AppModule } from '@/app.module';
-import {  APIResponseDto } from '@/common/dto/response.dto';
+import { APIResponseDto } from '@/common/dto/response.dto';
 import { GlobalExceptionFilter } from '@/common/filters/global-exception.filter';
 import { PrismaExceptionFilter } from '@/common/filters/prisma-exception.filter';
 import { TransformInterceptor } from '@/common/interceptors/transform.interceptor';
@@ -46,29 +46,31 @@ async function bootstrap() {
     defaultVersion: '1',
   });
 
-  const theme = new SwaggerTheme;
+  if (!isProduction) {
+    const theme = new SwaggerTheme;
 
-  const config = (new DocumentBuilder)
-    .setTitle('TAPIE API')
-    .setDescription('TAPIE System API')
-    .addCookieAuth('accessToken', {
-      type: 'apiKey', in: 'cookie',
-    }, 'accessToken')
-    .addCookieAuth('refreshToken', {
-      type: 'apiKey', in: 'cookie',
-    }, 'refreshToken')
-    .build();
+    const config = (new DocumentBuilder)
+      .setTitle('TAPIE API')
+      .setDescription('TAPIE System API')
+      .addCookieAuth('accessToken', {
+        type: 'apiKey', in: 'cookie',
+      }, 'accessToken')
+      .addCookieAuth('refreshToken', {
+        type: 'apiKey', in: 'cookie',
+      }, 'refreshToken')
+      .build();
 
-  const document = SwaggerModule.createDocument(app, config, { extraModels: [APIResponseDto] });
+    const document = SwaggerModule.createDocument(app, config, { extraModels: [APIResponseDto] });
 
-  SwaggerModule.setup('api-docs', app, document, {
-    jsonDocumentUrl: 'api-docs/json',
-    explorer:        true,
-    yamlDocumentUrl: 'api-docs/yaml',
-    customCss:       theme.getBuffer(SwaggerThemeNameEnum.ONE_DARK),
-    customfavIcon:   'https://s3.vport.dev/tapie-static/favicon.ico',
-    customSiteTitle: 'TAPIE API Swagger',
-  });
+    SwaggerModule.setup('api-docs', app, document, {
+      jsonDocumentUrl: 'api-docs/json',
+      explorer:        true,
+      yamlDocumentUrl: 'api-docs/yaml',
+      customCss:       theme.getBuffer(SwaggerThemeNameEnum.ONE_DARK),
+      customfavIcon:   'https://s3.vport.dev/tapie-static/favicon.ico',
+      customSiteTitle: 'TAPIE API Swagger',
+    });
+  }
 
   app.getHttpAdapter().get('/', (_req, res) => {
     res.json({
