@@ -7,6 +7,7 @@
     "dev": "nest start -b swc --watch",
     "start": "node dist/main.js",
     "seed": "ts-node -r tsconfig-paths/register scripts/seed.ts",
+    "generate:env": "node scripts/generate-env.js",
     "operate:perm": "ts-node -r tsconfig-paths/register scripts/add-permission.ts",
     "swagger:generate": "ts-node -r tsconfig-paths/register scripts/swagger.ts",
     "swagger:deploy": "dotenv -e .env -- sh -c 'bump deploy --doc \"tapie-api\" --token \"$BUMP_TOKEN\" ../../docs/openapi.json' && pnpm run swagger:diff",

@@ -14,7 +14,7 @@ RUN pnpm install --frozen-lockfile
 EXPOSE 8877
 
 WORKDIR /app/packages/api
-RUN node scripts/generate-env.js
+RUN pnpm run generate:env
 
 WORKDIR /app/packages/database
 
