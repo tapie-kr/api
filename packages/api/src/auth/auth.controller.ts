@@ -107,8 +107,4 @@ export class AuthController {
       name:  req.user.name,
     } satisfies MemberPayloadWithoutTypeDto;
   }
-  @Get('/debug-sentry')
-  getError() {
-    throw new Error('My first Sentry error!');
-  }
 }
