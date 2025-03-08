@@ -1,835 +1,24 @@
 {
   "openapi": "3.0.0",
   "paths": {
-    "/members": {
-      "get": {
-        "operationId": "MemberPublicController_getAllMembers",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/APIResponseDto"
-                    },
-                    {
-                      "properties": {
-                        "status": {
-                          "type": "number",
-                          "example": 200
-                        },
-                        "message": {
-                          "type": "string"
-                        },
-                        "responseAt": {
-                          "type": "string",
-                          "format": "date-time"
-                        },
-                        "data": {
-                          "type": "array",
-                          "items": {
-                            "$ref": "#/components/schemas/PublicOnlyMemberDto"
-                          }
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        },
-        "summary": "모든 멤버 가져오기",
-        "tags": [
-          "MemberPublic"
-        ]
-      }
-    },
-    "/admin/members": {
-      "post": {
-        "operationId": "MemberPrivateController_createNewMember",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateMemberDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/APIResponseDto"
-                    },
-                    {
-                      "properties": {
-                        "status": {
-                          "type": "number",
-                          "example": 200
-                        },
-                        "message": {
-                          "type": "string"
-                        },
-                        "responseAt": {
-                          "type": "string",
-                          "format": "date-time"
-                        },
-                        "data": {
-                          "$ref": "#/components/schemas/MemberDto"
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        },
-        "summary": "새 멤버 만들기",
-        "tags": [
-          "MemberPrivate"
-        ]
-      },
-      "get": {
-        "description": "username이 unknown으로 시작하는 멤버는 DB에서 username이 null입니다.",
-        "operationId": "MemberPrivateController_getAllMembers",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/APIResponseDto"
-                    },
-                    {
-                      "properties": {
-                        "status": {
-                          "type": "number",
-                          "example": 200
-                        },
-                        "message": {
-                          "type": "string"
-                        },
-                        "responseAt": {
-                          "type": "string",
-                          "format": "date-time"
-                        },
-                        "data": {
-                          "type": "array",
-                          "items": {
-                            "$ref": "#/components/schemas/MemberDto"
-                          }
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        },
-        "summary": "모든 멤버 가져오기",
-        "tags": [
-          "MemberPrivate"
-        ]
-      }
-    },
-    "/admin/members/search": {
-      "get": {
-        "description": "(이 버전은 username 검색만 가능)",
-        "operationId": "MemberPrivateController_searchMembers",
-        "parameters": [
-          {
-            "name": "username",
-            "required": true,
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/APIResponseDto"
-                    },
-                    {
-                      "properties": {
-                        "status": {
-                          "type": "number",
-                          "example": 200
-                        },
-                        "message": {
-                          "type": "string"
-                        },
-                        "responseAt": {
-                          "type": "string",
-                          "format": "date-time"
-                        },
-                        "data": {
-                          "$ref": "#/components/schemas/MemberDto"
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        },
-        "summary": "멤버 검색하기",
-        "tags": [
-          "MemberPrivate"
-        ]
-      }
-    },
-    "/admin/members/{memberUUID}": {
-      "get": {
-        "description": "username이 unknown으로 시작하는 멤버는 DB에서 username이 null입니다.",
-        "operationId": "MemberPrivateController_getMember",
-        "parameters": [
-          {
-            "name": "memberUUID",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/APIResponseDto"
-                    },
-                    {
-                      "properties": {
-                        "status": {
-                          "type": "number",
-                          "example": 200
-                        },
-                        "message": {
-                          "type": "string"
-                        },
-                        "responseAt": {
-                          "type": "string",
-                          "format": "date-time"
-                        },
-                        "data": {
-                          "$ref": "#/components/schemas/SpecificDetailMemberDto"
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        },
-        "summary": "특정 멤버 가져오기",
-        "tags": [
-          "MemberPrivate"
-        ]
-      },
-      "patch": {
-        "operationId": "MemberPrivateController_updateMember",
-        "parameters": [
-          {
-            "name": "memberUUID",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateMemberDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/APIResponseDto"
-                    },
-                    {
-                      "properties": {
-                        "status": {
-                          "type": "number",
-                          "example": 200
-                        },
-                        "message": {
-                          "type": "string"
-                        },
-                        "responseAt": {
-                          "type": "string",
-                          "format": "date-time"
-                        },
-                        "data": {
-                          "$ref": "#/components/schemas/MemberDto"
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        },
-        "summary": "멤버 정보 수정하기",
-        "tags": [
-          "MemberPrivate"
-        ]
-      }
-    },
-    "/admin/members/{memberUUID}/profile": {
-      "patch": {
-        "operationId": "MemberPrivateController_updateResponseFile",
-        "parameters": [
-          {
-            "name": "memberUUID",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "file": {
-                    "type": "string",
-                    "format": "binary",
-                    "description": "이미지 파일"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/APIResponseDto"
-                    },
-                    {
-                      "properties": {
-                        "status": {
-                          "type": "number",
-                          "example": 200
-                        },
-                        "message": {
-                          "type": "string"
-                        },
-                        "responseAt": {
-                          "type": "string",
-                          "format": "date-time"
-                        },
-                        "data": {
-                          "type": "string",
-                          "example": "ok"
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        },
-        "summary": "유저 프로필 이미지 수정하기",
-        "tags": [
-          "MemberPrivate"
-        ]
-      },
-      "delete": {
-        "operationId": "MemberPrivateController_deleteProfileImage",
-        "parameters": [
-          {
-            "name": "memberUUID",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/APIResponseDto"
-                    },
-                    {
-                      "properties": {
-                        "status": {
-                          "type": "number",
-                          "example": 200
-                        },
-                        "message": {
-                          "type": "string"
-                        },
-                        "responseAt": {
-                          "type": "string",
-                          "format": "date-time"
-                        },
-                        "data": {
-                          "type": "string",
-                          "example": "ok"
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        },
-        "summary": "유저 프로필 이미지 삭제하기",
-        "tags": [
-          "MemberPrivate"
-        ]
-      }
-    },
-    "/admin/members/{memberUUID}/links": {
-      "post": {
-        "operationId": "MemberPrivateController_addLink",
-        "parameters": [
-          {
-            "name": "memberUUID",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateMemberLinkDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/APIResponseDto"
-                    },
-                    {
-                      "properties": {
-                        "status": {
-                          "type": "number",
-                          "example": 200
-                        },
-                        "message": {
-                          "type": "string"
-                        },
-                        "responseAt": {
-                          "type": "string",
-                          "format": "date-time"
-                        },
-                        "data": {
-                          "$ref": "#/components/schemas/MemberDto"
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        },
-        "summary": "멤버 링크 추가하기",
-        "tags": [
-          "MemberPrivate"
-        ]
-      }
-    },
-    "/admin/members/{memberUUID}/links/{linkId}": {
-      "patch": {
-        "operationId": "MemberPrivateController_updateLink",
-        "parameters": [
-          {
-            "name": "memberUUID",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "linkId",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "number"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateMemberLinkDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/APIResponseDto"
-                    },
-                    {
-                      "properties": {
-                        "status": {
-                          "type": "number",
-                          "example": 200
-                        },
-                        "message": {
-                          "type": "string"
-                        },
-                        "responseAt": {
-                          "type": "string",
-                          "format": "date-time"
-                        },
-                        "data": {
-                          "$ref": "#/components/schemas/MemberDto"
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        },
-        "summary": "멤버 링크 수정하기",
-        "tags": [
-          "MemberPrivate"
-        ]
-      },
-      "delete": {
-        "operationId": "MemberPrivateController_removeLink",
-        "parameters": [
-          {
-            "name": "memberUUID",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "linkId",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "number"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/APIResponseDto"
-                    },
-                    {
-                      "properties": {
-                        "status": {
-                          "type": "number",
-                          "example": 200
-                        },
-                        "message": {
-                          "type": "string"
-                        },
-                        "responseAt": {
-                          "type": "string",
-                          "format": "date-time"
-                        },
-                        "data": {
-                          "$ref": "#/components/schemas/MemberDto"
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        },
-        "summary": "멤버 링크 삭제하기",
-        "tags": [
-          "MemberPrivate"
-        ]
-      }
-    },
-    "/admin/members/{memberUUID}/skills": {
-      "post": {
-        "description": "skill을 연결하려면 uuid, 새로 생성하려면 uuid를 제외한 나머지 field를 채워서 제출하세요.",
-        "operationId": "MemberPrivateController_addSkills",
-        "parameters": [
-          {
-            "name": "memberUUID",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateMemberSkillDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/APIResponseDto"
-                    },
-                    {
-                      "properties": {
-                        "status": {
-                          "type": "number",
-                          "example": 200
-                        },
-                        "message": {
-                          "type": "string"
-                        },
-                        "responseAt": {
-                          "type": "string",
-                          "format": "date-time"
-                        },
-                        "data": {
-                          "$ref": "#/components/schemas/MemberSkillDto"
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        },
-        "summary": "멤버 기술 추가하기",
-        "tags": [
-          "MemberPrivate"
-        ]
-      }
-    },
-    "/admin/members/{memberUUID}/skills/{skillUUID}": {
-      "patch": {
-        "operationId": "MemberPrivateController_updateSkills",
-        "parameters": [
-          {
-            "name": "memberUUID",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "skillUUID",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateMemberSkillDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/APIResponseDto"
-                    },
-                    {
-                      "properties": {
-                        "status": {
-                          "type": "number",
-                          "example": 200
-                        },
-                        "message": {
-                          "type": "string"
-                        },
-                        "responseAt": {
-                          "type": "string",
-                          "format": "date-time"
-                        },
-                        "data": {
-                          "$ref": "#/components/schemas/MemberSkillDto"
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        },
-        "summary": "멤버 기술 수정하기",
-        "tags": [
-          "MemberPrivate"
-        ]
-      },
-      "delete": {
-        "operationId": "MemberPrivateController_removeSkills",
-        "parameters": [
-          {
-            "name": "memberUUID",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "skillUUID",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/APIResponseDto"
-                    },
-                    {
-                      "properties": {
-                        "status": {
-                          "type": "number",
-                          "example": 200
-                        },
-                        "message": {
-                          "type": "string"
-                        },
-                        "responseAt": {
-                          "type": "string",
-                          "format": "date-time"
-                        },
-                        "data": {
-                          "$ref": "#/components/schemas/MemberDto"
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        },
-        "summary": "멤버 기술 삭제하기",
-        "tags": [
-          "MemberPrivate"
-        ]
-      }
-    },
     "/auth/google": {
       "get": {
         "operationId": "AuthController_googleAuth",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "summary": "Google Oauth 로그인으로 Redirect",
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/auth/google/callback": {
+      "get": {
+        "operationId": "AuthController_googleAuthRedirect",
         "parameters": [
           {
             "name": "service",
@@ -845,69 +34,6 @@
             "description": ""
           }
         },
-        "summary": "Google Oauth 로그인으로 Redirect",
-        "tags": [
-          "Auth"
-        ]
-      }
-    },
-    "/auth/google/callback": {
-      "get": {
-        "description": "accessToken과 refreshToken은 쿠키로 관리됩니다",
-        "operationId": "AuthController_googleAuthRedirect",
-        "parameters": [
-          {
-            "name": "service",
-            "required": true,
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "code",
-            "required": true,
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/APIResponseDto"
-                    },
-                    {
-                      "properties": {
-                        "status": {
-                          "type": "number",
-                          "example": 200
-                        },
-                        "message": {
-                          "type": "string"
-                        },
-                        "responseAt": {
-                          "type": "string",
-                          "format": "date-time"
-                        },
-                        "data": {
-                          "$ref": "#/components/schemas/MemberPayloadWithoutTypeDto"
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        },
-        "summary": "Google Oauth Code로 서비스에 로그인",
         "tags": [
           "Auth"
         ]
@@ -915,50 +41,28 @@
     },
     "/auth/refresh": {
       "post": {
-        "description": "*쿠키에 refreshToken을 설정해야 합니다.",
         "operationId": "AuthController_refreshAccessToken",
         "parameters": [],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/APIResponseDto"
-                    },
-                    {
-                      "properties": {
-                        "status": {
-                          "type": "number",
-                          "example": 200
-                        },
-                        "message": {
-                          "type": "string"
-                        },
-                        "responseAt": {
-                          "type": "string",
-                          "format": "date-time"
-                        },
-                        "data": {
-                          "type": "string",
-                          "example": "ok"
-                        }
-                      }
-                    }
-                  ]
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "refreshToken": {
+                    "type": "string"
+                  }
                 }
               }
             }
           }
         },
-        "security": [
-          {
-            "refreshToken": []
+        "responses": {
+          "201": {
+            "description": ""
           }
-        ],
-        "summary": "Access Token을 Refresh하기",
+        },
         "tags": [
           "Auth"
         ]
@@ -970,36 +74,7 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/APIResponseDto"
-                    },
-                    {
-                      "properties": {
-                        "status": {
-                          "type": "number",
-                          "example": 200
-                        },
-                        "message": {
-                          "type": "string"
-                        },
-                        "responseAt": {
-                          "type": "string",
-                          "format": "date-time"
-                        },
-                        "data": {
-                          "$ref": "#/components/schemas/MemberPayloadWithoutTypeDto"
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
+            "description": ""
           }
         },
         "security": [
@@ -1007,62 +82,110 @@
             "accessToken": []
           }
         ],
-        "summary": "내 정보 가져오기",
         "tags": [
           "Auth"
         ]
       }
     },
-    "/admin/form": {
+    "/profile/link": {
+      "post": {
+        "operationId": "ProfileLinkController_create",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "ProfileLink"
+        ]
+      }
+    },
+    "/profile/link/{memberId}": {
+      "get": {
+        "operationId": "ProfileLinkController_findByMemberId",
+        "parameters": [
+          {
+            "name": "memberId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "ProfileLink"
+        ]
+      }
+    },
+    "/profile/link/{id}": {
+      "put": {
+        "operationId": "ProfileLinkController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "ProfileLink"
+        ]
+      },
+      "delete": {
+        "operationId": "ProfileLinkController_delete",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "ProfileLink"
+        ]
+      }
+    },
+    "/form/admin": {
       "post": {
         "description": "지원 폼을 생성합니다. (응답 생성 X)",
-        "operationId": "FormPrivateController_create",
+        "operationId": "ApplyFormPrivateController_create",
         "parameters": [],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateFormDto"
+                "$ref": "#/components/schemas/CreateApplyFormDto"
               }
             }
           }
         },
         "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/APIResponseDto"
-                    },
-                    {
-                      "properties": {
-                        "status": {
-                          "type": "number",
-                          "example": 200
-                        },
-                        "message": {
-                          "type": "string"
-                        },
-                        "responseAt": {
-                          "type": "string",
-                          "format": "date-time"
-                        },
-                        "data": {
-                          "type": "array",
-                          "items": {
-                            "$ref": "#/components/schemas/FormDto"
-                          }
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
+          "201": {
+            "description": ""
           }
         },
         "security": [
@@ -1072,47 +195,15 @@
         ],
         "summary": "지원 폼 생성",
         "tags": [
-          "FormPrivate"
+          "ApplyFormPrivate"
         ]
       },
       "get": {
-        "operationId": "FormPrivateController_findAll",
+        "operationId": "ApplyFormPrivateController_findAll",
         "parameters": [],
         "responses": {
           "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/APIResponseDto"
-                    },
-                    {
-                      "properties": {
-                        "status": {
-                          "type": "number",
-                          "example": 200
-                        },
-                        "message": {
-                          "type": "string"
-                        },
-                        "responseAt": {
-                          "type": "string",
-                          "format": "date-time"
-                        },
-                        "data": {
-                          "type": "array",
-                          "items": {
-                            "$ref": "#/components/schemas/FormDto"
-                          }
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
+            "description": ""
           }
         },
         "security": [
@@ -1122,13 +213,13 @@
         ],
         "summary": "지원 폼 모두 가져오기",
         "tags": [
-          "FormPrivate"
+          "ApplyFormPrivate"
         ]
       }
     },
-    "/admin/form/{id}": {
+    "/form/admin/{id}": {
       "patch": {
-        "operationId": "FormPrivateController_update",
+        "operationId": "ApplyFormPrivateController_update",
         "parameters": [
           {
             "name": "id",
@@ -1144,43 +235,14 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateFormDto"
+                "$ref": "#/components/schemas/UpdateApplyFormDto"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/APIResponseDto"
-                    },
-                    {
-                      "properties": {
-                        "status": {
-                          "type": "number",
-                          "example": 200
-                        },
-                        "message": {
-                          "type": "string"
-                        },
-                        "responseAt": {
-                          "type": "string",
-                          "format": "date-time"
-                        },
-                        "data": {
-                          "$ref": "#/components/schemas/FormDto"
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
+            "description": ""
           }
         },
         "security": [
@@ -1190,11 +252,11 @@
         ],
         "summary": "특정 지원 폼 수정",
         "tags": [
-          "FormPrivate"
+          "ApplyFormPrivate"
         ]
       },
       "delete": {
-        "operationId": "FormPrivateController_remove",
+        "operationId": "ApplyFormPrivateController_remove",
         "parameters": [
           {
             "name": "id",
@@ -1207,37 +269,7 @@
         ],
         "responses": {
           "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/APIResponseDto"
-                    },
-                    {
-                      "properties": {
-                        "status": {
-                          "type": "number",
-                          "example": 200
-                        },
-                        "message": {
-                          "type": "string"
-                        },
-                        "responseAt": {
-                          "type": "string",
-                          "format": "date-time"
-                        },
-                        "data": {
-                          "type": "string",
-                          "example": "ok"
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
+            "description": ""
           }
         },
         "security": [
@@ -1247,11 +279,11 @@
         ],
         "summary": "지원 폼 삭제",
         "tags": [
-          "FormPrivate"
+          "ApplyFormPrivate"
         ]
       },
       "get": {
-        "operationId": "FormPrivateController_findOne",
+        "operationId": "ApplyFormPrivateController_findOne",
         "parameters": [
           {
             "name": "id",
@@ -1264,36 +296,7 @@
         ],
         "responses": {
           "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/APIResponseDto"
-                    },
-                    {
-                      "properties": {
-                        "status": {
-                          "type": "number",
-                          "example": 200
-                        },
-                        "message": {
-                          "type": "string"
-                        },
-                        "responseAt": {
-                          "type": "string",
-                          "format": "date-time"
-                        },
-                        "data": {
-                          "$ref": "#/components/schemas/FormDto"
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
+            "description": ""
           }
         },
         "security": [
@@ -1303,13 +306,13 @@
         ],
         "summary": "지원 폼 데이터 가져오기",
         "tags": [
-          "FormPrivate"
+          "ApplyFormPrivate"
         ]
       }
     },
-    "/admin/form/{id}/applications": {
+    "/form/admin/{id}/responses": {
       "get": {
-        "operationId": "FormPrivateController_findAllResponses",
+        "operationId": "ApplyFormPrivateController_findAllResponses",
         "parameters": [
           {
             "name": "id",
@@ -1322,39 +325,7 @@
         ],
         "responses": {
           "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/APIResponseDto"
-                    },
-                    {
-                      "properties": {
-                        "status": {
-                          "type": "number",
-                          "example": 200
-                        },
-                        "message": {
-                          "type": "string"
-                        },
-                        "responseAt": {
-                          "type": "string",
-                          "format": "date-time"
-                        },
-                        "data": {
-                          "type": "array",
-                          "items": {
-                            "$ref": "#/components/schemas/FormResponseDto"
-                          }
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
+            "description": ""
           }
         },
         "security": [
@@ -1364,13 +335,13 @@
         ],
         "summary": "특정 지원 폼의 모든 응답 가져오기",
         "tags": [
-          "FormPrivate"
+          "ApplyFormPrivate"
         ]
       }
     },
-    "/admin/form/applications/{responseId}": {
+    "/form/admin/responses/{responseId}": {
       "get": {
-        "operationId": "FormPrivateController_findOneResponse",
+        "operationId": "ApplyFormPrivateController_findOneResponse",
         "parameters": [
           {
             "name": "responseId",
@@ -1383,36 +354,7 @@
         ],
         "responses": {
           "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/APIResponseDto"
-                    },
-                    {
-                      "properties": {
-                        "status": {
-                          "type": "number",
-                          "example": 200
-                        },
-                        "message": {
-                          "type": "string"
-                        },
-                        "responseAt": {
-                          "type": "string",
-                          "format": "date-time"
-                        },
-                        "data": {
-                          "$ref": "#/components/schemas/FormResponseDto"
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
+            "description": ""
           }
         },
         "security": [
@@ -1422,193 +364,13 @@
         ],
         "summary": "특정 지원 폼의 특정 응답 가져오기",
         "tags": [
-          "FormPrivate"
-        ]
-      },
-      "delete": {
-        "operationId": "FormPrivateController_deleteResponse",
-        "parameters": [
-          {
-            "name": "responseId",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/APIResponseDto"
-                    },
-                    {
-                      "properties": {
-                        "status": {
-                          "type": "number",
-                          "example": 200
-                        },
-                        "message": {
-                          "type": "string"
-                        },
-                        "responseAt": {
-                          "type": "string",
-                          "format": "date-time"
-                        },
-                        "data": {
-                          "type": "string",
-                          "example": "ok"
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "accessToken": []
-          }
-        ],
-        "summary": "특정 지원 폼의 특정 응답 삭제",
-        "tags": [
-          "FormPrivate"
+          "ApplyFormPrivate"
         ]
       }
     },
-    "/admin/form/applications/{responseId}/attachment": {
-      "get": {
-        "operationId": "FormPrivateController_getAttachmentPresignedUrl",
-        "parameters": [
-          {
-            "name": "responseId",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/APIResponseDto"
-                    },
-                    {
-                      "properties": {
-                        "status": {
-                          "type": "number",
-                          "example": 200
-                        },
-                        "message": {
-                          "type": "string"
-                        },
-                        "responseAt": {
-                          "type": "string",
-                          "format": "date-time"
-                        },
-                        "data": {
-                          "type": "object",
-                          "properties": {
-                            "downloadUrl": {
-                              "type": "string"
-                            }
-                          }
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "accessToken": []
-          }
-        ],
-        "summary": "특정 지원 폼의 첨부파일 다운로드",
-        "tags": [
-          "FormPrivate"
-        ]
-      }
-    },
-    "/admin/form/applications/{responseId}/approve": {
+    "/form/admin/{id}/activate": {
       "post": {
-        "deprecated": true,
-        "description": "합격 처리 기능이 구현되지 않았습니다.",
-        "operationId": "FormPrivateController_approveResponse",
-        "parameters": [
-          {
-            "name": "responseId",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/APIResponseDto"
-                    },
-                    {
-                      "properties": {
-                        "status": {
-                          "type": "number",
-                          "example": 200
-                        },
-                        "message": {
-                          "type": "string"
-                        },
-                        "responseAt": {
-                          "type": "string",
-                          "format": "date-time"
-                        },
-                        "data": {
-                          "$ref": "#/components/schemas/FormResponseDto"
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "accessToken": []
-          }
-        ],
-        "summary": "특정 지원 폼의 특정 응답 합격처리",
-        "tags": [
-          "FormPrivate"
-        ]
-      }
-    },
-    "/admin/form/{id}/activate": {
-      "post": {
-        "operationId": "FormPrivateController_activateForm",
+        "operationId": "ApplyFormPrivateController_activateForm",
         "parameters": [
           {
             "name": "id",
@@ -1620,37 +382,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/APIResponseDto"
-                    },
-                    {
-                      "properties": {
-                        "status": {
-                          "type": "number",
-                          "example": 200
-                        },
-                        "message": {
-                          "type": "string"
-                        },
-                        "responseAt": {
-                          "type": "string",
-                          "format": "date-time"
-                        },
-                        "data": {
-                          "$ref": "#/components/schemas/FormDto"
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
+          "201": {
+            "description": ""
           }
         },
         "security": [
@@ -1660,13 +393,13 @@
         ],
         "summary": "지원 폼 활성화",
         "tags": [
-          "FormPrivate"
+          "ApplyFormPrivate"
         ]
       }
     },
-    "/admin/form/{id}/deactivate": {
+    "/form/admin/{id}/deactivate": {
       "post": {
-        "operationId": "FormPrivateController_deactivateForm",
+        "operationId": "ApplyFormPrivateController_deactivateForm",
         "parameters": [
           {
             "name": "id",
@@ -1678,37 +411,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/APIResponseDto"
-                    },
-                    {
-                      "properties": {
-                        "status": {
-                          "type": "number",
-                          "example": 200
-                        },
-                        "message": {
-                          "type": "string"
-                        },
-                        "responseAt": {
-                          "type": "string",
-                          "format": "date-time"
-                        },
-                        "data": {
-                          "$ref": "#/components/schemas/FormDto"
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
+          "201": {
+            "description": ""
           }
         },
         "security": [
@@ -1718,46 +422,17 @@
         ],
         "summary": "지원 폼 비활성화",
         "tags": [
-          "FormPrivate"
+          "ApplyFormPrivate"
         ]
       }
     },
     "/form": {
       "get": {
-        "operationId": "FormPublicController_findActiveForm",
+        "operationId": "ApplyFormPublicController_findActiveForm",
         "parameters": [],
         "responses": {
           "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/APIResponseDto"
-                    },
-                    {
-                      "properties": {
-                        "status": {
-                          "type": "number",
-                          "example": 200
-                        },
-                        "message": {
-                          "type": "string"
-                        },
-                        "responseAt": {
-                          "type": "string",
-                          "format": "date-time"
-                        },
-                        "data": {
-                          "$ref": "#/components/schemas/FormDto"
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
+            "description": ""
           }
         },
         "security": [
@@ -1765,16 +440,14 @@
             "accessToken": []
           }
         ],
-        "summary": "활성화 된 폼 찾기",
         "tags": [
-          "FormPublic"
+          "ApplyFormPublic"
         ]
       }
     },
-    "/form/{id}/application": {
+    "/form/{id}/response": {
       "post": {
-        "deprecated": true,
-        "operationId": "FormPublicController_createResponse",
+        "operationId": "ApplyFormPublicController_createResponse",
         "parameters": [
           {
             "name": "id",
@@ -1796,37 +469,8 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/APIResponseDto"
-                    },
-                    {
-                      "properties": {
-                        "status": {
-                          "type": "number",
-                          "example": 200
-                        },
-                        "message": {
-                          "type": "string"
-                        },
-                        "responseAt": {
-                          "type": "string",
-                          "format": "date-time"
-                        },
-                        "data": {
-                          "$ref": "#/components/schemas/FormResponseDto"
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
+          "201": {
+            "description": ""
           }
         },
         "security": [
@@ -1834,13 +478,12 @@
             "accessToken": []
           }
         ],
-        "summary": "새 응답 만들기",
         "tags": [
-          "FormPublic"
+          "ApplyFormPublic"
         ]
       },
       "get": {
-        "operationId": "FormPublicController_findResponse",
+        "operationId": "ApplyFormPublicController_findResponse",
         "parameters": [
           {
             "name": "id",
@@ -1853,36 +496,7 @@
         ],
         "responses": {
           "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/APIResponseDto"
-                    },
-                    {
-                      "properties": {
-                        "status": {
-                          "type": "number",
-                          "example": 200
-                        },
-                        "message": {
-                          "type": "string"
-                        },
-                        "responseAt": {
-                          "type": "string",
-                          "format": "date-time"
-                        },
-                        "data": {
-                          "$ref": "#/components/schemas/FormResponseDto"
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
+            "description": ""
           }
         },
         "security": [
@@ -1890,13 +504,12 @@
             "accessToken": []
           }
         ],
-        "summary": "내 응답 가져오기",
         "tags": [
-          "FormPublic"
+          "ApplyFormPublic"
         ]
       },
       "patch": {
-        "operationId": "FormPublicController_updateResponse",
+        "operationId": "ApplyFormPublicController_updateResponse",
         "parameters": [
           {
             "name": "id",
@@ -1919,36 +532,7 @@
         },
         "responses": {
           "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/APIResponseDto"
-                    },
-                    {
-                      "properties": {
-                        "status": {
-                          "type": "number",
-                          "example": 200
-                        },
-                        "message": {
-                          "type": "string"
-                        },
-                        "responseAt": {
-                          "type": "string",
-                          "format": "date-time"
-                        },
-                        "data": {
-                          "$ref": "#/components/schemas/FormResponseDto"
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
+            "description": ""
           }
         },
         "security": [
@@ -1956,13 +540,12 @@
             "accessToken": []
           }
         ],
-        "summary": "내 응답 수정하기",
         "tags": [
-          "FormPublic"
+          "ApplyFormPublic"
         ]
       },
       "delete": {
-        "operationId": "FormPublicController_removeResponse",
+        "operationId": "ApplyFormPublicController_removeResponse",
         "parameters": [
           {
             "name": "id",
@@ -1975,36 +558,7 @@
         ],
         "responses": {
           "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/APIResponseDto"
-                    },
-                    {
-                      "properties": {
-                        "status": {
-                          "type": "number",
-                          "example": 200
-                        },
-                        "message": {
-                          "type": "string"
-                        },
-                        "responseAt": {
-                          "type": "string",
-                          "format": "date-time"
-                        },
-                        "data": {
-                          "$ref": "#/components/schemas/FormResponseDto"
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
+            "description": ""
           }
         },
         "security": [
@@ -2012,15 +566,14 @@
             "accessToken": []
           }
         ],
-        "summary": "내 응답 삭제하기",
         "tags": [
-          "FormPublic"
+          "ApplyFormPublic"
         ]
       }
     },
-    "/form/{id}/application/file": {
+    "/form/{id}/response/file": {
       "patch": {
-        "operationId": "FormPublicController_updateResponseFile",
+        "operationId": "ApplyFormPublicController_updateResponseFile",
         "parameters": [
           {
             "name": "id",
@@ -2050,34 +603,7 @@
         },
         "responses": {
           "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/APIResponseDto"
-                    },
-                    {
-                      "properties": {
-                        "status": {
-                          "type": "number",
-                          "example": 200
-                        },
-                        "message": {
-                          "type": "string"
-                        },
-                        "responseAt": {
-                          "type": "string",
-                          "format": "date-time"
-                        },
-                        "data": {}
-                      }
-                    }
-                  ]
-                }
-              }
-            }
+            "description": ""
           }
         },
         "security": [
@@ -2085,13 +611,12 @@
             "accessToken": []
           }
         ],
-        "summary": "내 응답에 파일 첨부하기",
         "tags": [
-          "FormPublic"
+          "ApplyFormPublic"
         ]
       },
       "get": {
-        "operationId": "FormPublicController_getResponseFile",
+        "operationId": "ApplyFormPublicController_getResponseFile",
         "parameters": [
           {
             "name": "id",
@@ -2104,41 +629,7 @@
         ],
         "responses": {
           "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/APIResponseDto"
-                    },
-                    {
-                      "properties": {
-                        "status": {
-                          "type": "number",
-                          "example": 200
-                        },
-                        "message": {
-                          "type": "string"
-                        },
-                        "responseAt": {
-                          "type": "string",
-                          "format": "date-time"
-                        },
-                        "data": {
-                          "properties": {
-                            "presignedUrl": {
-                              "type": "string",
-                              "example": "https://example.com"
-                            }
-                          }
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
+            "description": ""
           }
         },
         "security": [
@@ -2146,13 +637,12 @@
             "accessToken": []
           }
         ],
-        "summary": "내 응답에 있는 파일 가져오기",
         "tags": [
-          "FormPublic"
+          "ApplyFormPublic"
         ]
       },
       "delete": {
-        "operationId": "FormPublicController_removeResponseFile",
+        "operationId": "ApplyFormPublicController_removeResponseFile",
         "parameters": [
           {
             "name": "id",
@@ -2165,36 +655,7 @@
         ],
         "responses": {
           "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/APIResponseDto"
-                    },
-                    {
-                      "properties": {
-                        "status": {
-                          "type": "number",
-                          "example": 200
-                        },
-                        "message": {
-                          "type": "string"
-                        },
-                        "responseAt": {
-                          "type": "string",
-                          "format": "date-time"
-                        },
-                        "data": {
-                          "$ref": "#/components/schemas/FormResponseDto"
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
+            "description": ""
           }
         },
         "security": [
@@ -2202,16 +663,14 @@
             "accessToken": []
           }
         ],
-        "summary": "내 응답에 있는 파일 삭제하기",
         "tags": [
-          "FormPublic"
+          "ApplyFormPublic"
         ]
       }
     },
-    "/form/{id}/application/apply": {
+    "/form/{id}/response/apply": {
       "post": {
-        "description": "응답을 제출하면 수정할 수 없음 (GET 요청만 허용)",
-        "operationId": "FormPublicController_applyForm",
+        "operationId": "ApplyFormPublicController_applyForm",
         "parameters": [
           {
             "name": "id",
@@ -2222,449 +681,46 @@
             }
           }
         ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/APIResponseDto"
-                    },
-                    {
-                      "properties": {
-                        "status": {
-                          "type": "number",
-                          "example": 200
-                        },
-                        "message": {
-                          "type": "string"
-                        },
-                        "responseAt": {
-                          "type": "string",
-                          "format": "date-time"
-                        },
-                        "data": {
-                          "$ref": "#/components/schemas/FormResponseDto"
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "accessToken": []
-          }
-        ],
-        "summary": "내 응답 제출하기",
-        "tags": [
-          "FormPublic"
-        ]
-      }
-    },
-    "/form/{id}/accessibility": {
-      "get": {
-        "operationId": "FormPublicController_isAvailableToAccessForm",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "number"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/APIResponseDto"
-                    },
-                    {
-                      "properties": {
-                        "status": {
-                          "type": "number",
-                          "example": 200
-                        },
-                        "message": {
-                          "type": "string"
-                        },
-                        "responseAt": {
-                          "type": "string",
-                          "format": "date-time"
-                        },
-                        "data": {
-                          "type": "boolean"
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "accessToken": []
-          }
-        ],
-        "summary": "해당 폼 접근 가능 여부",
-        "tags": [
-          "FormPublic"
-        ]
-      }
-    },
-    "/portfolio/awards": {
-      "get": {
-        "description": "year Query가 Swagger 버그로 required로 되어 있습니다. year Query는 optional입니다.",
-        "operationId": "PortfolioPublicController_getAllAwards",
-        "parameters": [
-          {
-            "name": "year",
-            "required": true,
-            "in": "query",
-            "schema": {
-              "type": "number"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/APIResponseDto"
-                    },
-                    {
-                      "properties": {
-                        "status": {
-                          "type": "number",
-                          "example": 200
-                        },
-                        "message": {
-                          "type": "string"
-                        },
-                        "responseAt": {
-                          "type": "string",
-                          "format": "date-time"
-                        },
-                        "data": {
-                          "type": "array",
-                          "items": {
-                            "$ref": "#/components/schemas/AwardPublicPreviewDto"
-                          }
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        },
-        "summary": "모든 대회 수상 가져오기 (메인 페이지용)",
-        "tags": [
-          "PortfolioPublic"
-        ]
-      }
-    },
-    "/admin/portfolio/awards": {
-      "get": {
-        "operationId": "PortfolioPrivateController_getAllAwards",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/APIResponseDto"
-                    },
-                    {
-                      "properties": {
-                        "status": {
-                          "type": "number",
-                          "example": 200
-                        },
-                        "message": {
-                          "type": "string"
-                        },
-                        "responseAt": {
-                          "type": "string",
-                          "format": "date-time"
-                        },
-                        "data": {
-                          "type": "array",
-                          "items": {
-                            "$ref": "#/components/schemas/AwardDto"
-                          }
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        },
-        "summary": "모든 대회 수상 가져오기",
-        "tags": [
-          "PortfolioPrivate"
-        ]
-      },
-      "post": {
-        "description": "competition field는 기존 competition을 연결하려면 uuid, 새로운 competition을 만들려면 name을 입력하세요. membersUUID field는 수상 멤버의 uuid를 입력하면 됩니다.",
-        "operationId": "PortfolioPrivateController_createAward",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateAwardDto"
-              }
-            }
-          }
-        },
         "responses": {
           "201": {
             "description": ""
           }
         },
-        "summary": "수상 추가",
-        "tags": [
-          "PortfolioPrivate"
-        ]
-      }
-    },
-    "/admin/portfolio/awards/{uuid}": {
-      "delete": {
-        "operationId": "PortfolioPrivateController_deleteAward",
-        "parameters": [
+        "security": [
           {
-            "name": "uuid",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
+            "accessToken": []
           }
         ],
-        "responses": {
-          "204": {
-            "description": ""
-          }
-        },
-        "summary": "수상 삭제",
         "tags": [
-          "PortfolioPrivate"
+          "ApplyFormPublic"
         ]
       }
     },
-    "/admin/portfolio/awards/{uuid}/members": {
-      "post": {
-        "operationId": "PortfolioPrivateController_addMembersToAward",
-        "parameters": [
-          {
-            "name": "uuid",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AddMemberAwardDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "204": {
-            "description": ""
-          }
-        },
-        "summary": "수상 멤버 추가",
-        "tags": [
-          "PortfolioPrivate"
-        ]
-      }
-    },
-    "/admin/portfolio/awards/{uuid}/members/{memberUUID}": {
-      "delete": {
-        "operationId": "PortfolioPrivateController_deleteMemberFromAward",
-        "parameters": [
-          {
-            "name": "uuid",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "memberUUID",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": ""
-          }
-        },
-        "summary": "수상 멤버 삭제",
-        "tags": [
-          "PortfolioPrivate"
-        ]
-      }
-    },
-    "/admin/portfolio/competitions": {
+    "/form/{id}/accessibility": {
       "get": {
-        "operationId": "PortfolioPrivateController_getAllCompetitions",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/APIResponseDto"
-                    },
-                    {
-                      "properties": {
-                        "status": {
-                          "type": "number",
-                          "example": 200
-                        },
-                        "message": {
-                          "type": "string"
-                        },
-                        "responseAt": {
-                          "type": "string",
-                          "format": "date-time"
-                        },
-                        "data": {
-                          "type": "array",
-                          "items": {
-                            "$ref": "#/components/schemas/CompetitionDto"
-                          }
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        },
-        "summary": "모든 대회 가져오기",
-        "tags": [
-          "PortfolioPrivate"
-        ]
-      }
-    },
-    "/admin/portfolio/competitions/{competitionUUID}": {
-      "get": {
-        "operationId": "PortfolioPrivateController_getAwardsByCompetition",
+        "operationId": "ApplyFormPublicController_isAvailableToAccessForm",
         "parameters": [
           {
-            "name": "competitionUUID",
+            "name": "id",
             "required": true,
             "in": "path",
             "schema": {
-              "type": "string"
+              "type": "number"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/APIResponseDto"
-                    },
-                    {
-                      "properties": {
-                        "status": {
-                          "type": "number",
-                          "example": 200
-                        },
-                        "message": {
-                          "type": "string"
-                        },
-                        "responseAt": {
-                          "type": "string",
-                          "format": "date-time"
-                        },
-                        "data": {
-                          "type": "array",
-                          "items": {
-                            "$ref": "#/components/schemas/AwardDto"
-                          }
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        },
-        "summary": "대회별 수상 가져오기",
-        "tags": [
-          "PortfolioPrivate"
-        ]
-      },
-      "delete": {
-        "operationId": "PortfolioPrivateController_deleteCompetition",
-        "parameters": [
-          {
-            "name": "competitionUUID",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
             "description": ""
           }
         },
-        "summary": "대회 삭제",
+        "security": [
+          {
+            "accessToken": []
+          }
+        ],
         "tags": [
-          "PortfolioPrivate"
+          "ApplyFormPublic"
         ]
       }
     }
@@ -2672,7 +728,7 @@
   "info": {
     "title": "TAPIE API",
     "description": "TAPIE System API",
-    "version": "0.0.6",
+    "version": "0.0.5",
     "contact": {}
   },
   "tags": [],
@@ -2699,646 +755,12 @@
       }
     },
     "schemas": {
-      "PublicOnlyMemberDto": {
-        "type": "object",
-        "properties": {
-          "uuid": {
-            "type": "string",
-            "description": "회원 ID",
-            "format": "uuid"
-          },
-          "name": {
-            "type": "string",
-            "description": "회원 이름",
-            "example": "Jeewon Kwon"
-          },
-          "studentID": {
-            "type": "number",
-            "description": "학번",
-            "example": "10912"
-          },
-          "username": {
-            "type": "string",
-            "description": "회원 아이디",
-            "example": "jeewonkwon"
-          },
-          "role": {
-            "type": "string",
-            "description": "회원 역할",
-            "example": "MEMBER",
-            "enum": [
-              "CO_MANAGER",
-              "MANAGER",
-              "MEMBER",
-              "GUEST"
-            ]
-          },
-          "unit": {
-            "type": "string",
-            "description": "회원 유닛",
-            "example": "DEVELOPER",
-            "enum": [
-              "DEVELOPER",
-              "DESIGNER",
-              "EXTERNAL"
-            ]
-          },
-          "generation": {
-            "type": "number",
-            "description": "기수",
-            "example": 119
-          },
-          "profileUri": {
-            "type": "string",
-            "description": "프로필 URI",
-            "example": "https://tapie.kr/profile.png"
-          }
-        },
-        "required": [
-          "uuid",
-          "name",
-          "studentID",
-          "username",
-          "role",
-          "unit",
-          "generation",
-          "profileUri"
-        ]
-      },
-      "MemberDto": {
-        "type": "object",
-        "properties": {
-          "uuid": {
-            "type": "string",
-            "description": "회원 ID",
-            "format": "uuid"
-          },
-          "name": {
-            "type": "string",
-            "description": "회원 이름",
-            "example": "Jeewon Kwon"
-          },
-          "studentID": {
-            "type": "number",
-            "description": "학번",
-            "example": "10912"
-          },
-          "username": {
-            "type": "string",
-            "description": "회원 아이디",
-            "example": "jeewonkwon"
-          },
-          "googleEmail": {
-            "type": "string",
-            "description": "회원 이메일",
-            "example": "noreply@tapie.kr"
-          },
-          "role": {
-            "type": "string",
-            "description": "회원 역할",
-            "example": "MEMBER",
-            "enum": [
-              "CO_MANAGER",
-              "MANAGER",
-              "MEMBER",
-              "GUEST"
-            ]
-          },
-          "unit": {
-            "type": "string",
-            "description": "회원 유닛",
-            "example": "DEVELOPER",
-            "enum": [
-              "DEVELOPER",
-              "DESIGNER",
-              "EXTERNAL"
-            ]
-          },
-          "generation": {
-            "type": "number",
-            "description": "기수",
-            "example": 119
-          },
-          "profileUri": {
-            "type": "string",
-            "description": "프로필 URI",
-            "example": "https://tapie.kr/profile.png"
-          }
-        },
-        "required": [
-          "uuid",
-          "name",
-          "studentID",
-          "username",
-          "googleEmail",
-          "role",
-          "unit",
-          "generation",
-          "profileUri"
-        ]
-      },
-      "SkillDto": {
-        "type": "object",
-        "properties": {
-          "uuid": {
-            "type": "string",
-            "description": "기술 UUID",
-            "example": "123e4567-e89b-12d3-a456-426614174000"
-          },
-          "icon": {
-            "type": "string",
-            "description": "기술 아이콘 값"
-          },
-          "name": {
-            "type": "string",
-            "description": "기술 이름"
-          },
-          "type": {
-            "type": "string",
-            "description": "기술 타입",
-            "enum": [
-              "DEVELOPMENT",
-              "MANAGEMENT",
-              "OTHER"
-            ]
-          },
-          "createdAt": {
-            "format": "date-time",
-            "type": "string",
-            "description": "기술 생성일"
-          },
-          "updatedAt": {
-            "format": "date-time",
-            "type": "string",
-            "description": "기술 수정일"
-          }
-        },
-        "required": [
-          "uuid",
-          "icon",
-          "name",
-          "type",
-          "createdAt",
-          "updatedAt"
-        ]
-      },
-      "MemberSkillDto": {
-        "type": "object",
-        "properties": {
-          "uuid": {
-            "type": "string",
-            "description": "멤버 기술 UUID"
-          },
-          "isVerified": {
-            "type": "boolean",
-            "description": "멤버 기술 인증 여부"
-          },
-          "isLearning": {
-            "type": "boolean",
-            "description": "멤버 기술 학습중 여부"
-          },
-          "skill": {
-            "$ref": "#/components/schemas/SkillDto"
-          }
-        },
-        "required": [
-          "uuid",
-          "isVerified",
-          "isLearning",
-          "skill"
-        ]
-      },
-      "MemberLinkDto": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "number",
-            "description": "링크 ID"
-          },
-          "icon": {
-            "type": "string",
-            "description": "링크 아이콘"
-          },
-          "label": {
-            "type": "string",
-            "description": "링크 라벨"
-          },
-          "href": {
-            "type": "string",
-            "description": "링크 URL"
-          }
-        },
-        "required": [
-          "id",
-          "icon",
-          "label",
-          "href"
-        ]
-      },
-      "PreviewAwardDto": {
-        "type": "object",
-        "properties": {
-          "uuid": {
-            "type": "string",
-            "description": "수상실적 UUID",
-            "example": "123e4567-e89b-12d3-a456-426614174000"
-          },
-          "competitionUUID": {
-            "type": "string",
-            "description": "대회 UUID",
-            "example": "123e4567-e89b-12d3-a456-426614174000"
-          },
-          "title": {
-            "type": "string",
-            "description": "수상명"
-          },
-          "grade": {
-            "type": "number",
-            "description": "수상 등급"
-          },
-          "gradeLabel": {
-            "type": "string",
-            "description": "수상 등급 이름",
-            "example": "우수상"
-          },
-          "rewardedAt": {
-            "format": "date-time",
-            "type": "string",
-            "description": "수상일"
-          }
-        },
-        "required": [
-          "uuid",
-          "competitionUUID",
-          "title",
-          "grade",
-          "gradeLabel",
-          "rewardedAt"
-        ]
-      },
-      "MemberHistoryDto": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "number",
-            "description": "기록 ID",
-            "format": "id"
-          },
-          "label": {
-            "type": "string",
-            "description": "라벨 이름",
-            "example": "Github"
-          },
-          "link": {
-            "type": "string",
-            "description": "라벨 링크",
-            "example": "https://foo.bar/baz"
-          },
-          "isImportant": {
-            "type": "boolean",
-            "description": "중요함",
-            "example": true
-          },
-          "releasedAt": {
-            "format": "date-time",
-            "type": "string",
-            "description": "날짜",
-            "example": "2021-01-01"
-          },
-          "createdAt": {
-            "format": "date-time",
-            "type": "string",
-            "description": "생성일",
-            "example": "2021-01-01"
-          },
-          "updatedAt": {
-            "format": "date-time",
-            "type": "string",
-            "description": "수정일",
-            "example": "2021-01-01"
-          }
-        },
-        "required": [
-          "id",
-          "label",
-          "link",
-          "isImportant",
-          "releasedAt",
-          "createdAt",
-          "updatedAt"
-        ]
-      },
-      "SpecificDetailMemberDto": {
-        "type": "object",
-        "properties": {
-          "uuid": {
-            "type": "string",
-            "description": "회원 ID",
-            "format": "uuid"
-          },
-          "name": {
-            "type": "string",
-            "description": "회원 이름",
-            "example": "Jeewon Kwon"
-          },
-          "studentID": {
-            "type": "number",
-            "description": "학번",
-            "example": "10912"
-          },
-          "username": {
-            "type": "string",
-            "description": "회원 아이디",
-            "example": "jeewonkwon"
-          },
-          "googleEmail": {
-            "type": "string",
-            "description": "회원 이메일",
-            "example": "noreply@tapie.kr"
-          },
-          "role": {
-            "type": "string",
-            "description": "회원 역할",
-            "example": "MEMBER",
-            "enum": [
-              "CO_MANAGER",
-              "MANAGER",
-              "MEMBER",
-              "GUEST"
-            ]
-          },
-          "unit": {
-            "type": "string",
-            "description": "회원 유닛",
-            "example": "DEVELOPER",
-            "enum": [
-              "DEVELOPER",
-              "DESIGNER",
-              "EXTERNAL"
-            ]
-          },
-          "generation": {
-            "type": "number",
-            "description": "기수",
-            "example": 119
-          },
-          "profileUri": {
-            "type": "string",
-            "description": "프로필 URI",
-            "example": "https://tapie.kr/profile.png"
-          },
-          "isGraduated": {
-            "type": "boolean",
-            "description": "특정 멤버의 졸업 여부",
-            "example": false
-          },
-          "permissions": {
-            "type": "number",
-            "description": "특정 멤버의 권한",
-            "example": 0
-          },
-          "links": {
-            "description": "멤버의 링크 목록",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MemberLinkDto"
-            }
-          },
-          "awards": {
-            "description": "멤버의 수상 목록",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/PreviewAwardDto"
-            }
-          },
-          "skills": {
-            "description": "멤버의 기술 목록",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MemberSkillDto"
-            }
-          },
-          "history": {
-            "description": "멤버의 기록 목록",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MemberHistoryDto"
-            }
-          }
-        },
-        "required": [
-          "uuid",
-          "name",
-          "studentID",
-          "username",
-          "googleEmail",
-          "role",
-          "unit",
-          "generation",
-          "profileUri",
-          "isGraduated",
-          "permissions",
-          "links",
-          "awards",
-          "skills",
-          "history"
-        ]
-      },
-      "CreateMemberDto": {
+      "CreateApplyFormDto": {
         "type": "object",
         "properties": {
           "name": {
             "type": "string",
-            "description": "회원 이름",
-            "example": "Jeewon Kwon"
-          },
-          "studentID": {
-            "type": "number",
-            "description": "학번",
-            "example": "10912"
-          },
-          "username": {
-            "type": "string",
-            "description": "회원 아이디",
-            "example": "jeewonkwon"
-          },
-          "googleEmail": {
-            "type": "string",
-            "description": "회원 이메일",
-            "example": "noreply@tapie.kr"
-          },
-          "role": {
-            "type": "string",
-            "description": "회원 역할",
-            "example": "MEMBER",
-            "enum": [
-              "CO_MANAGER",
-              "MANAGER",
-              "MEMBER",
-              "GUEST"
-            ]
-          },
-          "unit": {
-            "type": "string",
-            "description": "회원 유닛",
-            "example": "DEVELOPER",
-            "enum": [
-              "DEVELOPER",
-              "DESIGNER",
-              "EXTERNAL"
-            ]
-          },
-          "generation": {
-            "type": "number",
-            "description": "기수",
-            "example": 119
-          }
-        },
-        "required": [
-          "name",
-          "studentID",
-          "username",
-          "googleEmail",
-          "role",
-          "unit",
-          "generation"
-        ]
-      },
-      "CreateMemberLinkDto": {
-        "type": "object",
-        "properties": {
-          "icon": {
-            "type": "string",
-            "description": "링크 아이콘"
-          },
-          "label": {
-            "type": "string",
-            "description": "링크 라벨"
-          },
-          "href": {
-            "type": "string",
-            "description": "링크 URL"
-          }
-        },
-        "required": [
-          "icon",
-          "label",
-          "href"
-        ]
-      },
-      "UpdateMemberLinkDto": {
-        "type": "object",
-        "properties": {
-          "icon": {
-            "type": "string",
-            "description": "링크 아이콘"
-          },
-          "label": {
-            "type": "string",
-            "description": "링크 라벨"
-          },
-          "href": {
-            "type": "string",
-            "description": "링크 URL"
-          }
-        }
-      },
-      "ConnectSkillDto": {
-        "type": "object",
-        "properties": {
-          "uuid": {
-            "type": "string",
-            "description": "기술 UUID",
-            "example": "123e4567-e89b-12d3-a456-426614174000"
-          },
-          "icon": {
-            "type": "string",
-            "description": "기술 아이콘 값"
-          },
-          "name": {
-            "type": "string",
-            "description": "기술 이름"
-          },
-          "type": {
-            "type": "string",
-            "description": "기술 타입",
-            "enum": [
-              "DEVELOPMENT",
-              "MANAGEMENT",
-              "OTHER"
-            ]
-          }
-        }
-      },
-      "CreateMemberSkillDto": {
-        "type": "object",
-        "properties": {
-          "isVerified": {
-            "type": "boolean",
-            "description": "멤버 기술 인증 여부"
-          },
-          "isLearning": {
-            "type": "boolean",
-            "description": "멤버 기술 학습중 여부"
-          },
-          "skill": {
-            "$ref": "#/components/schemas/ConnectSkillDto"
-          }
-        },
-        "required": [
-          "isVerified",
-          "isLearning",
-          "skill"
-        ]
-      },
-      "UpdateMemberSkillDto": {
-        "type": "object",
-        "properties": {
-          "isVerified": {
-            "type": "boolean",
-            "description": "멤버 기술 인증 여부"
-          },
-          "isLearning": {
-            "type": "boolean",
-            "description": "멤버 기술 학습중 여부"
-          },
-          "skill": {
-            "$ref": "#/components/schemas/ConnectSkillDto"
-          }
-        }
-      },
-      "MemberPayloadWithoutTypeDto": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "email": {
-            "type": "string",
-            "format": "email"
-          },
-          "name": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "email",
-          "name"
-        ]
-      },
-      "FormDto": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "number",
-            "description": "폼 ID",
-            "example": 1
-          },
-          "name": {
-            "type": "string",
-            "description": "폼 이름",
-            "example": "Sample Form"
+            "description": "폼 이름"
           },
           "startsAt": {
             "format": "date-time",
@@ -3349,151 +771,20 @@
             "format": "date-time",
             "type": "string",
             "description": "종료 날짜"
-          },
-          "active": {
-            "type": "boolean",
-            "description": "활성화 여부"
-          }
-        },
-        "required": [
-          "id",
-          "name",
-          "startsAt",
-          "endsAt",
-          "active"
-        ]
-      },
-      "FormResponseDto": {
-        "type": "object",
-        "properties": {
-          "uuid": {
-            "type": "string",
-            "description": "응답 UUID"
-          },
-          "formId": {
-            "type": "number",
-            "description": "폼 ID"
-          },
-          "memberUUID": {
-            "type": "string",
-            "description": "멤버 UUID"
-          },
-          "portfolioAssetUUID": {
-            "type": "string",
-            "description": "포트폴리오 UUID"
-          },
-          "name": {
-            "type": "string",
-            "description": "이름"
-          },
-          "studentId": {
-            "type": "string",
-            "description": "학번"
-          },
-          "googleEmail": {
-            "type": "string",
-            "description": "구글 이메일"
-          },
-          "unit": {
-            "type": "string",
-            "description": "유닛",
-            "enum": [
-              "DEVELOPER",
-              "DESIGNER",
-              "EXTERNAL"
-            ]
-          },
-          "phoneNumber": {
-            "type": "string",
-            "description": "전화번호"
-          },
-          "introduction": {
-            "type": "string",
-            "description": "소개"
-          },
-          "motivation": {
-            "type": "string",
-            "description": "동기"
-          },
-          "expectedActivities": {
-            "type": "string",
-            "description": "기대 활동"
-          },
-          "reasonToChoose": {
-            "type": "string",
-            "description": "선택 이유"
-          },
-          "createdAt": {
-            "format": "date-time",
-            "type": "string",
-            "description": "생성일"
-          },
-          "updatedAt": {
-            "format": "date-time",
-            "type": "string",
-            "description": "수정일"
-          },
-          "submitted": {
-            "type": "boolean",
-            "description": "제출 여부"
-          }
-        },
-        "required": [
-          "uuid",
-          "formId",
-          "memberUUID",
-          "portfolioAssetUUID",
-          "name",
-          "studentId",
-          "googleEmail",
-          "unit",
-          "phoneNumber",
-          "introduction",
-          "motivation",
-          "expectedActivities",
-          "reasonToChoose",
-          "createdAt",
-          "updatedAt",
-          "submitted"
-        ]
-      },
-      "CreateFormDto": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "description": "폼 이름",
-            "example": "Sample Form"
-          },
-          "startsAt": {
-            "format": "date-time",
-            "type": "string",
-            "description": "시작 날짜"
-          },
-          "endsAt": {
-            "format": "date-time",
-            "type": "string",
-            "description": "종료 날짜"
-          },
-          "active": {
-            "type": "boolean",
-            "description": "활성화 여부"
           }
         },
         "required": [
           "name",
           "startsAt",
-          "endsAt",
-          "active"
+          "endsAt"
         ]
       },
-      "UpdateFormDto": {
+      "UpdateApplyFormDto": {
         "type": "object",
         "properties": {
           "name": {
             "type": "string",
-            "description": "폼 이름",
-            "example": "Sample Form"
+            "description": "폼 이름"
           },
           "startsAt": {
             "format": "date-time",
@@ -3504,16 +795,16 @@
             "format": "date-time",
             "type": "string",
             "description": "종료 날짜"
-          },
-          "active": {
-            "type": "boolean",
-            "description": "활성화 여부"
           }
         }
       },
       "CreateFormResponseDto": {
         "type": "object",
         "properties": {
+          "name": {
+            "type": "string",
+            "description": "이름"
+          },
           "unit": {
             "type": "string",
             "description": "유닛",
@@ -3529,22 +820,23 @@
           },
           "introduction": {
             "type": "string",
-            "description": "소개"
+            "description": "자기소개"
           },
           "motivation": {
             "type": "string",
-            "description": "동기"
+            "description": "지원동기"
           },
           "expectedActivities": {
             "type": "string",
-            "description": "기대 활동"
+            "description": "기대활동"
           },
           "reasonToChoose": {
             "type": "string",
-            "description": "선택 이유"
+            "description": "지원이유"
           }
         },
         "required": [
+          "name",
           "unit",
           "phoneNumber",
           "introduction",
@@ -3556,6 +848,10 @@
       "UpdateFormResponseDto": {
         "type": "object",
         "properties": {
+          "name": {
+            "type": "string",
+            "description": "이름"
+          },
           "unit": {
             "type": "string",
             "description": "유닛",
@@ -3571,237 +867,21 @@
           },
           "introduction": {
             "type": "string",
-            "description": "소개"
+            "description": "자기소개"
           },
           "motivation": {
             "type": "string",
-            "description": "동기"
+            "description": "지원동기"
           },
           "expectedActivities": {
             "type": "string",
-            "description": "기대 활동"
+            "description": "기대활동"
           },
           "reasonToChoose": {
             "type": "string",
-            "description": "선택 이유"
+            "description": "지원이유"
           }
         }
-      },
-      "AwardPublicPreviewDto": {
-        "type": "object",
-        "properties": {
-          "uuid": {
-            "type": "string",
-            "description": "수상실적 UUID",
-            "example": "123e4567-e89b-12d3-a456-426614174000"
-          },
-          "fullTitle": {
-            "type": "string",
-            "description": "수상명",
-            "example": "SW동행 해커톤 우수상"
-          },
-          "memberNames": {
-            "description": "수상 멤버 목록 (이름만)",
-            "example": [
-              "권지원",
-              "조성주"
-            ],
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        },
-        "required": [
-          "uuid",
-          "fullTitle",
-          "memberNames"
-        ]
-      },
-      "CompetitionPreviewDto": {
-        "type": "object",
-        "properties": {
-          "uuid": {
-            "type": "string",
-            "description": "대회 UUID",
-            "example": "123e4567-e89b-12d3-a456-426614174000"
-          },
-          "name": {
-            "type": "string",
-            "description": "대회 이름",
-            "example": "STA+C 1981"
-          }
-        },
-        "required": [
-          "uuid",
-          "name"
-        ]
-      },
-      "MemberPreviewDto": {
-        "type": "object",
-        "properties": {
-          "uuid": {
-            "type": "string",
-            "description": "회원 ID",
-            "format": "uuid"
-          },
-          "name": {
-            "type": "string",
-            "description": "회원 이름",
-            "example": "Jeewon Kwon"
-          },
-          "studentID": {
-            "type": "number",
-            "description": "학번",
-            "example": "10912"
-          },
-          "username": {
-            "type": "string",
-            "description": "회원 아이디",
-            "example": "jeewonkwon"
-          }
-        },
-        "required": [
-          "uuid",
-          "name",
-          "studentID",
-          "username"
-        ]
-      },
-      "AwardDto": {
-        "type": "object",
-        "properties": {
-          "uuid": {
-            "type": "string",
-            "description": "수상실적 UUID",
-            "example": "123e4567-e89b-12d3-a456-426614174000"
-          },
-          "competitionUUID": {
-            "type": "string",
-            "description": "대회 UUID",
-            "example": "123e4567-e89b-12d3-a456-426614174000"
-          },
-          "title": {
-            "type": "string",
-            "description": "수상명"
-          },
-          "grade": {
-            "type": "number",
-            "description": "수상 등급"
-          },
-          "gradeLabel": {
-            "type": "string",
-            "description": "수상 등급 이름",
-            "example": "우수상"
-          },
-          "rewardedAt": {
-            "format": "date-time",
-            "type": "string",
-            "description": "수상일"
-          },
-          "competition": {
-            "$ref": "#/components/schemas/CompetitionPreviewDto"
-          },
-          "members": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MemberPreviewDto"
-            }
-          },
-          "createdAt": {
-            "format": "date-time",
-            "type": "string",
-            "description": "수상 데이터 생성일"
-          },
-          "updatedAt": {
-            "format": "date-time",
-            "type": "string",
-            "description": "수상 데이터 수정일"
-          }
-        },
-        "required": [
-          "uuid",
-          "competitionUUID",
-          "title",
-          "grade",
-          "gradeLabel",
-          "rewardedAt",
-          "competition",
-          "members",
-          "createdAt",
-          "updatedAt"
-        ]
-      },
-      "ConnectCompetitionDto": {
-        "type": "object",
-        "properties": {
-          "uuid": {
-            "type": "string",
-            "description": "대회 UUID",
-            "example": "123e4567-e89b-12d3-a456-426614174000"
-          },
-          "name": {
-            "type": "string",
-            "description": "대회 이름",
-            "example": "STA+C 1981"
-          }
-        }
-      },
-      "CreateAwardDto": {
-        "type": "object",
-        "properties": {
-          "title": {
-            "type": "string",
-            "description": "수상명"
-          },
-          "grade": {
-            "type": "number",
-            "description": "수상 등급"
-          },
-          "gradeLabel": {
-            "type": "string",
-            "description": "수상 등급 이름",
-            "example": "우수상"
-          },
-          "rewardedAt": {
-            "format": "date-time",
-            "type": "string",
-            "description": "수상일"
-          },
-          "competition": {
-            "$ref": "#/components/schemas/ConnectCompetitionDto"
-          },
-          "membersUUID": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "example": "123e4567-e89b-12d3-a456-426614174000"
-            }
-          }
-        },
-        "required": [
-          "title",
-          "grade",
-          "gradeLabel",
-          "rewardedAt",
-          "competition",
-          "membersUUID"
-        ]
-      },
-      "AddMemberAwardDto": {
-        "type": "object",
-        "properties": {
-          "membersUUID": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "example": "123e4567-e89b-12d3-a456-426614174000"
-            }
-          }
-        },
-        "required": [
-          "membersUUID"
-        ]
       }
     }
   }
