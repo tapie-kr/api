@@ -7,6 +7,7 @@ import {
 import { Inject, Injectable, UseInterceptors } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Client as MinioClient } from 'minio';
+import { v4 as uuidv4 } from 'uuid';
 import { AssetRepository } from '@/asset/asset.repository';
 import { FileType } from '@/asset/types/fileType';
 
@@ -26,8 +27,13 @@ export class AssetService {
       secretKey: this.configService.get('MINIO_SECRET_KEY'),
     });
   }
+  generateFilename(originalName: string): string {
+    const extension = originalName.split('.').pop();
+
+    return `${uuidv4()}.${extension}`;
+  }
   @CacheTTL(1800)
-  async getFileWithUrl(uuid: string) {
+  async getPresignedUrl(uuid: string) {
     const asset = await this.assetRepository.getAsset(uuid);
     const presignedUrl = await this.minioClient.presignedUrl('GET', this.configService.get('MINIO_BUCKET_NAME'), asset.path, this.PRESIGNED_URL_EXPIRY);
 
@@ -48,5 +54,8 @@ export class AssetService {
     await this.minioClient.putObject(BUCKET_NAME, path, buffer, file.size);
 
     return path;
+  }
+  buildPublicUrl(path: string) {
+    return `${this.configService.get('MINIO_PUBLIC_URL')}/${path}`;
   }
 }

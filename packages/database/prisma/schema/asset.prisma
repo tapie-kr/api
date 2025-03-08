@@ -1,12 +1,13 @@
 model Asset {
-  uuid String @id @default(uuid())
+  uuid          String  @id @default(uuid())
+  portfolioUuid String?
 
   filename String?
   path     String
 
   member                 Member[]
   formResponse           FormResponse[]
-  portfolioThumbnail     Portfolio[]    @relation(name: "PortfolioThumbnail")
+  portfolioThumbnails    Portfolio?     @relation(fields: [portfolioUuid], references: [uuid])
   portfolioPresentation  Portfolio[]    @relation(name: "PortfolioPresentation")
   notificationAttachment Notification[] @relation(name: "AssetNotificationAttachment")
 

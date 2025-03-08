@@ -28,10 +28,11 @@ async function main() {
     }
 
     await prisma.member.create({ data: {
-      googleEmail: TEMPORARY_GOOGLE_EMAIL,
-      name:        '임시 사용자',
-      role:        MemberRole.MANAGER,
-      unit:        MemberUnit.DEVELOPER,
+        googleEmail: TEMPORARY_GOOGLE_EMAIL,
+        name:        '조성주',
+        studentID:   Math.floor(Math.random() * 10000) + 10000,
+        role:        MemberRole.MANAGER,
+        unit:        MemberUnit.DEVELOPER,
     } });
 
     logger.info('임시 사용자가 생성되었습니다.');
