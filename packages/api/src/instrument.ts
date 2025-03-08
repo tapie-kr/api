@@ -1,3 +1,9 @@
 import Sentry from '@sentry/nestjs';
+import { nodeProfilingIntegration } from '@sentry/profiling-node';
 
-Sentry.init({ dsn: process.env.SENTRY_DSN });
+if (process.env.NODE_ENV !== 'production') {
+  Sentry.init({
+    dsn:          process.env.SENTRY_DSN,
+    integrations: [nodeProfilingIntegration()],
+  });
+}
