@@ -22,19 +22,17 @@ model Member {
   googleEmail String     @unique
   role        MemberRole @default(GUEST)
   name        String
-  studentID   Int
   unit        MemberUnit
-  generation  Int        @default(0)
   permissions Int        @default(0)
 
-  profile      Asset?            @relation(fields: [profileAssetUUID], references: [uuid], onDelete: Restrict)
+  profile      Asset?             @relation(fields: [profileAssetUUID], references: [uuid], onDelete: Restrict)
   formResponse FormResponse[]
   links        MemberLink[]
-  portfolio    PortfolioMember[] @relation(name: "MemberPortfolio")
-  awards       Award[]           @relation(name: "MemberAward")
+  portfolio    PortfolioMember[]  @relation(name: "MemberPortfolio")
+  awards       Award[]            @relation(name: "MemberAward")
   skills       MemberSkill[]
   history      MemberHistory[]
-  visitStats   Int               @default(0)
+  visitStats   ProfileVisitStat[]
 
   representativePortfolioMember PortfolioMember? @relation(name: "MemberRepresentativePortfolioMember", fields: [representativePortfolioMemberUUID], references: [uuid], onDelete: Restrict)
   representativeAward           Award?           @relation(name: "MemberRepresentativeAward", fields: [representativeAwardUUID], references: [uuid], onDelete: Restrict)

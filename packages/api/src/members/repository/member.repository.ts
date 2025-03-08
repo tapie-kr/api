@@ -1,8 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@/common/prisma/prisma.service';
-import { UpdateMemberDto } from '@/members/dto/member.dto';
-import { CreateMemberLinkDto, UpdateMemberLinkDto } from '@/members/dto/member-link.dto';
-import { CreateMemberPrismaDto } from '@/members/dto/member-transaction';
+import { CreateMemberDto } from '@/members/dto/create.dto';
 
 @Injectable()
 export class MemberRepository {
@@ -11,19 +9,6 @@ export class MemberRepository {
   async getMember(uuid: string) {
     return this.prisma.member.findUnique({ where: { uuid } });
   }
-  async getMemberWithData(uuid: string) {
-    return this.prisma.member.findUnique({
-      where:   { uuid },
-      include: {
-        profile:   true,
-        links:     true,
-        portfolio: true,
-        awards:    true,
-        skills:    { include: { skill: true } },
-        history:   true,
-      },
-    });
-  }
   async getMemberByUsername(username: string) {
     return this.prisma.member.findUnique({ where: { username } });
   }
@@ -31,56 +16,9 @@ export class MemberRepository {
     return this.prisma.member.findUnique({ where: { googleEmail: email } });
   }
   async getAllMembers() {
-    return this.prisma.member.findMany({
-      include: { profile: true }, orderBy: [{ createdAt: 'desc' }, { role: 'desc' }],
-    });
+    return this.prisma.member.findMany();
   }
-  async createMember(data: CreateMemberPrismaDto) {
+  async createMember(data: CreateMemberDto) {
     return this.prisma.member.create({ data });
-  }
-  async updateMember(uuid: string, data: UpdateMemberDto) {
-    return this.prisma.member.update({
-      where: { uuid }, data,
-    });
-  }
-  async updateMemberProfileImage(uuid: string, assetUUID: string) {
-    return this.prisma.member.update({
-      where: { uuid },
-      data:  { profile: { connect: { uuid: assetUUID } } },
-    });
-  }
-  async deleteMemberProfileImage(uuid: string) {
-    return this.prisma.member.update({
-      where: { uuid },
-      data:  { profile: { disconnect: true } },
-    });
-  }
-  async addLink(uuid: string, data: CreateMemberLinkDto) {
-    return this.prisma.member.update({
-      where: { uuid },
-      data:  { links: { create: data } },
-    });
-  }
-  async hasLink(uuid: string, linkId: number): Promise<boolean> {
-    const linkEntity = await this.prisma.memberLink.findFirst({ where: {
-      memberUUID: uuid,
-      id:         linkId,
-    } });
-
-    return !!linkEntity;
-  }
-  async removeLink(uuid: string, linkId: number) {
-    return this.prisma.member.update({
-      where: { uuid },
-      data:  { links: { delete: { id: linkId } } },
-    });
-  }
-  async updateLink(uuid: string, linkId: number, data: UpdateMemberLinkDto) {
-    return this.prisma.member.update({
-      where: { uuid },
-      data:  { links: { update: {
-        where: { id: linkId }, data,
-      } } },
-    });
   }
 }
