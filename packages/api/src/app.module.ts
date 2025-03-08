@@ -1,6 +1,7 @@
 import { CacheModule } from '@nestjs/cache-manager';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { SentryModule } from '@sentry/nestjs/setup';
 import { AssetModule } from '@/asset/asset.module';
 import { AuthModule } from '@/auth/auth.module';
 import { FormModule } from '@/form/form.module';
@@ -13,6 +14,7 @@ import { ProjectModule } from '@/projects/projects.module';
     isGlobal:    true,
     envFilePath: ['.env', '.env.development'],
   }),
+  SentryModule.forRoot(),
 
   // Members
   MembersModule,

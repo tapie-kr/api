@@ -10,6 +10,8 @@ import { GlobalExceptionFilter } from '@/common/filters/global-exception.filter'
 import { PrismaExceptionFilter } from '@/common/filters/prisma-exception.filter';
 import { TransformInterceptor } from '@/common/interceptors/transform.interceptor';
 
+import '@/instrument';
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService);
