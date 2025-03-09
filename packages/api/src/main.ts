@@ -37,7 +37,7 @@ async function bootstrap() {
       'https://tapie.kr/',
       'https://api.tapie.kr/',
       'https://admin.tapie.kr/',
-      'https://lms.tapie.kr/',
+      'https://auth.tapie.kr/',
     ]
     : '*' });
 
