@@ -1,11 +1,12 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { MemberUnit } from '@tapie-kr/api-database';
+import { FormResponse, MemberUnit } from '@tapie-kr/api-database';
 import { AssetService } from '@/asset/asset.service';
 import { FileType } from '@/asset/types/fileType';
 import { MemberGuestPayload } from '@/auth/dto/member-payload.dto';
 import { PrismaForeignKeyConstraintError, PrismaOperationFailedError, toTypedPrismaError } from '@/common/prisma/prisma.exception';
 import { KSTDate } from '@/common/utils/date';
 import { decodeFileNameKorean } from '@/common/utils/string';
+import { EmailService } from '@/email/email.service';
 import { CreateFormDto, FormPreviewDto, UpdateFormDto } from '@/form/dto/form.dto';
 import { CreateFormResponseDto, UpdateFormResponseDto } from '@/form/dto/response.dto';
 import { FormRepository } from '@/form/repository/form.repository';
@@ -13,7 +14,8 @@ import { FormRepository } from '@/form/repository/form.repository';
 @Injectable()
 export class FormService {
   constructor(private readonly formRepository: FormRepository,
-    private readonly assetService: AssetService) {
+    private readonly assetService: AssetService,
+    private readonly emailService: EmailService) {
   }
   async create(createFormDto: CreateFormDto) {
     return this.formRepository.create(createFormDto);
@@ -201,6 +203,36 @@ export class FormService {
 
     return this.formRepository.deleteResponse(formId, user);
   }
+  async sendEmailSubmitted(user: MemberGuestPayload, response: FormResponse) {
+    try {
+      await this.emailService.sendEmailHTMLWithArguments(
+        'TAPIE <apply@email.tapie.kr>',
+        user.email,
+        'admin@tapie.kr',
+        '테이피 지원서 제출이 완료되었습니다',
+        'form-apply.html',
+        {
+          applicant_name:   user.name,
+          email:            user.email,
+          application_unit: {
+            DEVELOPER: '개발자', DESIGNER: '디자이너',
+          }[response.unit],
+          result_date: {
+            DEVELOPER: '3월 17일', DESIGNER: '3월 25일',
+          }[response.unit],
+          name:                user.name,
+          self_introduction:   response.introduction,
+          expected_activities: response.expectedActivities,
+          reason_to_select:    response.reasonToChoose,
+          instagram_handle:    '@sunrin_tapie',
+          contact_phone:       '010-2310-4403',
+          year:                '2025',
+        },
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  }
   async submitResponse(formId: number, user: MemberGuestPayload) {
     const isAvailable = await this.formRepository.isAvailableToAccessForm(formId);
 
@@ -238,7 +270,11 @@ export class FormService {
       throw new BadRequestException('응답 데이터가 비어있으면 제출할 수 없습니다.');
     }
 
-    return this.formRepository.submitResponse(formId, user);
+    const returnResponse = await this.formRepository.submitResponse(formId, user);
+
+    await this.sendEmailSubmitted(user, response);
+
+    return returnResponse;
   }
   async isAvailableToAccessForm(formId: number) {
     return this.formRepository.isAvailableToAccessForm(formId);
