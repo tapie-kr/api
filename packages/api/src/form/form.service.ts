@@ -4,6 +4,7 @@ import { AssetService } from '@/asset/asset.service';
 import { FileType } from '@/asset/types/fileType';
 import { MemberGuestPayload } from '@/auth/dto/member-payload.dto';
 import { PrismaForeignKeyConstraintError, PrismaOperationFailedError, toTypedPrismaError } from '@/common/prisma/prisma.exception';
+import { KSTDate } from '@/common/utils/date';
 import { decodeFileNameKorean } from '@/common/utils/string';
 import { CreateFormDto, FormPreviewDto, UpdateFormDto } from '@/form/dto/form.dto';
 import { CreateFormResponseDto, UpdateFormResponseDto } from '@/form/dto/response.dto';
@@ -60,7 +61,7 @@ export class FormService {
 
     return {
       ...data,
-      available: data.active && data.startsAt <= new Date && data.endsAt >= new Date,
+      available: data.active && data.startsAt <= new KSTDate && data.endsAt >= new KSTDate,
     } satisfies FormPreviewDto;
   }
   async activateForm(id: number) {
