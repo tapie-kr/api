@@ -49,7 +49,7 @@ export class ApiClient {
             }
           } catch (refreshError) {
             console.error('Refresh token request failed:', refreshError);
-            // window.location.href = `${this.authURL}?service=${this.service}`;
+            window.location.href = `${this.authURL}?service=${this.service}`;
           }
 
           this.isRefreshing = false;
