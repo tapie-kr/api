@@ -18,6 +18,7 @@ export class ApiClient {
     this.instance = axios.create({
       baseURL: baseURL.toString(),
       timeout: Number(process.env.API_TIMEOUT) || 5000,
+      withCredentials: true,
     });
 
     this.instance.interceptors.response.use(
@@ -48,7 +49,7 @@ export class ApiClient {
             }
           } catch (refreshError) {
             console.error('Refresh token request failed:', refreshError);
-            window.location.href = `${this.authURL}?service=${this.service}`;
+            // window.location.href = `${this.authURL}?service=${this.service}`;
           }
 
           this.isRefreshing = false;
