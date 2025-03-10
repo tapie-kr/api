@@ -24,15 +24,6 @@ export class FormRepository {
   }
   async create(data: CreateFormDto): Promise<ApplyForm> {
     try {
-      const activeForm = await this.prisma.applyForm.findFirst({ where: { active: true } });
-
-      if (activeForm) {
-        await this.prisma.applyForm.update({
-          where: { id: activeForm.id },
-          data:  { active: false },
-        });
-      }
-
       return this.prisma.applyForm.create({ data });
     } catch (error) {
       throw new InternalServerErrorException('폼을 생성하는데 문제가 발생했습니다.', error?.message);
@@ -71,15 +62,6 @@ export class FormRepository {
     return this.prisma.applyForm.findFirst({ where: { active: true } });
   }
   async activateForm(id: number): Promise<ApplyForm> {
-    const activeForm = await this.prisma.applyForm.findFirst({ where: { active: true } });
-
-    if (activeForm && activeForm.id !== id) {
-      await this.prisma.applyForm.update({
-        where: { id: activeForm.id },
-        data:  { active: false },
-      });
-    }
-
     return this.prisma.applyForm.update({
       where: { id },
       data:  { active: true },
