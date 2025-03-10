@@ -84,6 +84,7 @@ export class FormRepository {
           studentId:   studentId.toString(),
           googleEmail: user.email,
           form:        { connect: { id: formId } },
+          createdAt:   new KSTDate,
         },
         include: { form: true },
       });
@@ -117,7 +118,10 @@ export class FormRepository {
     try {
       return this.prisma.formResponse.update({
         where: { uuid },
-        data,
+        data:  {
+          ...data,
+          updatedAt: new KSTDate,
+        },
       });
     } catch (error) {
       const prismaError = toTypedPrismaError(error);
