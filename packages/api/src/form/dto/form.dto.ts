@@ -1,7 +1,9 @@
 import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger';
+import { MemberUnit } from '@tapie-kr/api-database';
 import {
   IsBoolean,
   IsDateString,
+  IsEnum,
   IsNumber,
   IsString,
 } from 'class-validator';
@@ -18,6 +20,12 @@ export class FormDto {
     description: '폼 이름', example: 'Sample Form',
   })
   name: string;
+
+  @IsEnum(MemberUnit)
+  @ApiProperty({
+    description: '유닛', enum: MemberUnit,
+  })
+  unit: MemberUnit;
 
   @IsDateString()
   @ApiProperty({ description: '시작 날짜' })

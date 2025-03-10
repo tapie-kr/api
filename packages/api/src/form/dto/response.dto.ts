@@ -1,10 +1,8 @@
 import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger';
-import { MemberUnit } from '@tapie-kr/api-database';
 import {
   IsBoolean,
   IsDate,
   IsEmail,
-  IsEnum,
   IsNumber,
   IsOptional,
   IsPhoneNumber,
@@ -43,12 +41,6 @@ export class FormResponseDto {
   @IsEmail()
   @ApiProperty({ description: '구글 이메일' })
   googleEmail: string;
-
-  @IsEnum(MemberUnit)
-  @ApiProperty({
-    description: '유닛', enum: MemberUnit,
-  })
-  unit: MemberUnit;
 
   @IsPhoneNumber()
   @ApiProperty({ description: '전화번호' })

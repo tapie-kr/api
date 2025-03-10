@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { FormResponse, MemberUnit } from '@tapie-kr/api-database';
+import { FormResponse } from '@tapie-kr/api-database';
 import { AssetService } from '@/asset/asset.service';
 import { FileType } from '@/asset/types/fileType';
 import { MemberGuestPayload } from '@/auth/dto/member-payload.dto';
@@ -114,7 +114,6 @@ export class FormService {
 
     if (!response) {
       const createResponseDto = {
-        unit:               data.unit || MemberUnit.DEVELOPER,
         phoneNumber:        data.phoneNumber || '',
         introduction:       data.introduction || '',
         motivation:         data.motivation || '',
@@ -203,8 +202,10 @@ export class FormService {
 
     return this.formRepository.deleteResponse(formId, user);
   }
-  async sendEmailSubmitted(user: MemberGuestPayload, response: FormResponse) {
+  async sendEmailSubmitted(user: MemberGuestPayload, response: FormResponse, formId: number) {
     try {
+      const form = await this.formRepository.findOne(formId);
+
       await this.emailService.sendEmailHTMLWithArguments(
         'TAPIE <apply@email.tapie.kr>',
         user.email,
@@ -216,7 +217,7 @@ export class FormService {
           email:            user.email,
           application_unit: {
             DEVELOPER: '개발자', DESIGNER: '디자이너',
-          }[response.unit],
+          }[form.unit],
           student_id:          response.studentId,
           name:                user.name,
           self_introduction:   response.introduction,
@@ -251,7 +252,6 @@ export class FormService {
     }
 
     const {
-      unit,
       introduction,
       motivation,
       expectedActivities,
@@ -259,7 +259,6 @@ export class FormService {
     } = response;
 
     if ([
-      unit,
       introduction,
       motivation,
       expectedActivities,
@@ -270,7 +269,7 @@ export class FormService {
 
     const returnResponse = await this.formRepository.submitResponse(formId, user);
 
-    await this.sendEmailSubmitted(user, response);
+    await this.sendEmailSubmitted(user, response, formId);
 
     return returnResponse;
   }
