@@ -61,7 +61,7 @@ export const formApplicationSchema = z.object({
   reasonToChoose: z.string(),
   createdAt: z.string(),
   updatedAt: z.string(),
-  submittedAt: z.string(),
+  submittedAt: z.string().optional(),
   submitted: z.boolean(),
 });
 export type FormApplicationResponse = BaseResponse<
