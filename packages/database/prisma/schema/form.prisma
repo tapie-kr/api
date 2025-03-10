@@ -24,10 +24,11 @@ model FormResponse {
   expectedActivities String
   reasonToChoose     String
 
-  form      ApplyForm @relation(fields: [formId], references: [id])
-  member    Member?   @relation(fields: [memberUUID], references: [uuid], onDelete: Restrict)
-  portfolio Asset?    @relation(fields: [portfolioAssetUUID], references: [uuid], onDelete: Restrict)
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  submitted Boolean   @default(false)
+  form        ApplyForm @relation(fields: [formId], references: [id])
+  member      Member?   @relation(fields: [memberUUID], references: [uuid], onDelete: Restrict)
+  portfolio   Asset?    @relation(fields: [portfolioAssetUUID], references: [uuid], onDelete: Restrict)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  submittedAt DateTime?
+  submitted   Boolean   @default(false)
 }
