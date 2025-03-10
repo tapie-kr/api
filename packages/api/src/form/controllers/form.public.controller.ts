@@ -31,13 +31,15 @@ import { FormService } from '@/form/form.service';
 
 @Controller('form')
 @ApiBearerAuth('accessToken')
-@ApiExtraModels(FormDto, FormResponseDto)
+@ApiExtraModels(FormDto, FormResponseDto, FormPreviewDto)
 export class FormPublicController {
   constructor(private readonly formService: FormService) {
   }
   @Get()
   @ApiOperation({ summary: '활성화 된 폼 찾기' })
-  @ApiCommonResponse(HttpStatus.OK, { $ref: getSchemaPath(FormPreviewDto) })
+  @ApiCommonResponse(HttpStatus.OK, {
+    type: 'array', items: { $ref: getSchemaPath(FormPreviewDto) },
+  })
   async findActiveForm() {
     return this.formService.getActiveForm();
   }

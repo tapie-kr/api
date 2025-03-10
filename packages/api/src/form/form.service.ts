@@ -61,10 +61,10 @@ export class FormService {
       return null;
     }
 
-    return {
-      ...data,
-      available: data.active && data.startsAt <= new KSTDate && data.endsAt >= new KSTDate,
-    } satisfies FormPreviewDto;
+    return data.map(form => ({
+      ...form,
+      available: form.active && form.startsAt <= new KSTDate && form.endsAt >= new KSTDate,
+    })) satisfies FormPreviewDto[];
   }
   async activateForm(id: number) {
     return this.formRepository.activateForm(id);

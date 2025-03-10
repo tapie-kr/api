@@ -58,8 +58,8 @@ export class FormRepository {
       where: { uuid: responseId }, include: { portfolio: true },
     });
   }
-  async getActiveForm(): Promise<ApplyForm | null> {
-    return this.prisma.applyForm.findFirst({ where: { active: true } });
+  async getActiveForm(): Promise<ApplyForm[] | null> {
+    return this.prisma.applyForm.findMany({ where: { active: true } });
   }
   async activateForm(id: number): Promise<ApplyForm> {
     return this.prisma.applyForm.update({
