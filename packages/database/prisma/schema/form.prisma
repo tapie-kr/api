@@ -3,6 +3,7 @@ model ApplyForm {
   name      String
   startsAt  DateTime
   endsAt    DateTime
+  unit      MemberUnit
   responses FormResponse[]
   createdAt DateTime       @default(now())
   active    Boolean        @default(false)
@@ -17,8 +18,7 @@ model FormResponse {
   name               String
   studentId          String
   googleEmail        String
-  unit               MemberUnit
-  phoneNumber        String     @unique
+  phoneNumber        String @unique
   introduction       String
   motivation         String
   expectedActivities String
