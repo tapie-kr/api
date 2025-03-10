@@ -217,9 +217,7 @@ export class FormService {
           application_unit: {
             DEVELOPER: '개발자', DESIGNER: '디자이너',
           }[response.unit],
-          result_date: {
-            DEVELOPER: '3월 17일', DESIGNER: '3월 25일',
-          }[response.unit],
+          student_id:          response.studentId,
           name:                user.name,
           self_introduction:   response.introduction,
           expected_activities: response.expectedActivities,
