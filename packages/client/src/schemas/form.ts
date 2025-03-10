@@ -20,7 +20,10 @@ export type FormListResponse = BaseResponse<typeof formListResponseSchema>;
 export type FormListType = z.infer<typeof formListResponseSchema>;
 
 // Create Form
-export const createFormSchema = formResponseSchema.omit({ id: true });
+export const createFormSchema = formResponseSchema.omit({
+  id: true,
+  available: true,
+});
 export type CreateFormRequest = z.infer<typeof createFormSchema>;
 
 // Update Form
