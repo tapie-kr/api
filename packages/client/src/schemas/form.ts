@@ -9,6 +9,7 @@ export const formResponseSchema = z.object({
   startsAt: z.string(),
   endsAt: z.string(),
   active: z.boolean(),
+  available: z.boolean(),
 });
 export type FormResponse = BaseResponse<typeof formResponseSchema>;
 export type FormType = z.infer<typeof formResponseSchema>;
@@ -60,6 +61,7 @@ export const formApplicationSchema = z.object({
   reasonToChoose: z.string(),
   createdAt: z.string(),
   updatedAt: z.string(),
+  submittedAt: z.string().optional(),
   submitted: z.boolean(),
 });
 export type FormApplicationResponse = BaseResponse<

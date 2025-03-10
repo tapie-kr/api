@@ -2,6 +2,7 @@ import { CacheModule } from '@nestjs/cache-manager';
 import { Module } from '@nestjs/common';
 import { AssetModule } from '@/asset/asset.module';
 import { PrismaService } from '@/common/prisma/prisma.service';
+import { EmailModule } from '@/email/email.module';
 import { FormPrivateController } from '@/form/controllers/form.private.controller';
 import { FormPublicController } from '@/form/controllers/form.public.controller';
 import { FormService } from '@/form/form.service';
@@ -14,6 +15,7 @@ import { MembersService } from '@/members/service/members.service';
     AssetModule,
     CacheModule.register(),
     MembersModule,
+    EmailModule,
   ],
   controllers: [FormPrivateController, FormPublicController],
   providers:   [

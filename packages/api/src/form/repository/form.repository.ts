@@ -185,7 +185,9 @@ export class FormRepository {
 
     return this.prisma.formResponse.update({
       where: { uuid },
-      data:  { submitted: true },
+      data:  {
+        submitted: true, submittedAt: new KSTDate,
+      },
     });
   }
   async isAvailableToAccessForm(formId: number): Promise<boolean> {

@@ -53,12 +53,14 @@ export class AuthController {
       httpOnly: true,
       secure:   this.configService.get('NODE_ENV') === 'production',
       sameSite: 'lax',
+      domain:   this.configService.get('NODE_ENV') === 'production' ? 'tapie.kr' : '',
     });
 
     res.cookie('refreshToken', tokens.refreshToken, {
       httpOnly: true,
       secure:   this.configService.get('NODE_ENV') === 'production',
       sameSite: 'lax',
+      domain:   this.configService.get('NODE_ENV') === 'production' ? 'tapie.kr' : '',
     });
 
     return {
@@ -89,6 +91,7 @@ export class AuthController {
       httpOnly: true,
       secure:   this.configService.get('NODE_ENV') === 'production',
       sameSite: 'lax',
+      domain:   this.configService.get('NODE_ENV') === 'production' ? 'tapie.kr' : '',
     });
 
     return 'ok';

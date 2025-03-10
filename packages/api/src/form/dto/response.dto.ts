@@ -78,6 +78,10 @@ export class FormResponseDto {
   @ApiProperty({ description: '수정일' })
   updatedAt: Date;
 
+  @IsDate()
+  @ApiProperty({ description: '제출일' })
+  submittedAt: Date;
+
   @IsBoolean()
   @ApiProperty({ description: '제출 여부' })
   submitted: boolean;
@@ -97,6 +101,7 @@ export class CreateFormResponseDto extends OmitType(FormResponseDto, [
   'createdAt',
   'updatedAt',
   'submitted',
+  'submittedAt',
 ] as const) {
 }
 

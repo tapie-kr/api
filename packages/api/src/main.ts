@@ -18,6 +18,10 @@ async function bootstrap() {
   const logger = new Logger('bootstrap');
   const isProduction = configService.get('NODE_ENV') === 'production';
 
+  if (isProduction) {
+    logger.log('Running in production mode');
+  }
+
   app.useGlobalFilters(new PrismaExceptionFilter);
 
   app.useGlobalFilters(new GlobalExceptionFilter);
@@ -32,14 +36,22 @@ async function bootstrap() {
 
   app.use(cookieParser());
 
-  app.enableCors({ origin: isProduction
-    ? [
-      'https://tapie.kr/',
-      'https://api.tapie.kr/',
-      'https://admin.tapie.kr/',
-      'https://lms.tapie.kr/',
-    ]
-    : '*' });
+  app.enableCors({
+    origin: [
+      'https://tapie.kr',
+      'https://api.tapie.kr',
+      'https://admin.tapie.kr',
+      'https://auth.tapie.kr',
+    ],
+    methods: [
+      'GET',
+      'POST',
+      'PUT',
+      'DELETE',
+      'PATCH',
+    ],
+    credentials: true,
+  });
 
   app.enableVersioning({
     type:           VersioningType.URI,
@@ -52,12 +64,18 @@ async function bootstrap() {
     const config = (new DocumentBuilder)
       .setTitle('TAPIE API')
       .setDescription('TAPIE System API')
-      .addCookieAuth('accessToken', {
-        type: 'apiKey', in: 'cookie',
-      }, 'accessToken')
-      .addCookieAuth('refreshToken', {
-        type: 'apiKey', in: 'cookie',
-      }, 'refreshToken')
+      .addCookieAuth('accessToken',
+        {
+          type: 'apiKey',
+          in:   'cookie',
+        },
+        'accessToken')
+      .addCookieAuth('refreshToken',
+        {
+          type: 'apiKey',
+          in:   'cookie',
+        },
+        'refreshToken')
       .build();
 
     const document = SwaggerModule.createDocument(app, config, { extraModels: [APIResponseDto] });
