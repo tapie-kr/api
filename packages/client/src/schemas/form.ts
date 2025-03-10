@@ -6,6 +6,7 @@ import { z } from 'zod';
 export const formResponseSchema = z.object({
   id: z.number(),
   name: z.string(),
+  unit: z.nativeEnum(MemberUnit),
   startsAt: z.string(),
   endsAt: z.string(),
   active: z.boolean(),
@@ -56,7 +57,6 @@ export const formApplicationSchema = z.object({
   name: z.string(),
   studentId: z.string(),
   googleEmail: z.string(),
-  unit: z.nativeEnum(MemberUnit),
   phoneNumber: z.string(),
   introduction: z.string(),
   motivation: z.string(),
@@ -89,7 +89,6 @@ export type DeleteFormApplicationResponse = BaseResponse<
 
 // Create Form Application (Public)
 export const createFormApplicationSchema = formApplicationSchema.pick({
-  unit: true,
   phoneNumber: true,
   introduction: true,
   motivation: true,
