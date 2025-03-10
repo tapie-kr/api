@@ -58,7 +58,8 @@ async function bootstrap() {
     defaultVersion: '1',
   });
 
-  if (!isProduction) {
+  // if (!isProduction) {
+  if (true) {
     const theme = new SwaggerTheme;
 
     const config = (new DocumentBuilder)
