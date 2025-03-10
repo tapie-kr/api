@@ -17,7 +17,7 @@ export class ApiClient {
 
     this.instance = axios.create({
       baseURL: baseURL.toString(),
-      timeout: 30000,
+      timeout: 100000000000,
       withCredentials: true,
     });
 
