@@ -1,6 +1,6 @@
-import { MemberUnit } from "@/constants/enum/unit-type";
-import { BaseResponse } from "@/schemas/base";
-import { z } from "zod";
+import { MemberUnit } from '@/constants/enum/unit-type';
+import { BaseResponse } from '@/schemas/base';
+import { z } from 'zod';
 
 // Form
 export const formResponseSchema = z.object({
@@ -61,6 +61,7 @@ export const formApplicationSchema = z.object({
   reasonToChoose: z.string(),
   createdAt: z.string(),
   updatedAt: z.string(),
+  submittedAt: z.string(),
   submitted: z.boolean(),
 });
 export type FormApplicationResponse = BaseResponse<
