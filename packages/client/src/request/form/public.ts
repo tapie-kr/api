@@ -6,6 +6,7 @@ import {
   CreateFormApplicationRequest,
   FormAccessibilityResponse,
   FormApplicationFileResponse,
+  FormListResponse,
   FormResponse,
   UpdateFormApplicationRequest,
   UploadFormApplicationFileResponse,
@@ -19,7 +20,7 @@ export type FormIDParam = { formId: number };
  * @return {FormResponse} FormListResponse
  */
 export const useForm = () => {
-  return useFetch<FormResponse>('/form');
+  return useFetch<FormListResponse>('/form');
 };
 
 /**
