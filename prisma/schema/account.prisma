@@ -1,0 +1,72 @@
+model Account {
+  uuid String @id @default(uuid())
+
+  email       String  @unique
+  name        String
+  description String?
+  avatar      String?
+
+  member Member?
+  guest  Guest?
+
+  classroomsAsStudent  Classroom[]    @relation("StudentClassroom")
+  classroomsAsTeacher  Classroom[]    @relation("TeacherClassroom")
+  classAsTeacher       Class[]
+  assignments          Assignment[]
+  awards               Award[]
+  projects             Project[]
+  writtenAnnouncements Announcement[] @relation("AuthorAnnouncement")
+  editedAnnouncements  Announcement[] @relation("EditorAnnouncement")
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+}
+
+model Member {
+  uuid        String @id @default(uuid())
+  accountUUID String @unique
+
+  cohort         Int
+  role           MemberRole            @default(MEMBER)
+  additionalRole MemberAdditionalRole?
+  unit           MemberUnit
+  status         MemberStatus          @default(ACTIVE)
+
+  account Account @relation(fields: [accountUUID], references: [uuid])
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+}
+
+enum MemberRole {
+  MANAGER
+  CO_MANAGER
+  MEMBER
+}
+
+enum MemberAdditionalRole {
+  INTERVIEWER
+}
+
+enum MemberUnit {
+  DEVELOPER
+  DESIGNER
+}
+
+enum MemberStatus {
+  ACTIVE
+  GRADUATED
+}
+
+model Guest {
+  uuid        String @id @default(uuid())
+  accountUUID String @unique
+
+  account Account @relation(fields: [accountUUID], references: [uuid])
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+}

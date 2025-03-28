@@ -1,0 +1,16 @@
+model Project {
+  uuid String @id @default(uuid())
+
+  name        String
+  description String?
+  visibility  Visibility @default(VISIBLE)
+
+  viewCount     Int @default(0)
+  downloadCount Int @default(0)
+
+  members Account[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+}

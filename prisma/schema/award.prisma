@@ -1,0 +1,27 @@
+model Award {
+  uuid            String @id @default(uuid())
+  competitionUUID String
+
+  prettyName String     @unique
+  position   Int
+  visibility Visibility @default(VISIBLE)
+  awardedAt  DateTime
+
+  winners     Account[]
+  competition Competition @relation(fields: [competitionUUID], references: [uuid])
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+}
+
+model Competition {
+  uuid String @id @default(uuid())
+
+  name String @unique
+
+  awards Award[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

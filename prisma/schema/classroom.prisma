@@ -1,0 +1,55 @@
+model Classroom {
+  uuid String @id @default(uuid())
+
+  name        String
+  description String?
+
+  students    Account[]    @relation("StudentClassroom")
+  teachers    Account[]    @relation("TeacherClassroom")
+  classes     Class[]
+  assignments Assignment[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+}
+
+model Class {
+  uuid          String @id @default(uuid())
+  classroomUUID String
+
+  name String
+
+  teachers    Account[]
+  assignments Assignment[]
+  classroom   Classroom    @relation(fields: [classroomUUID], references: [uuid])
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+}
+
+model Assignment {
+  uuid          String @id @default(uuid())
+  classroomUUID String
+  classUUID     String
+
+  name        String
+  description String?
+  status      AssignmentStatus @default(PENDING)
+
+  students  Account[]
+  classroom Classroom @relation(fields: [classroomUUID], references: [uuid])
+  class     Class     @relation(fields: [classUUID], references: [uuid])
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+}
+
+enum AssignmentStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}

@@ -1,0 +1,29 @@
+model Survey {
+  uuid     String @id @default(uuid())
+  formUUID String @unique
+
+  name       String
+  visibility Visibility @default(VISIBLE)
+  startAt    DateTime?
+  endAt      DateTime?
+
+  form         Form                @relation(fields: [formUUID], references: [uuid])
+  applications SurveyApplication[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+}
+
+model SurveyApplication {
+  uuid         String @id @default(uuid())
+  surveyUUID   String
+  responseUUID String @unique
+
+  survey   Survey       @relation(fields: [surveyUUID], references: [uuid])
+  response FormResponse @relation(fields: [responseUUID], references: [uuid])
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+}

@@ -1,0 +1,14 @@
+model Announcement {
+  uuid String @id @default(uuid())
+
+  title       String
+  content     String
+  attachments Asset[]
+  visibility  Visibility @default(VISIBLE)
+
+  authors Account[] @relation("AuthorAnnouncement")
+  editors Account[] @relation("EditorAnnouncement")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

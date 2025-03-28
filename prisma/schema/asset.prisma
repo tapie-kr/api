@@ -1,0 +1,12 @@
+model Asset {
+  uuid String @id @default(uuid())
+
+  prettyName String
+  url        String
+
+  createdAt DateTime  @default(now())
+  deletedAt DateTime?
+
+  announcements       Announcement[]       @ignore
+  formOptionResponses FormOptionResponse[] @ignore
+}

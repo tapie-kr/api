@@ -1,0 +1,92 @@
+model Form {
+  uuid String @id @default(uuid())
+
+  title       String
+  description String?
+
+  sections  FormSection[]
+  responses FormResponse[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  survey    Survey?    @ignore
+  interview Interview? @ignore
+}
+
+model FormSection {
+  uuid     String @id @default(uuid())
+  formUUID String
+
+  title       String
+  description String?
+  index       Int
+
+  form    Form         @relation(fields: [formUUID], references: [uuid])
+  options FormOption[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+}
+
+model FormOption {
+  uuid        String @id @default(uuid())
+  sectionUUID String
+
+  type        FormOptionType
+  label       String?
+  description String?
+  index       Int
+  placeholder String?
+  required    Boolean        @default(false)
+
+  section   FormSection          @relation(fields: [sectionUUID], references: [uuid])
+  responses FormOptionResponse[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+}
+
+enum FormOptionType {
+  TEXT
+  PARAGRAPH
+  RADIO
+  CHECKBOX
+  SELECT
+  FILE
+}
+
+model FormResponse {
+  uuid     String @id @default(uuid())
+  formUUID String
+
+  responses FormOptionResponse[]
+
+  form Form @relation(fields: [formUUID], references: [uuid])
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  survey    SurveyApplication?    @ignore
+  interview InterviewApplication? @ignore
+}
+
+model FormOptionResponse {
+  uuid         String @id @default(uuid())
+  optionUUID   String
+  responseUUID String
+
+  values      String[]
+  attachments Asset[]
+
+  option   FormOption   @relation(fields: [optionUUID], references: [uuid])
+  response FormResponse @relation(fields: [responseUUID], references: [uuid])
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+}

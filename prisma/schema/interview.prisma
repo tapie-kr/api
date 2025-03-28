@@ -1,0 +1,29 @@
+model Interview {
+  uuid     String @id @default(uuid())
+  formUUID String @unique
+
+  name       String
+  visibility Visibility @default(VISIBLE)
+  startAt    DateTime?
+  endAt      DateTime?
+
+  form         Form                   @relation(fields: [formUUID], references: [uuid])
+  applications InterviewApplication[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+}
+
+model InterviewApplication {
+  uuid          String @id @default(uuid())
+  interviewUUID String
+  responseUUID  String @unique
+
+  interview Interview    @relation(fields: [interviewUUID], references: [uuid])
+  response  FormResponse @relation(fields: [responseUUID], references: [uuid])
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+}

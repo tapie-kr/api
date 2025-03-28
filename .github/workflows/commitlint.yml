@@ -1,0 +1,25 @@
+name: Commit Message Lint
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  lint-commits:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22
+
+      - name: Install Commitlint
+        run: |
+          npm install --no-save @commitlint/{config-conventional,cli}
+
+      - name: Lint commits in PR
+        run: |
+          git fetch origin main
+          git log origin/main..HEAD --pretty=format:%s | npx commitlint
