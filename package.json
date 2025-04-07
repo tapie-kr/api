@@ -7,7 +7,7 @@
 		"test": "echo \"Warning: no test specified\"",
 		"prisma": "prisma",
 		"commit": "git add . && cz",
-		"format": "biome check --fix"
+		"lint": "biome check --fix"
 	},
 	"maintainers": [
 		{
