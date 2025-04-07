@@ -9,7 +9,7 @@
 		"start": "node dist/main.js",
 		"test": "echo \"Warning: no test specified\"",
 		"prisma": "prisma",
-		"commit": "git add . && cz",
+		"commit": "pnpm lint && git add . && cz",
 		"lint": "biome check --fix"
 	},
 	"maintainers": [
