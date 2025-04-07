@@ -1,3 +1,5 @@
 onlyBuiltDependencies:
   - '@prisma/client'
   - prisma
+ignoredBuiltDependencies:
+  - '@swc/core'
