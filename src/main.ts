@@ -1,4 +1,4 @@
-import { Logger } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
@@ -14,6 +14,13 @@ async function bootstrap() {
 
 	app.useGlobalFilters(new GlobalExceptionFilter());
 	app.useGlobalInterceptors(new TransformInterceptor());
+	app.useGlobalPipes(
+		new ValidationPipe({
+			transform: true,
+			whitelist: true,
+			forbidNonWhitelisted: true,
+		}),
+	);
 
 	initSentry(configService);
 	initSwagger(app);
