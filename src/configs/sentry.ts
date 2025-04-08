@@ -17,6 +17,7 @@ export default function initSentry(configService: ConfigService) {
 			Sentry.prismaIntegration({
 				prismaInstrumentation: new PrismaInstrumentation(),
 			}),
+			Sentry.redisIntegration(),
 		],
 	});
 
