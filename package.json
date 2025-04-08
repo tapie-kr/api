@@ -2,6 +2,12 @@
 	"name": "api",
 	"version": "1.0.0",
 	"description": "TAPIE Ecosystem API",
+	"license": "MIT",
+	"homepage": "https://tapie.kr/",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/tapie-kr/api.git"
+	},
 	"scripts": {
 		"prebuild": "rimraf dist && pnpm lint",
 		"build": "nest build -b swc --type-check && pnpm sentry:sourcemaps",
