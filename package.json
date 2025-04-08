@@ -4,13 +4,14 @@
 	"description": "TAPIE Ecosystem API",
 	"scripts": {
 		"prebuild": "rimraf dist && pnpm lint",
-		"build": "nest build -b swc --type-check",
-		"dev": "nest start -b swc --watch",
+		"build": "nest build -b swc --type-check && pnpm sentry:sourcemaps",
+		"dev": "nest start --watch",
 		"start": "node dist/main.js",
 		"test": "echo \"Warning: no test specified\"",
 		"prisma": "prisma",
 		"commit": "pnpm lint && git add . && cz",
-		"lint": "biome check --fix"
+		"lint": "biome check --fix",
+		"sentry:sourcemaps": "sentry-cli sourcemaps inject --org tapie-kr --project test-api ./dist && sentry-cli --url https://sentry.vport.dev/ sourcemaps upload --org tapie-kr --project test-api ./dist"
 	},
 	"maintainers": [
 		{
@@ -34,9 +35,14 @@
 	},
 	"dependencies": {
 		"@nestjs/common": "^11.0.13",
+		"@nestjs/config": "^4.0.2",
 		"@nestjs/core": "^11.0.13",
 		"@nestjs/platform-express": "^11.0.13",
 		"@prisma/client": "^6.5.0",
+		"@prisma/instrumentation": "^6.5.0",
+		"@sentry/cli": "^2.43.0",
+		"@sentry/nestjs": "^9.11.0",
+		"dotenv": "^16.4.7",
 		"prisma": "^6.5.0",
 		"reflect-metadata": "^0.2.2",
 		"rxjs": "^7.8.2"
@@ -49,6 +55,7 @@
 		"@nestjs/schematics": "^11.0.3",
 		"@swc/cli": "^0.6.0",
 		"@swc/core": "^1.11.18",
+		"@types/express": "^5.0.1",
 		"@types/node": "^22.14.0",
 		"commitizen": "^4.3.1",
 		"cz-conventional-changelog": "^3.3.0",
