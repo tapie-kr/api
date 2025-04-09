@@ -1,3 +1,4 @@
+import packageJson from '@/../package.json';
 import { Logger } from '@nestjs/common';
 import type { ConfigService } from '@nestjs/config';
 import { PrismaInstrumentation } from '@prisma/instrumentation';
@@ -10,8 +11,10 @@ export default function initSentry(configService: ConfigService) {
 
 	const client = Sentry.init({
 		dsn: SENTRY_DSN,
-		tracesSampleRate: 1.0,
 		environment: NODE_ENV,
+		release: packageJson.version,
+		tracesSampleRate: 1,
+		sampleRate: 1,
 		attachStacktrace: true,
 		integrations: [
 			Sentry.prismaIntegration({

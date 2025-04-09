@@ -1,3 +1,4 @@
+import packageJson from '@/../package.json';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
@@ -27,7 +28,9 @@ async function bootstrap() {
 
 	await app.listen(Number(configService.get('PORT') || 3000), '0.0.0.0');
 
-	logger.log(`Application is running on: ${await app.getUrl()}`);
+	logger.log(
+		`Application version ${packageJson.version} is running on: ${await app.getUrl()}`,
+	);
 	logger.debug(`Environment: ${configService.get('NODE_ENV')}`);
 }
 
