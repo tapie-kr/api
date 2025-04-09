@@ -1,0 +1,30 @@
+model Permission {
+  uuid       String @id @default(uuid())
+  targetUUID String @unique
+
+  account      PermissionType @default(NONE)
+  announcement PermissionType @default(READ)
+  assignment   PermissionType @default(READ)
+  auditLog     PermissionType @default(NONE)
+  award        PermissionType @default(READ)
+  class        PermissionType @default(READ)
+  classroom    PermissionType @default(READ)
+  interview    PermissionType @default(NONE)
+  project      PermissionType @default(READ)
+  statistics   PermissionType @default(READ)
+  survey       PermissionType @default(READ)
+
+  target Account @relation(fields: [targetUUID], references: [uuid])
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+}
+
+enum PermissionType {
+  FULL
+  READ
+  WRITE
+  DELETE
+  NONE
+}

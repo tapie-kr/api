@@ -6,8 +6,9 @@ model Account {
   description String?
   avatar      String?
 
-  member Member?
-  guest  Guest?
+  member     Member?
+  guest      Guest?
+  permission Permission?
 
   classroomsAsStudent  Classroom[]    @relation("StudentClassroom")
   classroomsAsTeacher  Classroom[]    @relation("TeacherClassroom")
@@ -27,11 +28,10 @@ model Member {
   uuid        String @id @default(uuid())
   accountUUID String @unique
 
-  cohort         Int
-  role           MemberRole            @default(MEMBER)
-  additionalRole MemberAdditionalRole?
-  unit           MemberUnit
-  status         MemberStatus          @default(ACTIVE)
+  cohort Int
+  role   MemberRole   @default(MEMBER)
+  unit   MemberUnit
+  status MemberStatus @default(ACTIVE)
 
   account Account @relation(fields: [accountUUID], references: [uuid])
 
@@ -44,10 +44,6 @@ enum MemberRole {
   MANAGER
   CO_MANAGER
   MEMBER
-}
-
-enum MemberAdditionalRole {
-  INTERVIEWER
 }
 
 enum MemberUnit {
