@@ -37,7 +37,7 @@ async function bootstrap() {
 		logger.warn('Redis flushed before starting the application');
 	}
 
-	await app.listen(Number(configService.get('PORT') || 3000), '0.0.0.0');
+	await app.listen(3000, '0.0.0.0');
 
 	logger.log(
 		`Application version ${packageJson.version} is running on: ${await app.getUrl()}`,
