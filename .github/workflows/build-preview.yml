@@ -19,6 +19,11 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+
+      - name: Create .env file
+        env:
+          SENTRY_API_KEY: ${{ secrets.SENTRY_API_KEY }}
+        run: echo "SENTRY_API_KEY=$SENTRY_API_KEY" > .env
       
       - name: Login to GitHub Container Registry
         env:
@@ -30,8 +35,7 @@ jobs:
         env:
           DOCKER_BUILDKIT: ${{ env.DOCKER_BUILDKIT }}
           IMAGE_NAME: ${{ env.IMAGE_NAME }}
-          SENTRY_API_KEY: ${{ secrets.SENTRY_API_KEY }}
-        run: docker build -t $IMAGE_NAME .
+        run: docker build -t $IMAGE_NAME . --env SENTRY_API_KEY=$SENTRY_API_KEY
       
       - name: Push Docker image to GitHub Container Registry
         env:
