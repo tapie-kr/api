@@ -41,3 +41,6 @@ jobs:
         env:
           IMAGE_NAME: ${{ env.IMAGE_NAME }}
         run: docker push $IMAGE_NAME
+      
+      - name: Deploy to vport.dev
+        run: curl ${{ secrets.DOKPLOY_WEBHOOK }}
