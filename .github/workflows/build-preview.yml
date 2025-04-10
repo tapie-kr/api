@@ -35,7 +35,7 @@ jobs:
         env:
           DOCKER_BUILDKIT: ${{ env.DOCKER_BUILDKIT }}
           IMAGE_NAME: ${{ env.IMAGE_NAME }}
-        run: docker build -t $IMAGE_NAME . --env SENTRY_API_KEY=$SENTRY_API_KEY
+        run: docker build -t $IMAGE_NAME .
       
       - name: Push Docker image to GitHub Container Registry
         env:
