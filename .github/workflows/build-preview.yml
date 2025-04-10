@@ -5,6 +5,13 @@ on:
     branches:
       - dev
 
+env:
+  DOCKER_BUILDKIT: 1
+  IMAGE_NAME: ghcr.io/tapie-kr/api:preview
+  GH_TOKEN: ${{ secrets.GH_TOKEN }}
+  GH_USERNAME: ${{ secrets.GH_USERNAME }}
+  SENTRY_API_KEY: ${{ secrets.SENTRY_API_KEY }}
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -14,10 +21,18 @@ jobs:
         uses: actions/checkout@v3
       
       - name: Login to GitHub Container Registry
-        run: echo ${{ secrets.GH_TOKEN }} | docker login ghcr.io -u ${{ secrets.GH_USERNAME }} --password-stdin
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          GH_USERNAME: ${{ secrets.GH_USERNAME }}
+        run: echo $GH_TOKEN | docker login ghcr.io -u $GH_USERNAME --password-stdin
       
       - name: Build Docker image
-        run: DOCKER_BUILDKIT=1 docker build -t ghcr.io/tapie-kr/api:preview .
+        env:
+          DOCKER_BUILDKIT: ${{ env.DOCKER_BUILDKIT }}
+          IMAGE_NAME: ${{ env.IMAGE_NAME }}
+        run: docker build -t $IMAGE_NAME .
       
       - name: Push Docker image to GitHub Container Registry
-        run: docker push ghcr.io/tapie-kr/api:preview
+        env:
+          IMAGE_NAME: ${{ env.IMAGE_NAME }}
+        run: docker push $IMAGE_NAME
