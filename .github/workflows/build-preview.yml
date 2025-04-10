@@ -1,0 +1,23 @@
+name: Build Preview Docker Image
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      
+      - name: Login to GitHub Container Registry
+        run: echo ${{ secrets.GH_TOKEN }} | docker login ghcr.io -u ${{ secrets.GH_USERNAME }} --password-stdin
+      
+      - name: Build Docker image
+        run: DOCKER_BUILDKIT=1 docker build -t ghcr.io/tapie-kr/api:preview .
+      
+      - name: Push Docker image to GitHub Container Registry
+        run: docker push ghcr.io/tapie-kr/api:preview

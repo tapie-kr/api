@@ -1,0 +1,9 @@
+# Same as .gitignore
+
+node_modules
+dist
+src/common/modules/prisma/client
+.DS_Store
+.env.local
+.env.development
+.env.test
