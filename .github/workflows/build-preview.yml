@@ -10,7 +10,7 @@ env:
   IMAGE_NAME: ghcr.io/tapie-kr/api:preview
   GH_TOKEN: ${{ secrets.GH_TOKEN }}
   GH_USERNAME: ${{ secrets.GH_USERNAME }}
-  SENTRY_API_KEY: ${{ secrets.SENTRY_API_KEY }}
+  SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
 
 jobs:
   build:
@@ -22,8 +22,8 @@ jobs:
 
       - name: Create .env file
         env:
-          SENTRY_API_KEY: ${{ secrets.SENTRY_API_KEY }}
-        run: echo "SENTRY_API_KEY=$SENTRY_API_KEY" > .env
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+        run: echo "SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN" > .env
       
       - name: Login to GitHub Container Registry
         env:
