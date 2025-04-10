@@ -49,12 +49,12 @@ export class GlobalExceptionFilter implements ExceptionFilter {
 
 		response.status(status).send(apiResponse);
 
-		this.logger.error(exception);
-
-		const isProduction = this.configService.get('NODE_ENV') === 'production';
-
-		if (!isProduction) {
-			console.error(exception);
-		}
+		const isDevelopment = this.configService.get('NODE_ENV') !== 'production';
+		this.logger.error(
+			`${exception.name} - ${exception.message}`,
+			isDevelopment && apiResponse.status === HttpStatus.INTERNAL_SERVER_ERROR
+				? exception.stack
+				: undefined,
+		);
 	}
 }

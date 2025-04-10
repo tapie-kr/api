@@ -19,22 +19,7 @@ export default async function initSwagger(app: INestApplication) {
 	const config = new DocumentBuilder()
 		.setTitle('TAPIE API')
 		.setDescription('TAPIE Ecosystem API')
-		.addCookieAuth(
-			'accessToken',
-			{
-				type: 'apiKey',
-				in: 'cookie',
-			},
-			'accessToken',
-		)
-		.addCookieAuth(
-			'refreshToken',
-			{
-				type: 'apiKey',
-				in: 'cookie',
-			},
-			'refreshToken',
-		)
+		.addBearerAuth()
 		.build();
 
 	const document = SwaggerModule.createDocument(app, config, {
