@@ -31,7 +31,7 @@ export class AuthService {
 
 	async generateToken(accountUUID: string) {
 		const existTokenCount = await this.redis.scard(`account:${accountUUID}`);
-		if (existTokenCount >= 5) {
+		if (existTokenCount > 5) {
 			throw new HttpException('토큰은 최대 5개까지 생성할 수 있습니다.', 429);
 		}
 
